@@ -1,5 +1,6 @@
 "use client";
 
+import { Panel } from "@/components/chapter/Panel";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useMemo, useState } from "react";
 import { Check, ClipboardCopy, Globe2, Store } from "lucide-react";
@@ -94,8 +95,8 @@ export function ThinkDiscuss() {
   };
 
   return (
-    <section id="think" className="relative scroll-mt-20 bg-cream py-14 sm:py-20">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+    <section id="think" className="relative scroll-mt-6 px-3 py-6 sm:px-6 sm:py-10">
+      <Panel tone="light" reveal="left" width="max-w-6xl">
         <SectionIntro index="5" kicker="Think & Discuss" title="What would you do?">
           There are no right or wrong answers here — only reasons. Build your thinking step by step, then copy it into your discussion or submission.
         </SectionIntro>
@@ -236,7 +237,7 @@ export function ThinkDiscuss() {
           <pre className="mt-5 whitespace-pre-wrap rounded-2xl bg-black/25 p-4 font-sans text-[1rem] leading-relaxed text-cream/95">{summary}</pre>
           {!allDone && <p className="mt-3 text-[0.95rem] text-cream/75">Finish both questions to copy your answers.</p>}
         </motion.div>
-      </div>
+      </Panel>
     </section>
   );
 }

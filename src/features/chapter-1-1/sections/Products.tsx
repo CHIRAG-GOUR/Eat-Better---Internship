@@ -1,5 +1,6 @@
 "use client";
 
+import { Panel } from "@/components/chapter/Panel";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useMemo, useState } from "react";
@@ -39,15 +40,15 @@ export function Products({ focus }: { focus: CategoryId | null }) {
   const selCard = PRODUCT_CARDS.find((c) => c.id === selected);
 
   return (
-    <section id="products" className="relative scroll-mt-20 bg-peach py-14 sm:py-20">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+    <section id="products" className="relative scroll-mt-6 px-3 py-6 sm:px-6 sm:py-10">
+      <Panel tone="peach" reveal="up" width="max-w-6xl">
         <SectionIntro index="4" kicker="What does Eat Better make?" title="Stock the shelves">
           Eat Better makes four kinds of products. Pick a real product from the tray, then place it on the shelf where it belongs. Each shelf reveals what that category includes once it&apos;s stocked.
         </SectionIntro>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,380px)_1fr]">
           {/* tray */}
-          <div className="self-start rounded-[28px] bg-cream p-5 shadow-[0_24px_50px_-32px_rgba(47,28,26,0.6)] lg:sticky lg:top-24">
+          <div className="self-start rounded-[28px] bg-cream p-5 shadow-[0_24px_50px_-32px_rgba(47,28,26,0.6)] lg:sticky lg:top-6">
             <ActivityLabel done={done}>Activity · Product tray</ActivityLabel>
             <p className="mt-2 text-[1.02rem] text-cocoa-2">
               {done ? "Every product is on its shelf." : `${remaining.length} of ${cards.length} products left to place.`}
@@ -184,7 +185,7 @@ export function Products({ focus }: { focus: CategoryId | null }) {
             These are Eat Better Co&apos;s own brand claims, as stated by the company. This chapter presents them as what the brand says — not as independently tested nutrition or health facts.
           </p>
         </motion.div>
-      </div>
+      </Panel>
     </section>
   );
 }

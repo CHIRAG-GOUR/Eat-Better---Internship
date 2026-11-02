@@ -1,5 +1,6 @@
 "use client";
 
+import { Panel } from "@/components/chapter/Panel";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
@@ -91,8 +92,8 @@ export function WhatIs() {
   };
 
   return (
-    <section id="what-is" className="relative scroll-mt-20 bg-peach py-14 sm:py-20">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+    <section id="what-is" className="relative scroll-mt-6 px-3 py-6 sm:px-6 sm:py-10">
+      <Panel tone="peach" reveal="left" width="max-w-6xl">
         <SectionIntro index="2" kicker="What is Eat Better Co?" title="Snacks you love. Ingredients you trust." />
 
         <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -200,7 +201,7 @@ export function WhatIs() {
             </AnimatePresence>
           </div>
         </div>
-      </div>
+      </Panel>
     </section>
   );
 }

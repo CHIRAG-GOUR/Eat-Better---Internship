@@ -9,6 +9,19 @@ export function useClientValue<T>(read: () => T, serverValue: T): T {
   return useSyncExternalStore(noop, read, () => serverValue);
 }
 
+/** Live media-query match (false on the server). */
+export function useMediaQuery(query: string): boolean {
+  return useSyncExternalStore(
+    (cb) => {
+      const mq = window.matchMedia(query);
+      mq.addEventListener("change", cb);
+      return () => mq.removeEventListener("change", cb);
+    },
+    () => window.matchMedia(query).matches,
+    () => false,
+  );
+}
+
 let webglCache: boolean | null = null;
 export function detectWebGL() {
   if (webglCache !== null) return webglCache;

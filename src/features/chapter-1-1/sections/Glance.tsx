@@ -1,5 +1,6 @@
 "use client";
 
+import { Panel } from "@/components/chapter/Panel";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
@@ -20,8 +21,8 @@ export function Glance() {
   const [role, setRole] = useState<string | null>(null);
 
   return (
-    <section id="glance" className="relative scroll-mt-20 bg-cream py-14 sm:py-20">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+    <section id="glance" className="relative scroll-mt-6 px-3 py-6 sm:px-6 sm:py-10">
+      <Panel tone="light" reveal="up" width="max-w-6xl">
         <SectionIntro index="1" kicker="Company at a glance" title="Meet the company">
           Open each line of the company file. The grey notes explain what each term means in business.
         </SectionIntro>
@@ -150,7 +151,7 @@ export function Glance() {
             })}
           </div>
         </div>
-      </div>
+      </Panel>
     </section>
   );
 }

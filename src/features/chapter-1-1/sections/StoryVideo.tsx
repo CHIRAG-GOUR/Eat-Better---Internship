@@ -1,5 +1,6 @@
 "use client";
 
+import { Panel } from "@/components/chapter/Panel";
 import { motion } from "motion/react";
 import { VIDEO } from "../content";
 import { SectionIntro } from "@/components/chapter/SectionIntro";
@@ -11,8 +12,8 @@ import { SectionIntro } from "@/components/chapter/SectionIntro";
  */
 export function StoryVideo() {
   return (
-    <section id="story" className="relative scroll-mt-20 overflow-hidden bg-cocoa py-14 sm:py-20">
-      <div className="mx-auto max-w-5xl px-5 sm:px-8">
+    <section id="story" className="relative scroll-mt-6 px-3 py-6 sm:px-6 sm:py-10">
+      <Panel tone="dark" reveal="up" width="max-w-5xl">
         <SectionIntro index="▸" kicker="Watch · In the company's own words" title="How Eat Better Co started" tone="dark">
           As you watch, notice two things: <strong className="text-cream">where the brand began</strong>, and{" "}
           <strong className="text-cream">what it says it stands for</strong>. You&apos;ll use both later in this chapter.
@@ -46,7 +47,7 @@ export function StoryVideo() {
         <p className="mt-4 text-[0.95rem] text-cream/70">
           {VIDEO.title} — {VIDEO.channel}
         </p>
-      </div>
+      </Panel>
     </section>
   );
 }

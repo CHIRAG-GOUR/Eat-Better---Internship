@@ -1,5 +1,6 @@
 "use client";
 
+import { Panel } from "@/components/chapter/Panel";
 import Image from "next/image";
 import { motion } from "motion/react";
 import { Check, Circle } from "lucide-react";
@@ -25,8 +26,8 @@ export function Conclusion() {
   const count = ACTIVITIES.filter((a) => done[a.id]).length;
 
   return (
-    <section id="wrap-up" className="relative scroll-mt-20 overflow-hidden bg-peach pb-24 pt-14 sm:pt-20">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+    <section id="wrap-up" className="relative scroll-mt-6 px-3 py-6 sm:px-6 sm:py-10">
+      <Panel tone="peach" reveal="up" width="max-w-6xl">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
           <div className="text-[0.85rem] font-extrabold uppercase tracking-[0.16em] text-orange">Chapter 1.1 · Wrap-up</div>
           <h2 className="mt-3 font-display text-[clamp(2.2rem,5vw,3.4rem)] font-semibold leading-[1.04] text-cocoa">You&apos;ve met Eat Better Co</h2>
@@ -86,7 +87,7 @@ export function Conclusion() {
           <Image src="/brand/eat-better-logo.svg" alt="Eat Better Co" width={110} height={53} />
           <p className="text-[0.95rem] text-cocoa-2">SkilliZee × Eat Better Co · 360° Internship</p>
         </div>
-      </div>
+      </Panel>
     </section>
   );
 }

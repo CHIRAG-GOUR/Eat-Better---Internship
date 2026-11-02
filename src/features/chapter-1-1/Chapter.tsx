@@ -1,10 +1,11 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { ChapterBar } from "@/components/chapter/ChapterBar";
-import type { ProgressSection } from "@/components/chapter/LaddooProgress";
-import { CHAPTER, type CategoryId } from "./content";
-import { Hero } from "./sections/Hero";
+import { FullscreenToggle } from "@/components/chapter/FullscreenToggle";
+import { LaddooRing, type ProgressSection } from "@/components/chapter/LaddooRing";
+import { WorldBackground } from "./three/WorldBackground";
+import type { CategoryId } from "./content";
+import { ChapterHeader } from "./sections/ChapterHeader";
 import { Glance } from "./sections/Glance";
 import { WhatIs } from "./sections/WhatIs";
 import { StoryVideo } from "./sections/StoryVideo";
@@ -36,12 +37,14 @@ export default function Chapter() {
 
   return (
     <>
-      <a href="#glance" className="sr-only z-50 rounded-lg bg-cocoa px-4 py-2 text-cream focus:not-sr-only focus:fixed focus:left-3 focus:top-20">
+      <a href="#glance" className="sr-only z-50 rounded-lg bg-cocoa px-4 py-2 text-cream focus:not-sr-only focus:fixed focus:left-3 focus:top-3">
         Skip to chapter content
       </a>
-      <ChapterBar label={`${CHAPTER.module} · Chapter ${CHAPTER.number} · ${CHAPTER.title}`} sections={SECTIONS} />
-      <main>
-        <Hero onPickCategory={pick} />
+      <WorldBackground />
+      <FullscreenToggle />
+      <LaddooRing sections={SECTIONS} />
+      <main className="relative z-10">
+        <ChapterHeader onPickCategory={pick} />
         <Glance />
         <WhatIs />
         <StoryVideo />

@@ -1,5 +1,6 @@
 "use client";
 
+import { Panel } from "@/components/chapter/Panel";
 import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
 import { useRef } from "react";
 import { ChefHat, Globe2, MapPinned } from "lucide-react";
@@ -45,9 +46,8 @@ export function Takeaway() {
   const emph = new Set(words.map((w, i) => (/internet-first/.test(w) ? i : -1)).concat(words.map((w, i) => (w === "brand." && i === words.length - 1 ? i : -1))));
 
   return (
-    <section id="takeaway" ref={ref} className="relative scroll-mt-20 overflow-hidden bg-[#3a0b0d] py-16 sm:py-24">
-      <div className="grain pointer-events-none absolute inset-0 opacity-40" aria-hidden />
-      <div className="relative mx-auto max-w-5xl px-5 sm:px-8">
+    <section id="takeaway" ref={ref} className="relative scroll-mt-6 px-3 py-6 sm:px-6 sm:py-10">
+      <Panel tone="maroon" reveal="up" width="max-w-5xl">
         <div className="text-center text-[0.85rem] font-extrabold uppercase tracking-[0.18em] text-haldi">Key takeaway</div>
         <blockquote className="mx-auto mt-8 max-w-4xl text-center font-display text-[clamp(1.9rem,4.4vw,3.3rem)] font-semibold leading-[1.18] text-cream">
           <span className="sr-only">{TAKEAWAY}</span>
@@ -67,7 +67,7 @@ export function Takeaway() {
             ))}
           </div>
         </div>
-      </div>
+      </Panel>
     </section>
   );
 }
