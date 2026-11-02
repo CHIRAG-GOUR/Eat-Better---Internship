@@ -65,6 +65,7 @@
 }
 
 html {
+  overflow-x: clip;
   background: var(--eb-cream);
   color: var(--eb-cocoa);
   -webkit-text-size-adjust: 100%;

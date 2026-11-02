@@ -156,7 +156,7 @@ export function LaddooRing({ sections }: { sections: ProgressSection[] }) {
   });
 
   const label = sections[section]?.label ?? "";
-  const size = small ? 84 : 112;
+  const size = small ? 66 : 112;
 
   return (
     <div
@@ -252,7 +252,7 @@ export function LaddooRing({ sections }: { sections: ProgressSection[] }) {
         {/* percentage pill */}
         <span
           ref={pctEl}
-          className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full border border-cocoa bg-orange px-2.5 py-0.5 font-display text-[0.95rem] font-semibold tabular-nums leading-tight text-white shadow-[1.5px_1.5px_0_0_#2f1c1a] sm:text-[1.02rem]"
+          className="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full border border-cocoa bg-orange px-2 py-0.5 font-display text-[0.8rem] font-semibold tabular-nums sm:px-2.5 leading-tight text-white shadow-[1.5px_1.5px_0_0_#2f1c1a] sm:text-[1.02rem]"
         >
           0%
         </span>

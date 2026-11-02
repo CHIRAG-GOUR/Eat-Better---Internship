@@ -38,7 +38,7 @@ export function GlossaryText({ children }: { children: string }) {
     };
   }, [entries]);
 
-  if (!re) return <>{children}</>;
+  if (!re) return <span>{children}</span>;
   const out: ReactNode[] = [];
   const used = new Set<GlossaryEntry>();
   let last = 0;
@@ -55,12 +55,13 @@ export function GlossaryText({ children }: { children: string }) {
     last = m.index + m[0].length;
   }
   out.push(children.slice(last));
+  // one inline wrapper so the text stays a single flowing line inside flex rows
   return (
-    <>
+    <span>
       {out.map((n, i) => (
         <Fragment key={i}>{n}</Fragment>
       ))}
-    </>
+    </span>
   );
 }
 

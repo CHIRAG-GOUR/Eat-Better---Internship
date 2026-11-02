@@ -294,7 +294,8 @@ export function Hall({ compact }: { compact: boolean }) {
   const signMat = useMemo(() => (signTex ? new THREE.MeshBasicMaterial({ map: signTex, fog: false, toneMapped: false }) : null), [signTex]);
   useEffect(() => () => signMat?.dispose(), [signMat]);
   useFrame(() => {
-    sign.current?.position.set(compact ? 0 : 3.1, compact ? 3.1 : 2.95, camera.position.z - 19);
+    sign.current?.position.set(compact ? 0 : 3.1, compact ? 4.35 : 2.95, camera.position.z - 19);
+    sign.current?.scale.setScalar(compact ? 0.62 : 0.85);
   });
 
   return (
@@ -327,7 +328,7 @@ export function Hall({ compact }: { compact: boolean }) {
         </>
       )}
 
-      <group ref={sign} scale={0.85}>
+      <group ref={sign}>
         {signMat && (
           <>
             <mesh material={signMat}>

@@ -28,6 +28,7 @@ export function Glance() {
         </SectionIntro>
 
         <div className="mt-10 grid gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-14">
+          <div className="space-y-5">
           {/* brand line card */}
           <motion.div
             initial={{ opacity: 0, y: 30, rotate: -1.5 }}
@@ -57,6 +58,18 @@ export function Glance() {
               )}
             </AnimatePresence>
           </motion.div>
+
+            <motion.figure
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-10% 0px" }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+              className="relative aspect-[16/9] overflow-hidden rounded-[24px] border border-cocoa shadow-[3px_3px_0_0_#2f1c1a]"
+            >
+              <Image src="/chapter-1-1/art/jaipur.webp" alt="Illustration of Jaipur's pink sandstone architecture" fill sizes="(max-width: 1024px) 100vw, 600px" className="object-cover" />
+              <figcaption className="absolute bottom-3 left-3 rounded-lg bg-cream/95 px-3 py-1.5 text-[0.95rem] font-bold text-cocoa">Headquarters · Jaipur, Rajasthan</figcaption>
+            </motion.figure>
+          </div>
 
           {/* fact ledger */}
           <motion.ul

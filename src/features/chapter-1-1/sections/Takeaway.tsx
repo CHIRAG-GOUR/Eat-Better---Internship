@@ -3,13 +3,13 @@
 import { Panel } from "@/components/chapter/Panel";
 import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
 import { useRef } from "react";
-import { ChefHat, Globe2, MapPinned } from "lucide-react";
+import Image from "next/image";
 import { TAKEAWAY } from "../content";
 
 const STEPS = [
-  { icon: ChefHat, label: "A family kitchen" },
-  { icon: Globe2, label: "Selling online" },
-  { icon: MapPinned, label: "A national brand" },
+  { img: "/chapter-1-1/art/family-kitchen.webp", label: "A family kitchen" },
+  { img: "/chapter-1-1/art/order-online.webp", label: "Selling online" },
+  { img: "/chapter-1-1/art/across-india.webp", label: "A national brand" },
 ];
 
 function Word({ word, i, total, progress, emphasis }: { word: string; i: number; total: number; progress: MotionValue<number>; emphasis: boolean }) {
@@ -22,16 +22,21 @@ function Word({ word, i, total, progress, emphasis }: { word: string; i: number;
   );
 }
 
-function Step({ i, progress, icon: Icon, label }: { i: number; progress: MotionValue<number>; icon: typeof ChefHat; label: string }) {
+function Step({ i, progress, img, label }: { i: number; progress: MotionValue<number>; img: string; label: string }) {
   const at = 0.15 + i * 0.25;
-  const bg = useTransform(progress, [at, at + 0.05], ["rgba(255,245,238,0.08)", "rgba(255,92,0,1)"]);
-  const scale = useTransform(progress, [at, at + 0.05], [0.9, 1]);
+  // each picture lights up (colour + orange frame) as the reader reaches it
+  const filter = useTransform(progress, [at, at + 0.06], ["grayscale(1) brightness(0.55)", "grayscale(0) brightness(1)"]);
+  const border = useTransform(progress, [at, at + 0.06], ["rgba(255,245,238,0.18)", "rgba(255,92,0,1)"]);
+  const scale = useTransform(progress, [at, at + 0.06], [0.94, 1]);
   return (
     <div className="flex flex-col items-center gap-3 text-center">
-      <motion.span style={{ backgroundColor: bg, scale }} className="grid size-16 place-items-center rounded-2xl text-cream ring-1 ring-cream/20 sm:size-20">
-        <Icon className="size-7 sm:size-8" />
-      </motion.span>
-      <span className="text-[1rem] font-bold text-cream/90 sm:text-[1.1rem]">{label}</span>
+      <motion.div style={{ borderColor: border, scale }} className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border-[3px]">
+        <motion.div style={{ filter }} className="absolute inset-0">
+          <Image src={img} alt={`Illustration: ${label.toLowerCase()}`} fill sizes="(max-width: 640px) 33vw, 300px" className="object-cover" />
+        </motion.div>
+        <span className="absolute left-2 top-2 grid size-7 place-items-center rounded-full bg-orange text-[0.9rem] font-bold text-white">{i + 1}</span>
+      </motion.div>
+      <span className="text-[0.98rem] font-bold text-cream/90 sm:text-[1.1rem]">{label}</span>
     </div>
   );
 }
@@ -58,12 +63,12 @@ export function Takeaway() {
           </span>
         </blockquote>
 
-        <div className="relative mx-auto mt-16 max-w-3xl">
-          <div className="absolute left-[16%] right-[16%] top-8 h-1 rounded-full bg-cream/15 sm:top-10" />
-          <motion.div style={{ width: line }} className="absolute left-[16%] top-8 h-1 max-w-[68%] rounded-full bg-orange sm:top-10" />
-          <div className="relative grid grid-cols-3">
+        <div className="relative mx-auto mt-12 max-w-4xl">
+          <div className="absolute left-[16%] right-[16%] top-[30%] h-1 rounded-full bg-cream/15" />
+          <motion.div style={{ width: line }} className="absolute left-[16%] top-[30%] h-1 max-w-[68%] rounded-full bg-orange" />
+          <div className="relative grid grid-cols-3 gap-3 sm:gap-6">
             {STEPS.map((s, i) => (
-              <Step key={s.label} i={i} progress={progress} icon={s.icon} label={s.label} />
+              <Step key={s.label} i={i} progress={progress} img={s.img} label={s.label} />
             ))}
           </div>
         </div>

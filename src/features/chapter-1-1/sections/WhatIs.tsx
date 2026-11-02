@@ -97,47 +97,62 @@ export function WhatIs() {
       <Panel tone="peach" reveal="left" width="max-w-7xl">
         <SectionIntro index="2" kicker="What is Eat Better Co?" title="Snacks you love. Ingredients you trust." />
 
-        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {[
-            { src: "/brand/products/hazelnut-laddoo-1.webp", alt: "Hazelnut Chocolate Laddoos" },
-            { src: "/brand/products/millet-bhujia-1.webp", alt: "Millet Bhujia" },
-            { src: "/brand/products/nut-mix-2.webp", alt: "Premium Nut Mix" },
-            { src: "/brand/products/laddoo-box-42-1.webp", alt: "Assorted Laddoo Box" },
-          ].map((img, i) => (
-            <motion.div
-              key={img.src}
-              initial={{ opacity: 0, y: 20 }}
+        {/* picture-led: the belief sits on the balance illustration; real products beside the description */}
+        <div className="mt-8 grid gap-5 lg:grid-cols-[1.15fr_1fr]">
+          <motion.figure
+            initial={{ opacity: 0, scale: 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-10% 0px" }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="relative min-h-[300px] overflow-hidden rounded-[24px] border border-cocoa shadow-[3px_3px_0_0_#2f1c1a]"
+          >
+            <Image src="/chapter-1-1/art/balance.webp" alt="Illustration of a brass scale balancing snacks and whole ingredients" fill sizes="(max-width: 1024px) 100vw, 640px" className="object-cover" />
+            <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-cocoa/90 via-cocoa/60 to-transparent p-5 pt-16 sm:p-7 sm:pt-20">
+              <span className="block font-display text-[clamp(1.3rem,2.6vw,1.75rem)] font-medium leading-snug text-cream">
+                <GlossaryText>{WHAT_IS.paragraphs[1]}</GlossaryText>
+              </span>
+            </figcaption>
+          </motion.figure>
+
+          <div className="flex flex-col gap-4">
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.07 }}
-              className="relative aspect-square overflow-hidden rounded-2xl border border-cocoa shadow-[2px_2px_0_0_#2f1c1a]"
+              className="rounded-[20px] bg-cream p-5 text-[1.12rem] leading-relaxed text-cocoa"
             >
-              <Image src={img.src} alt={`${img.alt} — official Eat Better Co photo`} fill sizes="(max-width: 640px) 50vw, 25vw" className="object-cover transition-transform duration-700 hover:scale-105" />
-            </motion.div>
-          ))}
+              <GlossaryText>{WHAT_IS.paragraphs[0]}</GlossaryText>
+            </motion.p>
+            <div className="grid flex-1 grid-cols-2 gap-3">
+              {[
+                { src: "/brand/products/hazelnut-laddoo-1.webp", alt: "Hazelnut Chocolate Laddoos" },
+                { src: "/brand/products/millet-bhujia-1.webp", alt: "Millet Bhujia" },
+                { src: "/brand/products/nut-mix-2.webp", alt: "Premium Nut Mix" },
+                { src: "/brand/products/laddoo-box-42-1.webp", alt: "Assorted Laddoo Box" },
+              ].map((img, i) => (
+                <motion.div
+                  key={img.src}
+                  initial={{ opacity: 0, y: 20, rotate: i % 2 ? 2 : -2 }}
+                  whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.07, type: "spring", stiffness: 150, damping: 18 }}
+                  className="group relative aspect-[4/3] overflow-hidden rounded-2xl border border-cocoa shadow-[2px_2px_0_0_#2f1c1a]"
+                >
+                  <Image src={img.src} alt={`${img.alt} — official Eat Better Co photo`} fill sizes="(max-width: 640px) 50vw, 20vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <span className="absolute inset-x-0 bottom-0 bg-cocoa/75 px-2.5 py-1 text-[0.85rem] font-bold text-cream opacity-0 transition-opacity group-hover:opacity-100">{img.alt}</span>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </div>
 
-        <div className="mt-8 grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
-          <div className="space-y-6">
-            {WHAT_IS.paragraphs.map((p, i) => (
-              <motion.p
-                key={i}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-10% 0px" }}
-                transition={{ delay: i * 0.1 }}
-                className={i === 1 ? "border-l-4 border-orange pl-5 font-display text-[1.6rem] font-medium leading-snug text-cocoa" : "text-[1.15rem] leading-relaxed text-cocoa"}
-              >
-                <GlossaryText>{p}</GlossaryText>
-              </motion.p>
-            ))}
-          </div>
-
+        <div className="mt-6">
           <div className="rounded-[28px] bg-cream p-5 shadow-[0_30px_60px_-36px_rgba(47,28,26,0.6)] sm:p-7">
             <ActivityLabel done={checked && allRight}>Activity · Keep or change?</ActivityLabel>
             <p className="mt-2 text-[1.1rem] leading-relaxed text-cocoa">
-              Eat Better keeps some things about a snack and changes others. Select a card, then choose the tray it belongs in.
+              <GlossaryText>{WHAT_IS.paragraphs[2]}</GlossaryText>
             </p>
+            <p className="mt-1 text-[1rem] text-cocoa-2">Sort each card: tap it, then tap a tray.</p>
 
             <div className="mt-5 flex min-h-[52px] flex-wrap gap-2" aria-label="Cards to sort">
               {unplaced.map((a) => (

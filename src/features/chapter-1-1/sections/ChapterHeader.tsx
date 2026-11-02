@@ -32,7 +32,7 @@ export function ChapterHeader() {
   const fade = useTransform(scrollYProgress, [0, 0.75], [1, 0.25]);
 
   return (
-    <header id="intro" ref={ref} className="relative flex min-h-[100svh] items-center px-4 pb-16 pt-24 sm:px-8 lg:pt-20">
+    <header id="intro" ref={ref} className="relative flex min-h-[100svh] items-center px-4 pb-20 pt-36 sm:px-8 sm:pt-28 lg:pt-20">
       <motion.div style={{ y, opacity: fade }} className="relative mx-auto w-full max-w-7xl">
         <div className="pointer-events-auto max-w-[44rem]">
           {/* module / chapter */}
