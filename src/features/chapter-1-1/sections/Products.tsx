@@ -1,5 +1,6 @@
 "use client";
 
+import { GlossaryText } from "@/components/chapter/Glossary";
 import { Panel } from "@/components/chapter/Panel";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
@@ -41,7 +42,7 @@ export function Products({ focus }: { focus: CategoryId | null }) {
 
   return (
     <section id="products" className="relative scroll-mt-6 px-3 py-6 sm:px-6 sm:py-10">
-      <Panel tone="peach" reveal="up" width="max-w-6xl">
+      <Panel tone="peach" reveal="up" width="max-w-7xl">
         <SectionIntro index="4" kicker="What does Eat Better make?" title="Stock the shelves">
           Eat Better makes four kinds of products. Pick a real product from the tray, then place it on the shelf where it belongs. Each shelf reveals what that category includes once it&apos;s stocked.
         </SectionIntro>
@@ -147,7 +148,7 @@ export function Products({ focus }: { focus: CategoryId | null }) {
                         {cat.points.map((pt) => (
                           <li key={pt} className="flex gap-2.5 text-[1.02rem] leading-snug text-cocoa">
                             <span className="mt-2 size-1.5 shrink-0 rounded-full" style={{ background: cat.tone }} />
-                            {pt}
+                            <GlossaryText>{pt}</GlossaryText>
                           </li>
                         ))}
                       </motion.ul>

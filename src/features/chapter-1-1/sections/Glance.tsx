@@ -22,7 +22,7 @@ export function Glance() {
 
   return (
     <section id="glance" className="relative scroll-mt-6 px-3 py-6 sm:px-6 sm:py-10">
-      <Panel tone="light" reveal="up" width="max-w-6xl">
+      <Panel tone="light" reveal="up" width="max-w-7xl">
         <SectionIntro index="1" kicker="Company at a glance" title="Meet the company">
           Open each line of the company file. The grey notes explain what each term means in business.
         </SectionIntro>

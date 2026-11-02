@@ -1,5 +1,6 @@
 "use client";
 
+import { GlossaryText } from "@/components/chapter/Glossary";
 import { Panel } from "@/components/chapter/Panel";
 import Image from "next/image";
 import { motion } from "motion/react";
@@ -27,7 +28,7 @@ export function Conclusion() {
 
   return (
     <section id="wrap-up" className="relative scroll-mt-6 px-3 py-6 sm:px-6 sm:py-10">
-      <Panel tone="peach" reveal="up" width="max-w-6xl">
+      <Panel tone="peach" reveal="up" width="max-w-7xl">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
           <div className="text-[0.85rem] font-extrabold uppercase tracking-[0.16em] text-orange">Chapter 1.1 · Wrap-up</div>
           <h2 className="mt-3 font-display text-[clamp(2.2rem,5vw,3.4rem)] font-semibold leading-[1.04] text-cocoa">You&apos;ve met Eat Better Co</h2>
@@ -40,7 +41,7 @@ export function Conclusion() {
               {RECAP.map((r, i) => (
                 <motion.li key={i} initial={{ opacity: 0, x: -12 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }} className="flex gap-3 text-[1.08rem] leading-relaxed text-cocoa">
                   <span className="mt-1 grid size-6 shrink-0 place-items-center rounded-full bg-orange text-[0.85rem] font-bold text-white">{i + 1}</span>
-                  {r}
+                  <GlossaryText>{r}</GlossaryText>
                 </motion.li>
               ))}
             </ul>
@@ -49,7 +50,7 @@ export function Conclusion() {
               <ul className="mt-3 space-y-2">
                 {D2C.advantages.map((a) => (
                   <li key={a.id} className="flex gap-2.5 text-[1.02rem] leading-snug text-cocoa-2">
-                    <Check className="mt-0.5 size-5 shrink-0 text-success" /> {a.text}
+                    <Check className="mt-0.5 size-5 shrink-0 text-success" /> <GlossaryText>{a.text}</GlossaryText>
                   </li>
                 ))}
               </ul>
@@ -72,9 +73,7 @@ export function Conclusion() {
                 {ACTIVITIES.map((a) => (
                   <li key={a.id} className="flex items-center gap-3 text-[1.02rem] text-cocoa">
                     {done[a.id] ? <Check className="size-5 text-success" strokeWidth={3} /> : <Circle className="size-5 text-cocoa-2/40" />}
-                    <a href={`#${a.id === "keepChange" ? "what-is" : a.id === "routes" ? "d2c" : a.id === "shelf" ? "products" : "think"}`} className="underline-offset-2 hover:underline">
-                      {a.label}
-                    </a>
+                    <span>{a.label}</span>
                   </li>
                 ))}
               </ul>

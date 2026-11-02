@@ -21,7 +21,7 @@ export function LaddooRing({ sections }: { sections: ProgressSection[] }) {
   const reduce = useReducedMotion();
   const small = useMediaQuery("(max-width: 639px)");
   const idPrefix = useId().replace(/:/g, "");
-  const root = useRef<HTMLButtonElement>(null);
+  const root = useRef<HTMLDivElement>(null);
   const pctEl = useRef<HTMLSpanElement>(null);
 
   const progress = useMotionValue(0);
@@ -175,14 +175,13 @@ export function LaddooRing({ sections }: { sections: ProgressSection[] }) {
               Section {section + 1} of {sections.length}
             </div>
             <div className="max-w-[220px] text-[1rem] font-bold leading-snug text-cocoa">{label}</div>
-            <div className="mt-0.5 text-[0.82rem] text-cocoa-2/80">Click to go back to the top</div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <motion.button
+      <motion.div
         ref={root}
-        onClick={() => window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" })}
+        tabIndex={0}
         onHoverStart={() => setHover(true)}
         onHoverEnd={() => setHover(false)}
         onFocus={() => setHover(true)}
@@ -192,12 +191,11 @@ export function LaddooRing({ sections }: { sections: ProgressSection[] }) {
         aria-valuemax={100}
         aria-valuenow={0}
         aria-valuetext={label}
-        aria-label="Reading progress. Click to go back to the top."
+        aria-label="Reading progress"
         initial={{ opacity: 0, scale: 0.5, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ type: "spring", stiffness: 220, damping: 18, delay: 0.9 }}
         whileHover={{ y: -2 }}
-        whileTap={{ scale: 0.94 }}
         style={{ width: size, height: size, scale: pulse }}
         className="relative shrink-0 rounded-full"
       >
@@ -258,7 +256,7 @@ export function LaddooRing({ sections }: { sections: ProgressSection[] }) {
         >
           0%
         </span>
-      </motion.button>
+      </motion.div>
     </div>
   );
 }

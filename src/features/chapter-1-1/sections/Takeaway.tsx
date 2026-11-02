@@ -47,7 +47,7 @@ export function Takeaway() {
 
   return (
     <section id="takeaway" ref={ref} className="relative scroll-mt-6 px-3 py-6 sm:px-6 sm:py-10">
-      <Panel tone="maroon" reveal="up" width="max-w-5xl">
+      <Panel tone="maroon" reveal="up" width="max-w-6xl">
         <div className="text-center text-[0.85rem] font-extrabold uppercase tracking-[0.18em] text-haldi">Key takeaway</div>
         <blockquote className="mx-auto mt-8 max-w-4xl text-center font-display text-[clamp(1.9rem,4.4vw,3.3rem)] font-semibold leading-[1.18] text-cream">
           <span className="sr-only">{TAKEAWAY}</span>

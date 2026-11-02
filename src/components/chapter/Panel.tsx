@@ -31,7 +31,7 @@ export function Panel({ children, tone = "light", width = "max-w-6xl", reveal = 
         whileInView={{ clipPath: "inset(0% 0% 0% 0% round 36px)", opacity: 1 }}
         viewport={{ once: true, margin: "-8% 0px" }}
         transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-        className={`rounded-[28px] border border-cocoa/15 px-5 py-10 shadow-[0_30px_70px_-40px_rgba(47,28,26,0.75)] sm:rounded-[36px] sm:px-10 sm:py-14 ${TONES[tone]}`}
+        className={`pointer-events-auto rounded-[28px] border border-cocoa/15 px-5 py-10 shadow-[0_30px_70px_-40px_rgba(47,28,26,0.75)] sm:rounded-[36px] sm:px-10 sm:py-14 ${TONES[tone]}`}
       >
         {children}
       </motion.div>

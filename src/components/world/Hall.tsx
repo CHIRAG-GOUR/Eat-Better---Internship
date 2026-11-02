@@ -294,7 +294,7 @@ export function Hall({ compact }: { compact: boolean }) {
   const signMat = useMemo(() => (signTex ? new THREE.MeshBasicMaterial({ map: signTex, fog: false, toneMapped: false }) : null), [signTex]);
   useEffect(() => () => signMat?.dispose(), [signMat]);
   useFrame(() => {
-    sign.current?.position.set(compact ? 0 : 1.4, compact ? 3.1 : 2.85, camera.position.z - 19);
+    sign.current?.position.set(compact ? 0 : 3.1, compact ? 3.1 : 2.95, camera.position.z - 19);
   });
 
   return (

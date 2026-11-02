@@ -1,5 +1,6 @@
 "use client";
 
+import { GlossaryText } from "@/components/chapter/Glossary";
 import { Panel } from "@/components/chapter/Panel";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
@@ -93,7 +94,7 @@ export function WhatIs() {
 
   return (
     <section id="what-is" className="relative scroll-mt-6 px-3 py-6 sm:px-6 sm:py-10">
-      <Panel tone="peach" reveal="left" width="max-w-6xl">
+      <Panel tone="peach" reveal="left" width="max-w-7xl">
         <SectionIntro index="2" kicker="What is Eat Better Co?" title="Snacks you love. Ingredients you trust." />
 
         <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -127,7 +128,7 @@ export function WhatIs() {
                 transition={{ delay: i * 0.1 }}
                 className={i === 1 ? "border-l-4 border-orange pl-5 font-display text-[1.6rem] font-medium leading-snug text-cocoa" : "text-[1.15rem] leading-relaxed text-cocoa"}
               >
-                {p}
+                <GlossaryText>{p}</GlossaryText>
               </motion.p>
             ))}
           </div>

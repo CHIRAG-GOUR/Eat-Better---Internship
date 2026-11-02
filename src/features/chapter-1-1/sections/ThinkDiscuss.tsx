@@ -96,7 +96,7 @@ export function ThinkDiscuss() {
 
   return (
     <section id="think" className="relative scroll-mt-6 px-3 py-6 sm:px-6 sm:py-10">
-      <Panel tone="light" reveal="left" width="max-w-6xl">
+      <Panel tone="light" reveal="left" width="max-w-7xl">
         <SectionIntro index="5" kicker="Think & Discuss" title="What would you do?">
           There are no right or wrong answers here — only reasons. Build your thinking step by step, then copy it into your discussion or submission.
         </SectionIntro>

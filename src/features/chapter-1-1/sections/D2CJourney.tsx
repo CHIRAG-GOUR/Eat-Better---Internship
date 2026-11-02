@@ -1,5 +1,6 @@
 "use client";
 
+import { GlossaryText } from "@/components/chapter/Glossary";
 import { Panel } from "@/components/chapter/Panel";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
@@ -173,10 +174,10 @@ export function D2CJourney() {
 
   return (
     <section id="d2c" className="relative scroll-mt-6 px-3 py-6 sm:px-6 sm:py-10">
-      <Panel tone="light" reveal="right" width="max-w-6xl">
+      <Panel tone="light" reveal="right" width="max-w-7xl">
         <SectionIntro index="3" kicker="Understanding the internet-first (D2C) model" title="Two routes from a kitchen to a customer">
-          <p>{D2C.definition}</p>
-          <p className="mt-3 rounded-2xl border-l-4 border-orange bg-white px-5 py-4 text-cocoa">{D2C.howEatBetterSells}</p>
+          <p><GlossaryText>{D2C.definition}</GlossaryText></p>
+          <p className="mt-3 rounded-2xl border-l-4 border-orange bg-white px-5 py-4 text-cocoa"><GlossaryText>{D2C.howEatBetterSells}</GlossaryText></p>
         </SectionIntro>
 
         {/* simulator */}
@@ -236,7 +237,7 @@ export function D2CJourney() {
               className="mt-5 grid gap-5 rounded-[28px] border border-line bg-white p-5 sm:p-7 lg:grid-cols-[1fr_1fr]"
             >
               <div>
-                <p className="font-display text-[1.45rem] font-medium leading-snug text-cocoa">{sc.prompt}</p>
+                <p className="font-display text-[1.45rem] font-medium leading-snug text-cocoa"><GlossaryText>{sc.prompt}</GlossaryText></p>
                 <div className="mt-5 flex flex-wrap gap-2">
                   <button onClick={() => tryRoute("traditional")} className={`rounded-xl px-4 py-2.5 text-[1rem] font-bold ring-1 ${st.showing === "traditional" ? "bg-cocoa text-cream ring-cocoa" : "bg-white text-cocoa ring-line-strong hover:ring-cocoa"}`}>
                     Try the shop route {st.tried.traditional && "✓"}
@@ -254,7 +255,7 @@ export function D2CJourney() {
                       exit={{ opacity: 0 }}
                       className={`mt-4 rounded-2xl px-4 py-3 text-[1.05rem] leading-relaxed ${st.showing === "d2c" ? "bg-orange/10" : "bg-surface-sunk"}`}
                     >
-                      {st.showing === "d2c" ? sc.d2cOutcome : sc.traditionalOutcome}
+                      <GlossaryText>{st.showing === "d2c" ? sc.d2cOutcome : sc.traditionalOutcome}</GlossaryText>
                     </motion.p>
                   )}
                 </AnimatePresence>
@@ -311,7 +312,7 @@ export function D2CJourney() {
                 >
                   <div className="text-[0.85rem] font-extrabold uppercase tracking-[0.12em]">Advantage {i + 1}</div>
                   <div className="mt-1 font-display text-[1.25rem] font-semibold leading-tight">{unlocked ? a.title : "Locked — solve the scenario"}</div>
-                  {unlocked && <p className="mt-2 text-[1rem] leading-relaxed text-white/95">{a.text}</p>}
+                  {unlocked && <p className="mt-2 text-[1rem] leading-relaxed text-white/95"><GlossaryText>{a.text}</GlossaryText></p>}
                 </motion.div>
               );
             })}
