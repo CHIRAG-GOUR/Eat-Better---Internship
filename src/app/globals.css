@@ -1,0 +1,212 @@
+@import "tailwindcss";
+
+/* ──────────────────────────────────────────────────────────────
+   EAT BETTER CO × SKILLIZEE — design tokens
+   Core brand values are taken from eatbetterco.com (theme CSS +
+   logo SVG). Studio tones are sampled from official product
+   photography. See src/lib/brand.ts for provenance notes.
+   ────────────────────────────────────────────────────────────── */
+:root {
+  /* brand core */
+  --eb-orange: #ff5c00;
+  --eb-cocoa: #2f1c1a;
+  --eb-cocoa-2: #4a3230;
+  --eb-logo: #603a38;
+  --eb-peach: #fee7d5;
+  --eb-cream: #fff5ee;
+  --eb-haldi: #fed300;
+
+  /* studio (photography-derived) */
+  --eb-maroon: #550d10;
+  --eb-terracotta: #af4300;
+  --eb-mustard: #e7ba68;
+  --eb-forest: #35401d;
+  --eb-chocolate: #381c11;
+  --eb-brass: #c8963e;
+  --eb-sand: #b18f74;
+
+  /* functional (from site theme) */
+  --eb-success: #00a341;
+  --eb-error: #f83a3a;
+
+  /* surfaces */
+  --surface: #fffaf6;
+  --surface-sunk: #fbeee3;
+  --line: rgb(47 28 26 / 0.12);
+  --line-strong: rgb(47 28 26 / 0.22);
+}
+
+@theme inline {
+  --color-orange: var(--eb-orange);
+  --color-cocoa: var(--eb-cocoa);
+  --color-cocoa-2: var(--eb-cocoa-2);
+  --color-logo: var(--eb-logo);
+  --color-peach: var(--eb-peach);
+  --color-cream: var(--eb-cream);
+  --color-haldi: var(--eb-haldi);
+  --color-maroon: var(--eb-maroon);
+  --color-terracotta: var(--eb-terracotta);
+  --color-mustard: var(--eb-mustard);
+  --color-forest: var(--eb-forest);
+  --color-chocolate: var(--eb-chocolate);
+  --color-brass: var(--eb-brass);
+  --color-sand: var(--eb-sand);
+  --color-success: var(--eb-success);
+  --color-error: var(--eb-error);
+  --color-surface: var(--surface);
+  --color-surface-sunk: var(--surface-sunk);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --font-display: var(--font-fredoka), ui-rounded, system-ui, sans-serif;
+  --font-sans: var(--font-tommy), var(--font-figtree), system-ui, sans-serif;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  background: var(--eb-cream);
+  color: var(--eb-cocoa);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--eb-cream);
+  color: var(--eb-cocoa);
+  font-family: var(--font-sans);
+  font-size: 1.125rem; /* 18px body */
+  font-weight: 500; /* MADE TOMMY Medium is the reading weight */
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--eb-haldi);
+  color: var(--eb-cocoa);
+}
+
+:focus-visible {
+  outline: 3px solid var(--eb-orange);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Range inputs styled once for the whole product */
+input[type="range"].eb-range {
+  appearance: none;
+  width: 100%;
+  height: 28px;
+  background: transparent;
+  cursor: pointer;
+}
+input[type="range"].eb-range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--eb-orange) var(--fill, 50%), var(--line-strong) var(--fill, 50%));
+}
+input[type="range"].eb-range::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--line-strong);
+}
+input[type="range"].eb-range::-moz-range-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--eb-orange);
+}
+input[type="range"].eb-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  margin-top: -8px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--eb-orange);
+  box-shadow: 0 2px 8px rgb(47 28 26 / 0.25);
+}
+input[type="range"].eb-range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--eb-orange);
+}
+
+/* Buttons — mirror eatbetterco.com: 0.5rem radius, 1px cocoa outline, hard 2px offset shadow */
+.eb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #2f1c1a;
+  box-shadow: 2px 2px 0 0 #2f1c1a;
+  padding: 0.8rem 1.4rem;
+  font-weight: 700;
+  font-size: 1.02rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease;
+}
+.eb-btn:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 0 #2f1c1a;
+}
+.eb-btn:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 0 #2f1c1a;
+}
+.eb-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.eb-btn-primary {
+  background: #ff5c00;
+  color: #fff;
+}
+.eb-btn-secondary {
+  background: #fff;
+  color: #2f1c1a;
+}
+.eb-btn-dark {
+  background: #2f1c1a;
+  color: #fff5ee;
+  border-color: #2f1c1a;
+  box-shadow: 2px 2px 0 0 #ff5c00;
+}
+.eb-btn-dark:hover:not(:disabled) {
+  box-shadow: 3px 3px 0 0 #ff5c00;
+}
+
+/* Section heading squiggle — like the site's "CROWD FAVOURITES" underline */
+.eb-squiggle {
+  display: block;
+  width: 9rem;
+  height: 12px;
+  margin-top: 0.6rem;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 144 12'%3E%3Cpath d='M2 8c12-6 18-6 30 0s18 6 30 0 18-6 30 0 18 6 30 0 10-4 20-4' fill='none' stroke='%23FF5C00' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat left center / contain;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* subtle paper grain used on large surfaces (inline SVG noise, no network) */
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.18 0 0 0 0 0.11 0 0 0 0 0.1 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
