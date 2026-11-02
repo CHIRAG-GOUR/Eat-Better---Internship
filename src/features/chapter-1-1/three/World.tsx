@@ -8,6 +8,7 @@ import { useReducedMotion } from "motion/react";
 import { useMediaQuery } from "@/lib/useClient";
 import { BhujiaPile, Laddoos, NutPile } from "@/features/packaging/three/StudioSet";
 import { makeBowl, makeKatori } from "@/features/packaging/three/geometry";
+import { Hall, TABLE_HALF } from "@/components/world/Hall";
 
 /**
  * One persistent 3D world behind the whole chapter: a long Jaipur kitchen table.
@@ -259,7 +260,7 @@ function Scene({ reduced, compact }: { reduced: boolean; compact: boolean }) {
   return (
     <>
       <color attach="background" args={[FOG]} />
-      <fog attach="fog" args={[FOG, 6, 19]} />
+      <fog attach="fog" args={[FOG, 8, 30]} />
       <hemisphereLight args={["#FFF4E6", "#7A4A2C", 0.75]} />
       <directionalLight
         ref={key}
@@ -286,11 +287,12 @@ function Scene({ reduced, compact }: { reduced: boolean; compact: boolean }) {
       </Environment>
 
       {/* the long kitchen table + an orange runner down its centre */}
-      <mesh material={mats.table} position={[0, -0.02, -28]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[16, 90]} />
+      <Hall compact={compact} />
+      <mesh material={mats.table} position={[0, 0.001, -30]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[TABLE_HALF * 2, 76]} />
       </mesh>
-      <mesh material={mats.runner} position={[0, 0.001, -28]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[0.85, 90]} />
+      <mesh material={mats.runner} position={[0, 0.004, -30]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[0.85, 76]} />
       </mesh>
 
       {/* 1 · the family kitchen (opening + company at a glance) */}
@@ -419,7 +421,7 @@ export default function World() {
     <Canvas
       shadows="percentage"
       dpr={[1, compact ? Math.min(dpr, 1.25) : dpr]}
-      camera={{ position: [1, 3.1, 8], fov: 40, near: 0.1, far: 40 }}
+      camera={{ position: [1, 3.1, 8], fov: 40, near: 0.1, far: 60 }}
       gl={{ antialias: true, powerPreference: "high-performance" }}
       onCreated={({ gl }) => {
         gl.toneMapping = THREE.ACESFilmicToneMapping;
