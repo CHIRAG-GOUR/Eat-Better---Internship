@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { ChapterBar } from "@/components/chapter/ChapterBar";
-import { ProgressRing, type ProgressSection } from "@/components/chapter/ProgressRing";
+import type { ProgressSection } from "@/components/chapter/LaddooProgress";
 import { CHAPTER, type CategoryId } from "./content";
 import { Hero } from "./sections/Hero";
 import { Glance } from "./sections/Glance";
@@ -39,8 +39,7 @@ export default function Chapter() {
       <a href="#glance" className="sr-only z-50 rounded-lg bg-cocoa px-4 py-2 text-cream focus:not-sr-only focus:fixed focus:left-3 focus:top-20">
         Skip to chapter content
       </a>
-      <ChapterBar label={`${CHAPTER.module} · Chapter ${CHAPTER.number} · ${CHAPTER.title}`} />
-      <ProgressRing sections={SECTIONS} />
+      <ChapterBar label={`${CHAPTER.module} · Chapter ${CHAPTER.number} · ${CHAPTER.title}`} sections={SECTIONS} />
       <main>
         <Hero onPickCategory={pick} />
         <Glance />

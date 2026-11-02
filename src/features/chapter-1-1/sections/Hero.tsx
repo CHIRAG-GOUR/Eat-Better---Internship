@@ -30,7 +30,7 @@ export function Hero({ onPickCategory }: { onPickCategory: (id: CategoryId) => v
   const [hovered, setHovered] = useState<CategoryId | null>(null);
 
   return (
-    <section id="intro" className="relative flex min-h-[100svh] flex-col overflow-hidden bg-[#5a1416] pt-[70px] lg:block">
+    <section id="intro" className="relative flex min-h-[100svh] flex-col overflow-hidden bg-[#5a1416] pt-[70px] lg:block lg:pt-[82px]">
       {/* 3D world */}
       <div className="relative h-[46svh] w-full lg:absolute lg:inset-0 lg:h-auto">
         {webgl === false ? (
