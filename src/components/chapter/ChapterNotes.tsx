@@ -4,14 +4,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import {
   AlertTriangle,
-  ArrowRight,
   BookOpen,
   Check,
   ClipboardCopy,
   Download,
   FileText,
-  RotateCcw,
-  Sparkles,
   Trash2,
   X,
 } from "lucide-react";
@@ -36,19 +33,22 @@ export function ChapterNotes({ chapterNumber, chapterTitle }: ChapterNotesProps)
 
   // Restore saved draft on mount
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(storageKey);
-      if (saved) {
-        setNotes(saved);
+    queueMicrotask(() => {
+      try {
+        const saved = localStorage.getItem(storageKey);
+        const downloadedFlag = localStorage.getItem(`${storageKey}-downloaded`);
+        if (saved) {
+          setNotes(saved);
+        }
+        if (downloadedFlag && downloadedFlag === saved) {
+          setLastDownloadedText(downloadedFlag);
+        }
+      } catch {
+        // localStorage disabled/restricted
+      } finally {
+        setHydrated(true);
       }
-      const downloadedFlag = localStorage.getItem(`${storageKey}-downloaded`);
-      if (downloadedFlag && downloadedFlag === saved) {
-        setLastDownloadedText(downloadedFlag);
-      }
-    } catch {
-      // localStorage disabled/restricted
-    }
-    setHydrated(true);
+    });
   }, [storageKey]);
 
   // Persist to local storage draft
@@ -163,7 +163,7 @@ Generated from Eat Better Co Internship Portal
 
     setDownloadSuccess(true);
     setTimeout(() => setDownloadSuccess(false), 2500);
-  }, [chapterNumber, chapterTitle, notes, wordCount, charCount, storageKey]);
+  }, [chapterNumber, displayTitle, notes, wordCount, charCount, storageKey]);
 
   // Copy to clipboard
   const handleCopy = async () => {
@@ -225,7 +225,7 @@ Generated from Eat Better Co Internship Portal
           aria-label={isOpen ? "Close notes panel" : "Open chapter notes"}
           aria-expanded={isOpen}
           title="Take Chapter Notes"
-          className={`group relative flex h-12 items-center gap-2 rounded-full border border-cocoa px-3.5 sm:px-4 transition-[box-shadow,background-color,color] ${
+          className={`group relative grid size-12 place-items-center rounded-full border border-cocoa transition-[box-shadow,background-color,color] ${
             isOpen
               ? "bg-cocoa text-cream shadow-[3px_3px_0_0_#ff5c00]"
               : isDirty
@@ -234,14 +234,12 @@ Generated from Eat Better Co Internship Portal
           }`}
         >
           <BookOpen className="size-5 shrink-0 transition-transform group-hover:scale-110" />
-          <span className="font-display text-[0.98rem] font-semibold leading-none">
-            Notes
-          </span>
+          <span className="sr-only">Notes</span>
 
           {/* Badge: Shows count or unsaved indicator */}
           {wordCount > 0 && (
             <span
-              className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-[0.78rem] font-bold ${
+              className={`absolute -bottom-1.5 -right-2 flex items-center gap-0.5 rounded-full border border-white px-1.5 py-px text-[0.68rem] font-bold leading-tight ${
                 isOpen
                   ? "bg-orange text-white"
                   : isDirty

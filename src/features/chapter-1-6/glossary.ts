@@ -1,0 +1,32 @@
+import type { GlossaryEntry } from "@/components/chapter/Glossary";
+
+/** Chapter 1.6 word help: everyday meaning + how the word is used in this chapter. */
+export const GLOSSARY_1_6: GlossaryEntry[] = [
+  { term: "clean-label", match: ["clean label", "Clean Label"], general: "Food with a short, simple ingredient list that people can easily understand.", chapter: "Eat Better's Clean Label Commitment keeps ingredient lists short and free of complex chemical additives." },
+  { term: "FSSAI", general: "The Food Safety and Standards Authority of India — the government body that sets food safety rules.", chapter: "Eat Better states it is fully accredited under FSSAI guidelines." },
+  { term: "compliance", match: ["Compliance"], general: "Following the rules and laws that apply to you.", chapter: "Regulatory compliance means meeting food safety and labelling rules." },
+  { term: "regulatory", match: ["Regulatory"], general: "To do with official rules set by the government.", chapter: "Regulatory compliance covers FSSAI food safety and hygiene rules." },
+  { term: "accreditation", match: ["accredited"], general: "Official approval that something meets a required standard.", chapter: "FSSAI accreditation and third-party accredited labs back Eat Better's quality claims." },
+  { term: "statutory", general: "Required by law.", chapter: "Statutory food safety means the safety standards the law requires." },
+  { term: "hydrogenated", general: "Oil that has been chemically hardened into a solid fat.", chapter: "Hydrogenated unhealthy fats are on Eat Better's strict exclusion list." },
+  { term: "preservatives", match: ["preservative"], general: "Substances added to food so it lasts longer before going bad.", chapter: "Eat Better excludes artificial preservatives and relies on packaging to keep snacks fresh." },
+  { term: "palm oil", general: "A cheap oil from oil-palm fruit, used in many packaged foods.", chapter: "Zero palm oil is one of Eat Better's strict ingredient exclusions." },
+  { term: "refined sugar", general: "White sugar that has been processed until only the sweet part is left.", chapter: "Eat Better sweetens with dates and dry fruits instead of refined sugar." },
+  { term: "shelf-life", match: ["shelf life"], general: "How long a food stays good to eat after it is packed.", chapter: "Sealed, multi-layer packaging extends shelf-life naturally." },
+  { term: "high-barrier", general: "Packaging that blocks moisture and air from getting in.", chapter: "High-barrier packaging keeps snacks fresh without artificial chemical preservatives." },
+  { term: "multi-layer", general: "Made of several thin layers pressed together, each with a job.", chapter: "Eat Better seals products in protective, multi-layer food-grade packaging." },
+  { term: "food-grade", general: "Safe to be in direct contact with food.", chapter: "Only food-grade packaging materials are used for sealing." },
+  { term: "batch", match: ["batches"], general: "An amount of something made at the same time.", chapter: "Every batch passes six checkpoints, and cooking happens in small batches." },
+  { term: "moisture", general: "A small amount of water or wetness in something.", chapter: "Batch testing checks moisture — too much makes snacks soft and spoil faster." },
+  { term: "benchmarks", general: "Standards that other things are measured against.", chapter: "Raw ingredients are checked against global food safety benchmarks." },
+  { term: "raw materials", match: ["raw material", "raw ingredients"], general: "The basic things something is made from.", chapter: "Dates, nuts and millets are checked for size, freshness and quality before use." },
+  { term: "foreign particles", match: ["foreign particle"], general: "Small things that don't belong in food, like a stone or a husk.", chapter: "Sorting during Prepping removes foreign particles or impurities." },
+  { term: "impurities", general: "Unwanted things mixed into something.", chapter: "Meticulous sorting removes impurities before cooking." },
+  { term: "nutritional integrity", general: "Keeping the food's nutrition whole and unharmed.", chapter: "The six checkpoints aim to protect nutritional integrity, safety and taste." },
+  { term: "macro- and micronutrient", match: ["micronutrient", "macronutrient"], general: "Macronutrients (protein, carbs, fat) are needed in large amounts; micronutrients (vitamins, minerals) in small amounts.", chapter: "Lab tests verify these profiles for the nutrition label." },
+  { term: "third-party", general: "An outside, independent person or company — not the brand itself.", chapter: "Nutrition is verified by third-party accredited laboratories." },
+  { term: "front-of-pack", match: ["Front-of-pack"], general: "The front side of a package, the part shoppers see first.", chapter: "Key attributes like Roasted, No Palm Oil and Sweetened with Dates are highlighted there." },
+  { term: "omnichannel", match: ["Omnichannel"], general: "Selling through many channels — shops, websites and apps — as one brand.", chapter: "Packs are designed to look consistent on shop shelves and quick-commerce apps." },
+  { term: "quick-commerce", general: "Apps that deliver everyday items within minutes.", chapter: "Eat Better's packs must stand out on quick-commerce storefronts." },
+  { term: "degradation", general: "Slowly getting worse or breaking down.", chapter: "Good packaging protects snacks against degradation from moisture and air." },
+];
