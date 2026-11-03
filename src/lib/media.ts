@@ -22,3 +22,4 @@ export function getMediaUrl(path: string | undefined): string {
   // All other assets (images, svg, webp) load from the local/hosting root
   return path;
 }
+
