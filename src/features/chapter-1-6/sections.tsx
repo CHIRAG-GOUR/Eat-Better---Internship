@@ -116,8 +116,8 @@ export function ReportSection() {
   return (
     <section id="qa-report" className={sectionCls}>
       <Panel tone="peach" reveal="up" width="max-w-5xl">
-        <SectionIntro index="3" kicker="Your deliverable" title="Quality Assurance Report">
-          Built from the decisions you made in the facility. Add your final batch decision, then copy, download or print it.
+        <SectionIntro index="3" kicker="Interactive Dispatch Terminal" title="Quality Assurance Command Center">
+          Review station telemetry cards, endorse certified quality parameters, and apply your official verification stamp to issue the batch passport.
         </SectionIntro>
         <div className="mt-6">
           <QAReport />
