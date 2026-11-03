@@ -24,15 +24,6 @@ jobs:
       - name: Build Next.js Application
         run: npm run build
 
-      - name: Check Firebase Token Secret
-        if: "${{ env.FIREBASE_TOKEN == '' }}"
-        run: |
-          echo "::error::FIREBASE_TOKEN secret is missing in GitHub repository settings!"
-          echo "Please generate a token with 'npx firebase login:ci' and add it to GitHub Settings -> Secrets -> Actions as FIREBASE_TOKEN."
-          exit 1
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-
       - name: Deploy to Firebase Hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
