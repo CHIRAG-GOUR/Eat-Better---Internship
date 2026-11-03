@@ -137,7 +137,7 @@ export function Direction() {
         className={`relative flex min-h-[260px] flex-col overflow-hidden rounded-[22px] border-2 transition-[box-shadow,transform] ${over === bin ? "scale-[1.01] border-orange" : "border-cocoa/15"} ${sel ? "cursor-pointer" : ""}`}
       >
         <div className="relative h-28 sm:h-32">
-          <Image src={isV ? "/chapter-1-1/art/across-india.webp" : "/chapter-1-1/art/family-kitchen.webp"} alt="" fill sizes="(max-width: 1024px) 100vw, 600px" className="object-cover" />
+          <Image src={isV ? "/chapter-1-2/vision-path.webp" : "/chapter-1-1/art/family-kitchen.webp"} alt="" fill sizes="(max-width: 1024px) 100vw, 600px" className="object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-cocoa/85 to-cocoa/10" />
           <div className="absolute bottom-3 left-4 right-4 flex items-end justify-between text-cream">
             <div>
@@ -546,7 +546,7 @@ export function Think() {
 /* ── Wrap-up ──────────────────────────────────────────────────── */
 
 const RECAP = [
-  { title: "Vision", text: VISION.publicVision, img: "/chapter-1-1/art/across-india.webp" },
+  { title: "Vision", text: VISION.publicVision, img: "/chapter-1-2/vision-path.webp" },
   { title: "Mission", text: MISSION.text, img: "/chapter-1-1/art/doorstep.webp" },
   { title: "Values", text: "Familiar Taste · Better Ingredients · Honest Processes", img: "/chapter-1-2/better-ingredients.webp" },
   { title: "The filter", text: TAKEAWAY, img: "/chapter-1-2/frames/shipping-box.webp" },

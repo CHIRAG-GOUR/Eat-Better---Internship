@@ -267,7 +267,7 @@ export function Roles() {
             {!grown ? (
               <motion.div layout className="mt-4 grid items-center gap-5 md:grid-cols-[minmax(0,320px)_1fr]">
                 <motion.div layoutId="roles-img" className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-cocoa">
-                  <Image src="/chapter-1-3/home-kitchen.webp" alt="" fill sizes="320px" className="object-cover" />
+                  <Image src="/chapter-1-3/early-days.webp" alt="" fill sizes="320px" className="object-cover" />
                 </motion.div>
                 <div>
                   <div className="font-display text-[1.3rem] font-semibold text-cocoa">The founders</div>
@@ -320,9 +320,9 @@ export function Roles() {
 
 const TL_IMG = [
   "/chapter-1-3/exhibition-stall.webp",
-  "/chapter-1-3/frames/designing.webp",
+  "/chapter-1-3/funding.webp",
   "/chapter-1-2/frames/facility-li.webp",
-  "/chapter-1-1/founders.webp",
+  "/chapter-1-3/pitch-stage.webp",
   "/chapter-1-3/frames/warehouse.webp",
 ];
 

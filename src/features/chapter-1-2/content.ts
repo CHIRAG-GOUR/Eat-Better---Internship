@@ -88,7 +88,7 @@ export const CHANNELS = [
     name: "Quick-commerce platforms",
     detail: "Blinkit, Zepto, Swiggy Instamart",
     general: "Apps that deliver everyday items to your door within minutes.",
-    img: "/chapter-1-1/art/order-online.webp",
+    img: "/chapter-1-2/quick-delivery.webp",
   },
   {
     id: "d2c",
@@ -102,7 +102,7 @@ export const CHANNELS = [
     name: "Wellness retail outlets",
     detail: "Across India",
     general: "Physical shops that focus on health and wellness products.",
-    img: "/chapter-1-2/better-ingredients.webp",
+    img: "/chapter-1-2/wellness-store.webp",
   },
 ];
 

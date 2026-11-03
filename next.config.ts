@@ -6,7 +6,16 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   poweredByHeader: false,
   images: {
-    formats: ["image/avif", "image/webp"],
+    // WebP only + a short list of widths keeps Vercel's image-optimisation usage low;
+    // optimised images are cached for 31 days so each variant is generated once.
+    formats: ["image/webp"],
+    deviceSizes: [640, 828, 1080, 1280, 1920],
+    imageSizes: [96, 160, 256, 384],
+    minimumCacheTTL: 2678400,
+  },
+  async redirects() {
+    // chapters are direct links; the bare domain opens Chapter 1.1 (temporary, so it can change later)
+    return [{ source: "/", destination: "/1.1", permanent: false }];
   },
   async headers() {
     const week = "public, max-age=604800, stale-while-revalidate=86400";

@@ -44,7 +44,7 @@ export const STORY = [
     kicker: "2 · Small experiments in a home kitchen",
     text:
       "The brand began with small experiments using dates, millets and real masalas. The first aim was simple: make familiar snacks with cleaner ingredients, and check whether people still loved them.",
-    img: "/chapter-1-1/art/family-kitchen.webp",
+    img: "/chapter-1-3/kitchen-experiments.webp",
   },
   {
     id: "bigger",
@@ -76,7 +76,7 @@ export const VISITORS: { id: string; says: string; about: Exclude<Fix, "ignore">
 /* 5 · going national */
 export const NATIONAL = [
   { text: "The brand moved online and became internet-first.", img: "/chapter-1-1/art/order-online.webp" },
-  { text: "It raised funding from investors.", img: "/chapter-1-2/frames/facility-li.webp" },
+  { text: "It raised funding from investors.", img: "/chapter-1-3/funding.webp" },
   { text: "It appeared on Shark Tank India (Season 4).", img: "/chapter-1-3/shark-tank-thumb.jpg" },
   { text: "It grew from a home kitchen to a 50,000 sq. ft. facility.", img: "/chapter-1-3/frames/warehouse.webp" },
 ];
