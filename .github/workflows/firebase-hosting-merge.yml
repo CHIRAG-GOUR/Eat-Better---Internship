@@ -1,4 +1,4 @@
-name: Deploy to Firebase Hosting on Merge
+name: Deploy to Firebase Hosting on Push
 
 on:
   push:
@@ -24,5 +24,16 @@ jobs:
       - name: Build Next.js Application
         run: npm run build
 
+      - name: Check Firebase Token Secret
+        if: "${{ env.FIREBASE_TOKEN == '' }}"
+        run: |
+          echo "::error::FIREBASE_TOKEN secret is missing in GitHub repository settings!"
+          echo "Please generate a token with 'npx firebase login:ci' and add it to GitHub Settings -> Secrets -> Actions as FIREBASE_TOKEN."
+          exit 1
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
       - name: Deploy to Firebase Hosting
-        run: npx firebase-tools deploy --only hosting:eat-better-internship --token "${{ secrets.FIREBASE_TOKEN }}"
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: npx firebase-tools deploy --only hosting:eat-better-internship --project skillizee-products --non-interactive
