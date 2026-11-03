@@ -15,9 +15,9 @@ import { EVOLUTION, EXHIBITIONS, LEADERS, LEADERS_NOTE, NATIONAL, STORY, TAKEAWA
 
 export const useActivities13 = createActivityStore(["stall", "roles", "valuation", "reflect"] as const);
 
-const StallActivity = dynamic(() => import("./three/StallActivity"), {
+const StallDay = dynamic(() => import("./three/StallDay"), {
   ssr: false,
-  loading: () => <div className="h-[380px] animate-pulse rounded-[24px] bg-[#FBE6D3] sm:h-[480px]" />,
+  loading: () => <div className="h-[380px] animate-pulse rounded-[24px] bg-[#F6D7B8] sm:h-[480px] lg:h-[580px]" />,
 });
 
 const sectionCls = "relative scroll-mt-6 px-3 py-6 sm:px-6 sm:py-10";
@@ -68,13 +68,11 @@ export function Story() {
   );
 }
 
-/* ── 2 · Exhibitions & direct selling + stall activity ────────── */
+/* ── 2 · Exhibitions & direct selling ─────────────────────────── */
 
 const POINT_ICONS = [Users, MessageCircle, Star];
 
 export function Exhibitions() {
-  const webgl = useClientValue<boolean | null>(detectWebGL, null);
-  const complete = useActivities13((s) => s.complete);
   return (
     <section id="exhibitions" className={sectionCls}>
       <Panel tone="peach" reveal="left" width="max-w-7xl">
@@ -111,32 +109,37 @@ export function Exhibitions() {
             })}
           </ul>
         </div>
+      </Panel>
+    </section>
+  );
+}
 
-        <div className="mt-8">
-          <ActivityLabel>Activity · Run the stall</ActivityLabel>
-          <p className="mt-1.5 max-w-3xl text-[1.05rem] text-cocoa">Visitors tell you what they think. Listen, choose what to fix, and watch your stall change.</p>
-          <div className="mt-4">
-            {webgl === false ? (
-              <p className="rounded-2xl bg-white p-4 text-[1rem] text-cocoa">
-                This activity needs 3D graphics, which this device doesn&apos;t support. Think about it instead: if a visitor says a laddoo is too sweet, a pack too costly, or a pouch hard to open — what would you change?
-              </p>
-            ) : (
-              <StallActivity onComplete={() => complete("stall")} />
-            )}
-          </div>
+/* ── 3 · Activity: Stall Day (game) ───────────────────────────── */
+
+export function StallDaySection() {
+  const webgl = useClientValue<boolean | null>(detectWebGL, null);
+  const complete = useActivities13((s) => s.complete);
+  return (
+    <section id="stall-day" className={sectionCls}>
+      <Panel tone="light" reveal="up" width="max-w-7xl">
+        <SectionIntro index="3" kicker="Activity · Stall Day" title="Run the Eat Better stall">
+          It&apos;s exhibition day and you are the seller. Five customers will walk up with questions. Read the pack, give the answer that makes each one happy — and win the day.
+        </SectionIntro>
+        <div className="mt-6">
+          <StallDay onComplete={() => complete("stall")} three={webgl !== false} />
         </div>
       </Panel>
     </section>
   );
 }
 
-/* ── 3 · Going national ───────────────────────────────────────── */
+/* ── 4 · Going national ───────────────────────────────────────── */
 
 export function National() {
   return (
     <section id="national" className={sectionCls}>
       <Panel tone="light" reveal="right" width="max-w-7xl">
-        <SectionIntro index="3" kicker="Going national" title="From one city to all of India" />
+        <SectionIntro index="4" kicker="Going national" title="From one city to all of India" />
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {NATIONAL.map((n, i) => (
             <motion.figure
@@ -181,7 +184,7 @@ export function Leaders() {
   return (
     <section id="leaders" className={sectionCls}>
       <Panel tone="dark" reveal="up" width="max-w-7xl">
-        <SectionIntro index="4" kicker="Who leads Eat Better" title="The leadership team" tone="dark" />
+        <SectionIntro index="5" kicker="Who leads Eat Better" title="The leadership team" tone="dark" />
         <div className="mt-8 grid gap-5 lg:grid-cols-[minmax(0,460px)_1fr] lg:items-start">
           <motion.figure
             initial={{ opacity: 0, y: 20 }}
@@ -243,7 +246,7 @@ export function Roles() {
   return (
     <section id="roles" className={sectionCls}>
       <Panel tone="peach" reveal="right" width="max-w-7xl">
-        <SectionIntro index="5" kicker="How roles evolved" title="Doing everything → doing one thing well">
+        <SectionIntro index="6" kicker="How roles evolved" title="Doing everything → doing one thing well">
           Switch between the two stages and watch the work reorganise.
         </SectionIntro>
 
@@ -432,7 +435,7 @@ export function Timeline() {
   return (
     <section id="timeline" className={sectionCls}>
       <Panel tone="light" reveal="left" width="max-w-7xl">
-        <SectionIntro index="6" kicker="Journey timeline" title="Five moments that built the brand">
+        <SectionIntro index="7" kicker="Journey timeline" title="Five moments that built the brand">
           Tap each moment on the line.
         </SectionIntro>
 
@@ -536,7 +539,7 @@ export function Think() {
   return (
     <section id="think" className={sectionCls}>
       <Panel tone="light" reveal="right" width="max-w-7xl">
-        <SectionIntro index="7" kicker="Think & Discuss" title="Think like a founder" />
+        <SectionIntro index="8" kicker="Think & Discuss" title="Think like a founder" />
         <div className="mt-8 grid gap-4 lg:grid-cols-3">
           {THINK.questions.map((q, i) => {
             const ok = s.answers[i].trim().length >= 15;
@@ -636,7 +639,7 @@ const RECAP = [
   { title: "Step by step", text: TAKEAWAY, img: "/chapter-1-3/frames/warehouse.webp" },
 ];
 const ACT: { id: "stall" | "roles" | "valuation" | "reflect"; label: string }[] = [
-  { id: "stall", label: "Run the stall" },
+  { id: "stall", label: "Stall Day: 5 happy customers" },
   { id: "roles", label: "How roles evolved" },
   { id: "valuation", label: "What was the company worth?" },
   { id: "reflect", label: "Think & Discuss" },

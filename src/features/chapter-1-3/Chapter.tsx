@@ -9,7 +9,7 @@ import { GlossaryProvider } from "@/components/chapter/Glossary";
 import { WorldShell } from "@/components/world/WorldShell";
 import { CHAPTER, TAKEAWAY } from "./content";
 import { GLOSSARY_1_3 } from "./glossary";
-import { Exhibitions, Leaders, National, Roles, Story, Think, Timeline, WrapUp } from "./sections";
+import { Exhibitions, Leaders, National, Roles, StallDaySection, Story, Think, Timeline, WrapUp } from "./sections";
 
 const World = dynamic(() => import("./three/World"), { ssr: false, loading: () => null });
 
@@ -17,6 +17,7 @@ const SECTIONS: ProgressSection[] = [
   { id: "intro", label: "Introduction" },
   { id: "story", label: "Where it all began" },
   { id: "exhibitions", label: "Exhibitions & direct selling" },
+  { id: "stall-day", label: "Activity: Stall Day" },
   { id: "national", label: "Going national" },
   { id: "leaders", label: "The leadership team" },
   { id: "roles", label: "How roles evolved" },
@@ -41,6 +42,7 @@ export default function Chapter() {
         <ChapterOpener module={CHAPTER.module} number={CHAPTER.number} title={CHAPTER.title} subtitle={CHAPTER.subtitle} objective={CHAPTER.objective} />
         <Story />
         <Exhibitions />
+        <StallDaySection />
         <National />
         <Leaders />
         <Roles />

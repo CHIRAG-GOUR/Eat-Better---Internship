@@ -65,12 +65,122 @@ export const EXHIBITIONS = {
   why: "A brand that has already listened to real customers makes fewer expensive mistakes later.",
 };
 
-/** Exhibition-stall activity — PRACTICE SCENARIOS invented for learning (labelled in the UI). */
-export type Fix = "recipe" | "price" | "packaging" | "ignore";
-export const VISITORS: { id: string; says: string; about: Exclude<Fix, "ignore">; good: string }[] = [
-  { id: "sweet", says: "These laddoos taste great — but a little too sweet for me.", about: "recipe", good: "You tweak the recipe and offer a new tasting batch. The visitor tries it and smiles." },
-  { id: "price", says: "I'd love to try, but the big pack costs a lot for a first try.", about: "price", good: "You bring out a smaller pack at a lower price. First-time buyers can now try it." },
-  { id: "pack", says: "The pouch was hard to open and wouldn't close again.", about: "packaging", good: "You switch to an easy-open pouch that reseals. Customers notice straight away." },
+/* ── Stall Day game ───────────────────────────────────────────────
+ * The customers and their questions are PRACTICE SCENARIOS invented for learning (labelled in the UI).
+ * Every product fact in a correct answer comes from the official pack or eatbetterco.com
+ * (see src/lib/brand.ts) or from Chapters 1.1–1.3. Wrong answers are deliberately wrong.
+ */
+
+/** Official packs on the stall (fronts cut from official product photos). */
+export const STALL_PACKS = {
+  "hazelnut-laddoo": { name: "Hazelnut Chocolate Laddoos", color: "#2B1A14", kind: "sachet" },
+  "coffee-almond-laddoo": { name: "Coffee Almond Laddoos", color: "#2B1A14", kind: "sachet" },
+  "peanut-laddoo": { name: "Peanut Chocolate Laddoos", color: "#2B1A14", kind: "sachet" },
+  "protein-laddoo": { name: "Protein Laddoos", color: "#2B1A14", kind: "sachet" },
+  "millet-bhujia": { name: "Millet Bhujia · Pudina Masti", color: "#B9D23A", kind: "pouch" },
+  "millet-bhel": { name: "Millet Bhel · Bombay Bhelpuri", color: "#9DBA3A", kind: "pouch" },
+  "millet-namkeen": { name: "Millet Namkeen · Pudina Punch", color: "#3DAE48", kind: "pouch" },
+  "quinoa-namkeen": { name: "Quinoa Namkeen · Chilli Lime", color: "#D81F45", kind: "pouch" },
+  "ragi-chips": { name: "Ragi Chips · Achari Masti", color: "#F4C21B", kind: "pouch" },
+  "nut-mix": { name: "Premium Nut Mix", color: "#1E2A5A", kind: "pouch" },
+  "trail-mix": { name: "Better Trail Mix", color: "#E8622C", kind: "pouch" },
+  "seed-mix": { name: "Spiced Jaggery Seed Mix", color: "#6E8B3D", kind: "pouch" },
+} as const;
+export type PackId = keyof typeof STALL_PACKS;
+
+export type Look = {
+  skin: string;
+  top: string;
+  bottom: string;
+  hair: string;
+  hairStyle: "short" | "long" | "bun";
+  dress?: boolean;
+  extra?: "glasses" | "cap" | "dupatta" | "backpack" | "apron";
+  extraColor?: string;
+};
+
+export type StallCustomer = {
+  id: string;
+  who: string;
+  look: Look;
+  pack: PackId;
+  says: string;
+  options: { text: string; good: boolean; reply: string; hint?: string }[];
+  fact: string;
+};
+
+export const STALL_CUSTOMERS: StallCustomer[] = [
+  {
+    id: "sugar",
+    who: "A man buying for his father",
+    look: { skin: "#C68B59", top: "#2E6F95", bottom: "#3B3B3B", hair: "#1E1410", hairStyle: "short", extra: "glasses", extraColor: "#2F1C1A" },
+    pack: "coffee-almond-laddoo",
+    says: "My father avoids refined sugar. What's in these laddoos?",
+    options: [
+      { text: "Just a little sugar — he won't even notice.", good: false, reply: "Hmm… that's not what the pack says. Now I'm not sure I can trust you.", hint: "Look at the red strip on the pack. How are these laddoos sweetened?" },
+      { text: "They're sweetened with dates — no added sugar. Here, read the pack.", good: true, reply: "Dates instead of sugar? Perfect — I'll take some for him!" },
+      { text: "Sugar-free sweets never taste good. Buy something else.", good: false, reply: "Oh. Then why are you selling them?", hint: "Eat Better's belief: you shouldn't have to choose between tasty and healthy." },
+    ],
+    fact: "From the pack: “Sweetened with dates” · “No added sugar”. Chapter 1.2: Natural Sweetening.",
+  },
+  {
+    id: "fried",
+    who: "A mother packing her kids' tiffin",
+    look: { skin: "#B5764A", top: "#C2185B", bottom: "#C2185B", hair: "#140C08", hairStyle: "long", dress: true, extra: "dupatta", extraColor: "#FED300" },
+    pack: "millet-bhujia",
+    says: "Is this bhujia fried? I want something lighter for my kids' tiffin.",
+    options: [
+      { text: "All tasty namkeen is fried. That's normal.", good: false, reply: "Then it's not right for my kids' tiffin…", hint: "Check the bottom of the pack: is it fried or roasted? Which oil is not used?" },
+      { text: "Don't worry about what's inside, just taste it!", good: false, reply: "But I do worry — that's why I asked!", hint: "Answer her real question with a fact from the pack." },
+      { text: "It's roasted, not fried — and made with no palm oil.", good: true, reply: "Roasted? Then the kids can have it. Two packs, please!" },
+    ],
+    fact: "From the pack: “Roasted not fried” · “No palm oil”. Chapter 1.2: Oil & Cooking Innovation.",
+  },
+  {
+    id: "spicy",
+    who: "A college student who just tasted a sample",
+    look: { skin: "#D9A066", top: "#3E8E41", bottom: "#2B3A55", hair: "#2A1A12", hairStyle: "short", extra: "cap", extraColor: "#FF5C00" },
+    pack: "quinoa-namkeen",
+    says: "I tasted the Chilli Lime namkeen. It's a bit too spicy for me.",
+    options: [
+      { text: "Thanks for telling me! Try the Premium Nut Mix — it's sweet & savoury. I'll pass your feedback to our kitchen.", good: true, reply: "You actually listened! I'll take the nut mix." },
+      { text: "Spicy is the best part. You'll get used to it.", good: false, reply: "No thanks — I came here to enjoy a snack.", hint: "Face-to-face feedback is a gift. Listen, and suggest something milder." },
+      { text: "Nobody else has complained, so it must be fine.", good: false, reply: "Well, I'm complaining now…", hint: "One honest comment can save many future customers. What would a good listener say?" },
+    ],
+    fact: "Premium Nut Mix is “Sweet & Savoury” (official product page). Chapter 1.3: exhibitions gave honest, immediate feedback on taste.",
+  },
+  {
+    id: "size",
+    who: "A grandmother trying Eat Better for the first time",
+    look: { skin: "#A86B45", top: "#7B1FA2", bottom: "#7B1FA2", hair: "#BDB6B0", hairStyle: "bun", dress: true, extra: "glasses", extraColor: "#C8963E" },
+    pack: "hazelnut-laddoo",
+    says: "The 240 g pack is too much before I know if I like it.",
+    options: [
+      { text: "Bigger packs are better value — take the biggest one.", good: false, reply: "You're not listening to me, beta.", hint: "She wants to try first. Is there a smaller size?" },
+      { text: "Start with the 40 g pack. If you love it, come back for a bigger one!", good: true, reply: "A small pack to try? That's just right." },
+      { text: "Sorry, it's 240 g or nothing.", good: false, reply: "Then I'll leave it, thank you.", hint: "These laddoos come in 40 g, 120 g and 240 g packs." },
+    ],
+    fact: "Hazelnut Chocolate Laddoos come in 40 g, 120 g and 240 g (official website). Chapter 1.3: customers gave feedback on price.",
+  },
+  {
+    id: "online",
+    who: "A visitor from another city",
+    look: { skin: "#8D5A3B", top: "#F2A900", bottom: "#4E342E", hair: "#1A110C", hairStyle: "short", extra: "backpack", extraColor: "#35401D" },
+    pack: "trail-mix",
+    says: "I love this trail mix, but I live in another city. Can I buy it after today?",
+    options: [
+      { text: "Ask a shop near your home to order it for you.", good: false, reply: "That sounds like a lot of running around…", hint: "Eat Better is internet-first. Where can anyone in India buy it?" },
+      { text: "No — you can only buy it here at the stall today.", good: false, reply: "Oh no. I'll never find it again!", hint: "Remember Chapter 1.1: what does D2C mean?" },
+      { text: "Yes! Order online from our website and it's delivered to your door.", good: true, reply: "Delivered home? I'll order more next week!" },
+    ],
+    fact: "Chapter 1.1: Eat Better is an internet-first, direct-to-consumer (D2C) brand — it sells straight to customers online.",
+  },
+];
+
+export const STALL_RANKS = [
+  { min: 13, title: "Star Seller" },
+  { min: 9, title: "Great Seller" },
+  { min: 0, title: "Learning Seller" },
 ];
 
 /* 5 · going national */
