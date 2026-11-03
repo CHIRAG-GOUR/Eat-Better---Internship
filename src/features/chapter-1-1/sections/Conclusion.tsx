@@ -15,19 +15,19 @@ const RECAP: { title: string; text: string; img?: string; alt?: string; mosaic?:
     text: `${GLANCE.name} (${GLANCE.legalName}), founded ${GLANCE.founded} in ${GLANCE.headquarters}.`,
     img: "/chapter-1-1/art/jaipur.webp",
     alt: "Illustration of Jaipur's pink sandstone buildings",
-      },
+  },
   {
     title: "What it believes",
     text: "Keep the taste. Change the ingredients and the way snacks are made.",
     img: "/chapter-1-1/art/balance.webp",
     alt: "Illustration of a brass scale balancing snacks and whole ingredients",
-      },
+  },
   {
     title: "How it sells",
     text: "Internet-first and D2C — straight to customers through its own website.",
     img: "/chapter-1-1/art/doorstep.webp",
     alt: "Illustration of a parcel being delivered to a front door",
-      },
+  },
   {
     title: "What it makes",
     text: "Sweets & laddoos · namkeens · nuts & mixes · combos & gifting.",

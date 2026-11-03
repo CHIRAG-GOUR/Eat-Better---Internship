@@ -1,9 +1,11 @@
 "use client";
 
 import { FullscreenToggle } from "@/components/chapter/FullscreenToggle";
+import { ChapterNotes } from "@/components/chapter/ChapterNotes";
 import { LaddooRing, type ProgressSection } from "@/components/chapter/LaddooRing";
 import { WorldBackground } from "./three/WorldBackground";
 import { GlossaryProvider } from "@/components/chapter/Glossary";
+import { CHAPTER } from "./content";
 import { GLOSSARY_1_1 } from "./glossary";
 import { ChapterHeader } from "./sections/ChapterHeader";
 import { Glance } from "./sections/Glance";
@@ -34,6 +36,7 @@ export default function Chapter() {
         Skip to chapter content
       </a>
       <WorldBackground />
+      <ChapterNotes chapterNumber={CHAPTER.number} chapterTitle={CHAPTER.title} />
       <FullscreenToggle />
       <LaddooRing sections={SECTIONS} />
       <GlossaryProvider entries={GLOSSARY_1_1}>

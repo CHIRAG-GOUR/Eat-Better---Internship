@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { FullscreenToggle } from "@/components/chapter/FullscreenToggle";
+import { ChapterNotes } from "@/components/chapter/ChapterNotes";
 import { LaddooRing, type ProgressSection } from "@/components/chapter/LaddooRing";
 import { ChapterOpener } from "@/components/chapter/ChapterOpener";
 import { TakeawayMoment } from "@/components/chapter/TakeawayMoment";
@@ -34,6 +35,7 @@ export default function Chapter() {
       <WorldShell>
         <World />
       </WorldShell>
+      <ChapterNotes chapterNumber={CHAPTER.number} chapterTitle={CHAPTER.title} />
       <FullscreenToggle />
       <LaddooRing sections={SECTIONS} />
       <main className="pointer-events-none relative z-10">
