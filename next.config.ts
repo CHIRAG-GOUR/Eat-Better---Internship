@@ -6,12 +6,8 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   poweredByHeader: false,
   images: {
-    // WebP only + a short list of widths keeps Vercel's image-optimisation usage low;
-    // optimised images are cached for 31 days so each variant is generated once.
-    formats: ["image/webp"],
-    deviceSizes: [640, 828, 1080, 1280, 1920],
-    imageSizes: [96, 160, 256, 384],
-    minimumCacheTTL: 2678400,
+    // Serve WebP images statically from the CDN (compatible with Firebase Hosting & Vercel)
+    unoptimized: true,
   },
   async redirects() {
     // chapters are direct links; the bare domain opens Chapter 1.1 (temporary, so it can change later)

@@ -4,6 +4,7 @@ import { Panel } from "@/components/chapter/Panel";
 import { motion } from "motion/react";
 import { VIDEO } from "../content";
 import { SectionIntro } from "@/components/chapter/SectionIntro";
+import { getMediaUrl } from "@/lib/media";
 
 /**
  * Self-hosted copy of the official story video (https://youtu.be/AZrRAUVxlgg).
@@ -35,8 +36,8 @@ export function StoryVideo() {
             title={VIDEO.title}
             controlsList="nodownload"
           >
-            <source src="/chapter-1-1/video/story-av1.mp4" type='video/mp4; codecs="av01.0.08M.08, mp4a.40.2"' />
-            <source src="/chapter-1-1/video/story-h264.mp4" type='video/mp4; codecs="avc1.640028, mp4a.40.2"' />
+            <source src={getMediaUrl("/chapter-1-1/video/story-av1.mp4")} type='video/mp4; codecs="av01.0.08M.08, mp4a.40.2"' />
+            <source src={getMediaUrl("/chapter-1-1/video/story-h264.mp4")} type='video/mp4; codecs="avc1.640028, mp4a.40.2"' />
             Your browser can&apos;t play this video.{" "}
             <a href={`https://youtu.be/${VIDEO.id}`} className="underline">
               Watch it on YouTube

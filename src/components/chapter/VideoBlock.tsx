@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import { useState } from "react";
 import { Play } from "lucide-react";
+import { getMediaUrl } from "@/lib/media";
 
 type Props = {
   title: string;
@@ -35,8 +36,8 @@ export function VideoBlock(props: Props) {
       >
         {props.kind === "file" ? (
           <video className="block size-full bg-black object-contain" controls playsInline preload="metadata" poster={props.poster} title={props.title} controlsList="nodownload">
-            {props.av1 && <source src={props.av1} type='video/mp4; codecs="av01.0.08M.08, mp4a.40.2"' />}
-            <source src={props.h264} type="video/mp4" />
+            {props.av1 && <source src={getMediaUrl(props.av1)} type='video/mp4; codecs="av01.0.08M.08, mp4a.40.2"' />}
+            <source src={getMediaUrl(props.h264)} type="video/mp4" />
           </video>
         ) : play ? (
           <iframe
