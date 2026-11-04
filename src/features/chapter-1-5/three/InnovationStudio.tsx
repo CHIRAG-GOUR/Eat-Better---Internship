@@ -4,7 +4,8 @@ import NextImage from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Camera, Check, FlaskConical, Lightbulb, Plus, RotateCcw, Sparkles, X } from "lucide-react";
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Camera, Check, FlaskConical, Lightbulb, Plus, RotateCcw, X } from "lucide-react";
+import { LeafBadge } from "@/components/icons/EbIcons";
 import { InspectPanel, LiteToggle, ObjectiveTracker, RoleBadge, SimReport, liteCanvasProps, useLiteMode, type Objective, type ReportData } from "@/components/sim";
 import {
   CATEGORIES,
@@ -389,7 +390,7 @@ export default function InnovationStudio({ onComplete, three = true }: { onCompl
                       </div>
                       <p className="mt-1 text-[0.95rem] leading-snug text-cocoa">{CAT[focusZone].includes}</p>
                       <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-cocoa px-2.5 py-1 text-[0.82rem] font-bold text-cream">
-                        <Sparkles className="size-3.5 text-haldi" /> {CAT[focusZone].positioning}
+                        <LeafBadge className="size-3.5 text-haldi" /> {CAT[focusZone].positioning}
                       </div>
                       <div className="mt-2 grid grid-cols-3 gap-1.5">
                         {ZONE_PRODUCTS[focusZone].map((p) => (

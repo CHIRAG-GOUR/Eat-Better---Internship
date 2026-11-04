@@ -17,13 +17,13 @@ import {
   Play,
   RotateCcw,
   ShoppingCart,
-  Sparkles,
   Star,
   Users,
   X,
   Zap,
   type LucideIcon,
 } from "lucide-react";
+import { LeafBulb, Sprout } from "@/components/icons/EbIcons";
 import { LiteToggle, ObjectiveTracker, RoleBadge, SimReport, liteCanvasProps, useLiteMode, type Objective, type ReportData } from "@/components/sim";
 import { OFFERS } from "../content";
 import { usePractice22 } from "../practice";
@@ -744,7 +744,7 @@ export default function GrowthDesk({ onComplete }: { onComplete: () => void }) {
             </Canvas>
           )}
           <div className="pointer-events-none absolute left-3 top-3 z-10">
-            <RoleBadge role="Junior Digital Marketer" icon={<Sparkles className="size-4 text-haldi" />} />
+            <RoleBadge role="Junior Digital Marketer" icon={<Sprout className="size-4 text-haldi" />} />
           </div>
           <div className="absolute right-3 top-3 z-10 hidden sm:block">
             <LiteToggle />
@@ -910,7 +910,7 @@ export default function GrowthDesk({ onComplete }: { onComplete: () => void }) {
                   <ul className="grid gap-1.5">
                     {result.insights.slice(0, 4).map((s) => (
                       <li key={s} className="flex gap-2 rounded-xl bg-white px-3 py-2 text-[0.92rem] font-semibold leading-snug text-cocoa">
-                        <Sparkles className="mt-0.5 size-4 shrink-0 text-orange" /> {s}
+                        <LeafBulb className="mt-0.5 size-4 shrink-0 text-orange" /> {s}
                       </li>
                     ))}
                   </ul>

@@ -4,7 +4,8 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowRight, BadgeCheck, Check, Circle, ClipboardCopy, Hand, Megaphone, RefreshCw, RotateCcw, Sparkles } from "lucide-react";
+import { ArrowRight, BadgeCheck, Check, Circle, ClipboardCopy, Hand, Megaphone, RefreshCw, RotateCcw } from "lucide-react";
+import { Sprout } from "@/components/icons/EbIcons";
 import { Panel } from "@/components/chapter/Panel";
 import { ActivityLabel, SectionIntro } from "@/components/chapter/SectionIntro";
 import { GlossaryText } from "@/components/chapter/Glossary";
@@ -157,7 +158,7 @@ export function Market() {
           <AnimatePresence>
             {all && (
               <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="mt-4 flex items-start gap-2 font-bold text-success">
-                <Sparkles className="mt-0.5 size-5 shrink-0" /> Same nostalgic flavours — made with cleaner ingredients, natural sweetening and oil-free processing.
+                <Sprout className="mt-0.5 size-5 shrink-0" /> Same nostalgic flavours — made with cleaner ingredients, natural sweetening and oil-free processing.
               </motion.p>
             )}
           </AnimatePresence>

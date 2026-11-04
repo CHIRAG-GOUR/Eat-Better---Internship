@@ -1,4 +1,5 @@
-import { BadgeCheck, Ear, Eye, Gem, HandHeart, Heart, Layers, MessageCircle, Package, Palette, PenLine, ScanEye, ShoppingBag, Smile, Sparkles, Type, Zap } from "lucide-react";
+import { BadgeCheck, Ear, Eye, Gem, HandHeart, Heart, Layers, MessageCircle, Package, Palette, PenLine, ScanEye, ShoppingBag, Smile, Type, Zap } from "lucide-react";
+import { EchoMark } from "@/components/icons/EbIcons";
 import type { LabSpec } from "@/components/learn/LearnLab";
 
 /**
@@ -17,7 +18,7 @@ export const LABS_21: Record<"name" | "logo" | "colour" | "pack" | "tone" | "per
     skill: "explain how a short brand name carries a promise, and test any name against three checks.",
     rules: [
       { id: "simple", title: "Simple", text: "Easy to say, spell and share — short, everyday words.", icon: Type, source: GEN },
-      { id: "memorable", title: "Memorable", text: "Sticks after hearing it once, often thanks to a familiar phrase.", icon: Sparkles, source: GEN },
+      { id: "memorable", title: "Memorable", text: "Sticks after hearing it once, often thanks to a familiar phrase.", icon: EchoMark, source: GEN },
       { id: "promise", title: "Carries a promise", text: "A simple, memorable name communicates a brand promise.", icon: HandHeart, source: CH },
       { id: "tagline", title: "The tagline finishes the job", text: "“The joy of snacking, made better.” adds what the name alone can’t say.", icon: PenLine, source: BR },
     ],

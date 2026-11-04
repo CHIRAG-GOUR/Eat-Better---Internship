@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowDown, ArrowRight, ArrowUp, BookOpen, Check, CheckCircle2, Lightbulb, PenLine, RotateCcw, Sparkles, Star, Target, X, type LucideIcon } from "lucide-react";
+import { ArrowDown, ArrowRight, ArrowUp, BookOpen, Check, CheckCircle2, Lightbulb, PenLine, RotateCcw, Star, Target, X } from "lucide-react";
+import { GoalFlag } from "@/components/icons/EbIcons";
 
 /**
  * LearnLab — a learnable activity: LEARN the rule → APPLY it to real material → CHECK with a diagnosis
@@ -11,7 +12,7 @@ import { ArrowDown, ArrowRight, ArrowUp, BookOpen, Check, CheckCircle2, Lightbul
  * (Pattern from the SkilliZee Architecture internship's studios.) Data-driven; one per chapter area.
  */
 
-export type Rule = { id: string; title: string; text: string; icon?: LucideIcon; source?: string };
+export type Rule = { id: string; title: string; text: string; icon?: React.ComponentType<{ className?: string }>; source?: string };
 
 type WithWhy = { why: string; rule?: string };
 export type ClassifyTask = {
@@ -157,11 +158,7 @@ export function LearnLab({ spec, onDone }: { spec: LabSpec; onDone?: (r: LabResu
     <div className="overflow-hidden rounded-[24px] border border-cocoa bg-white shadow-[3px_3px_0_0_#2f1c1a]">
       {/* header: skill + stepper */}
       <div className="border-b border-cocoa/10 bg-cream px-4 py-3 sm:px-5">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="flex min-w-0 items-start gap-2 text-[0.98rem] font-bold leading-snug text-cocoa">
-            <Sparkles className="mt-0.5 size-4 shrink-0 text-orange" />
-            <span className="min-w-0">You&apos;ll be able to: {spec.skill}</span>
-          </p>
+        <div className="flex flex-wrap items-center justify-end gap-2 empty:hidden">
           {s.attempts > 0 && (
             <span className="flex items-center gap-0.5" aria-label={`${s.score} of 5 stars on the first check`}>
               {[0, 1, 2, 3, 4].map((i) => (
@@ -191,6 +188,12 @@ export function LearnLab({ spec, onDone }: { spec: LabSpec; onDone?: (r: LabResu
             {/* LEARN */}
             {s.step === 0 && (
               <div>
+                <p className="mb-3 flex items-start gap-2.5 rounded-2xl bg-peach/60 px-3.5 py-2.5 text-[1rem] leading-snug text-cocoa">
+                  <GoalFlag className="mt-0.5 size-5 shrink-0 text-orange" />
+                  <span className="min-w-0">
+                    <span className="font-extrabold">Goal:</span> {spec.skill}
+                  </span>
+                </p>
                 <div className="grid gap-2.5 sm:grid-cols-2">
                   {spec.rules.map((r, i) => {
                     const Icon = r.icon ?? Lightbulb;

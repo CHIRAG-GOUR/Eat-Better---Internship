@@ -178,7 +178,16 @@ export function LookSection() {
               ))}
             </div>
           </div>
-          <PhotoFan items={TOUCHPOINTS.map((t) => ({ img: t.img, caption: t.label, alt: t.note }))} />
+          <div className="grid grid-cols-3 gap-2">
+            {TOUCHPOINTS.map((t, i) => (
+              <motion.figure key={t.id} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }} className="min-w-0 overflow-hidden rounded-2xl border border-cocoa bg-white">
+                <div className="relative aspect-[3/4]">
+                  <Image src={t.img} alt={t.note} fill sizes="160px" className="object-cover" />
+                </div>
+                <figcaption className="px-2 py-1.5 text-[0.82rem] font-bold leading-tight text-cocoa">{t.label}</figcaption>
+              </motion.figure>
+            ))}
+          </div>
         </div>
       }
     />

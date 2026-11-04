@@ -13,10 +13,10 @@ import {
   LayoutTemplate,
   Palette,
   RotateCcw,
-  Sparkles,
   Trash2,
   Type,
 } from "lucide-react";
+import { ShineDrop } from "@/components/icons/EbIcons";
 import { PRODUCTS, getProduct, type PackFormat } from "@/lib/brand";
 import { useStudio } from "../store";
 import { ELEMENT_LIBRARY, FINISHES, FORMATS, SWATCH_GROUPS, TEMPLATES, TYPEFACES } from "../presets";
@@ -27,13 +27,13 @@ import type { ArtworkMetrics, ElementKind, LogoTone, PackDesign } from "../types
 import { Section, Segmented, Slider, SwatchRow, TextField, Toggle } from "./primitives";
 
 type TabId = "product" | "layout" | "colour" | "words" | "art" | "finish" | "versions";
-const TABS: { id: TabId; label: string; icon: typeof Box }[] = [
+const TABS: { id: TabId; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
   { id: "product", label: "Product", icon: Box },
   { id: "layout", label: "Layout", icon: LayoutTemplate },
   { id: "colour", label: "Colour", icon: Palette },
   { id: "words", label: "Words", icon: Type },
   { id: "art", label: "Art", icon: Brush },
-  { id: "finish", label: "Finish", icon: Sparkles },
+  { id: "finish", label: "Finish", icon: ShineDrop },
   { id: "versions", label: "Versions", icon: GitCompareArrows },
 ];
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { Boxes, Factory, FlaskConical, Flame, Leaf, PackageCheck, ScanSearch, ShieldCheck, Smile, Truck } from "lucide-react";
+import { EchoMark, GoalFlag, HeartLeaf, LeafBadge, LeafBulb, ShineDrop, Sprout } from "@/components/icons/EbIcons";
 import { AutoStepper, BeforeAfter, FlipCards, IconFlow, Marquee, PhotoFan, SplitStory, StatBand, VersusCards } from "@/components/rich";
 
 function H({ t }: { t: string }) {
@@ -13,6 +14,30 @@ export default function ComponentsPreview() {
     <main className="mx-auto max-w-6xl bg-cream px-4 py-10 sm:px-8">
       <div className="text-[0.85rem] font-extrabold uppercase tracking-[0.14em] text-orange">Preview</div>
       <h1 className="mb-10 font-display text-[2.4rem] font-semibold text-cocoa">Rich chapter components</h1>
+
+      <H t="Eat Better icon set" />
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
+        {[
+          [Sprout, "Sprout", "growth, beginnings"],
+          [LeafBulb, "Leaf bulb", "lessons, insights"],
+          [LeafBadge, "Leaf badge", "positioning"],
+          [EchoMark, "Echo", "memorable"],
+          [HeartLeaf, "Heart leaf", "connection"],
+          [ShineDrop, "Shine drop", "finish"],
+          [GoalFlag, "Goal flag", "learning goal"],
+        ].map(([Icon, name, use]) => {
+          const I = Icon as typeof Sprout;
+          return (
+            <div key={name as string} className="flex flex-col items-center gap-2 rounded-2xl border border-cocoa/15 bg-white p-4 text-center">
+              <span className="grid size-14 place-items-center rounded-2xl bg-orange text-white">
+                <I className="size-7" />
+              </span>
+              <span className="font-display text-[1rem] font-semibold text-cocoa">{name as string}</span>
+              <span className="text-[0.82rem] text-cocoa-2">{use as string}</span>
+            </div>
+          );
+        })}
+      </div>
 
       <H t="StatBand (count-up)" />
       <StatBand

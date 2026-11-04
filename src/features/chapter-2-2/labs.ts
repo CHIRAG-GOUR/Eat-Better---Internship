@@ -1,4 +1,5 @@
-import { BadgePercent, BookOpen, Briefcase, Camera, Clock, Ear, Globe, Handshake, HeartHandshake, Layers, Mail, MessageSquareHeart, Package, Repeat, Scale, ShieldCheck, ShoppingCart, Sparkles, Store, Truck, Users, Video, Zap } from "lucide-react";
+import { BadgePercent, BookOpen, Briefcase, Camera, Clock, Ear, Globe, Handshake, HeartHandshake, Layers, Mail, MessageSquareHeart, Package, Repeat, Scale, ShieldCheck, ShoppingCart, Store, Truck, Users, Video, Zap } from "lucide-react";
+import { HeartLeaf } from "@/components/icons/EbIcons";
 import type { LabSpec } from "@/components/learn/LearnLab";
 
 /**
@@ -120,7 +121,7 @@ export const LABS_22: Record<"community" | "owned" | "social" | "story" | "revie
     skill: "build a brand story that earns trust, and know where storytelling stops.",
     rules: [
       { id: "purpose", title: "Story = purpose and people", text: "Customers connect when they understand the brand’s story, purpose and people.", icon: HeartHandshake, source: CH },
-      { id: "emotion", title: "Stories create connection", text: "A founder explaining why they started makes a brand feel personal and relatable.", icon: Sparkles, source: CH },
+      { id: "emotion", title: "Stories create connection", text: "A founder explaining why they started makes a brand feel personal and relatable.", icon: HeartLeaf, source: CH },
       { id: "transparency", title: "Transparency builds trust", text: "Eat Better invites customers to book a kitchen tour — proof you can check.", icon: ShieldCheck, source: CH },
       { id: "limits", title: "Stories aren’t enough", text: "Trust also depends on product quality and credible information.", icon: Scale, source: CH },
     ],

@@ -4,7 +4,8 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { useEffect, useState } from "react";
-import { ArrowRight, Check, Circle, ClipboardCopy, Compass, Megaphone, MessageCircle, Rocket, Sparkles, Star, TrendingUp, Users } from "lucide-react";
+import { ArrowRight, Check, Circle, ClipboardCopy, Compass, Megaphone, MessageCircle, Rocket, Star, TrendingUp, Users } from "lucide-react";
+import { LeafBulb, Sprout } from "@/components/icons/EbIcons";
 import { Panel } from "@/components/chapter/Panel";
 import { ActivityLabel, SectionIntro } from "@/components/chapter/SectionIntro";
 import { GlossaryText } from "@/components/chapter/Glossary";
@@ -55,7 +56,7 @@ export function Story() {
                 </p>
                 {"lesson" in s && s.lesson && (
                   <div className="mt-4 flex items-start gap-3 rounded-2xl bg-cocoa p-4 text-cream">
-                    <Sparkles className="mt-0.5 size-5 shrink-0 text-haldi" />
+                    <LeafBulb className="mt-0.5 size-5 shrink-0 text-haldi" />
                     <p className="text-[1.05rem] font-semibold leading-snug">{s.lesson}</p>
                   </div>
                 )}
@@ -178,7 +179,7 @@ export function National() {
 
 /* ── 4 · Leadership team ──────────────────────────────────────── */
 
-const LEADER_ICONS = [Sparkles, Compass, Megaphone, TrendingUp];
+const LEADER_ICONS = [Sprout, Compass, Megaphone, TrendingUp];
 
 export function Leaders() {
   return (

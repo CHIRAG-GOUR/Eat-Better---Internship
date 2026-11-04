@@ -4,7 +4,8 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
-import { CalendarHeart, Check, Circle, ClipboardCopy, Gift, Hand, Layers, RefreshCw, Sparkles, Sun } from "lucide-react";
+import { CalendarHeart, Check, Circle, ClipboardCopy, Gift, Hand, Layers, RefreshCw, Sun } from "lucide-react";
+import { LeafBadge } from "@/components/icons/EbIcons";
 import { Panel } from "@/components/chapter/Panel";
 import { ActivityLabel, SectionIntro } from "@/components/chapter/SectionIntro";
 import { GlossaryText } from "@/components/chapter/Glossary";
@@ -64,7 +65,7 @@ function CategoryCard({ c, i }: { c: (typeof CATEGORIES)[number]; i: number }) {
         </p>
         <div className="mt-auto pt-3">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-cocoa px-3 py-1.5 text-[0.9rem] font-bold text-cream">
-            <Sparkles className="size-4 text-haldi" /> {c.positioning}
+            <LeafBadge className="size-4 text-haldi" /> {c.positioning}
           </span>
         </div>
       </div>
