@@ -121,23 +121,38 @@ export function SimReport({ data, storageKey, ready = true }: { data: ReportData
       <div className="grid gap-4 p-5 sm:p-6">
         {data.image && (
           // eslint-disable-next-line @next/next/no-img-element -- data-URL snapshot of the student's 3D design
-          <img src={data.image.src} alt={data.image.alt} className="w-full max-w-md rounded-2xl border border-cocoa/20" />
+          <img src={data.image.src} alt={data.image.alt} className="mx-auto w-full max-w-sm rounded-2xl border border-cocoa/20" />
         )}
-        {data.sections.map((s) => (
-          <section key={s.heading}>
-            <h4 className={`text-[0.85rem] font-extrabold uppercase tracking-[0.1em] ${s.status === "fail" ? "text-error" : s.status === "pass" ? "text-success" : "text-orange"}`}>{s.heading}</h4>
-            {s.body && <p className="mt-1 text-[1rem] leading-relaxed text-cocoa">{s.body}</p>}
-            {s.items && (
-              <ul className="mt-1.5 space-y-1">
-                {s.items.map((it) => (
-                  <li key={it} className="flex gap-2 text-[0.98rem] leading-snug text-cocoa">
-                    <span className="mt-2 size-1.5 shrink-0 rounded-full bg-orange" /> {it}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-        ))}
+        <div className="grid gap-3 sm:grid-cols-2">
+          {data.sections.map((s) => {
+            const chips = !!s.items && s.items.every((it) => it.length <= 48);
+            const wide = !chips && ((s.items?.length ?? 0) > 3 || (s.body?.length ?? 0) > 160);
+            return (
+              <section key={s.heading} className={`rounded-2xl p-4 ${s.status === "fail" ? "bg-error/10" : s.status === "pass" ? "bg-success/10" : "bg-cream"} ${wide ? "sm:col-span-2" : ""}`}>
+                <h4 className={`text-[0.8rem] font-extrabold uppercase tracking-[0.1em] ${s.status === "fail" ? "text-error" : s.status === "pass" ? "text-success" : "text-orange"}`}>{s.heading}</h4>
+                {s.body && <p className="mt-1.5 text-[1rem] font-semibold leading-snug text-cocoa">{s.body}</p>}
+                {s.items &&
+                  (chips ? (
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      {s.items.map((it) => (
+                        <span key={it} className="rounded-full border border-cocoa/15 bg-white px-3 py-1 text-[0.92rem] font-semibold text-cocoa">
+                          {it}
+                        </span>
+                      ))}
+                    </div>
+                  ) : (
+                    <ul className="mt-2 space-y-1.5">
+                      {s.items.map((it) => (
+                        <li key={it} className="flex gap-2 text-[0.95rem] leading-snug text-cocoa">
+                          <Check className="mt-0.5 size-4 shrink-0 text-success" /> {it}
+                        </li>
+                      ))}
+                    </ul>
+                  ))}
+              </section>
+            );
+          })}
+        </div>
         <p className="text-[0.82rem] text-cocoa-2/80">
           {data.footnote ? `${data.footnote} · ` : ""}Saved on this device only. This report is your deliverable; it does not record progress in the LMS.
         </p>
