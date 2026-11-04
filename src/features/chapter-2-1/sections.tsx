@@ -3,16 +3,19 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { motion } from "motion/react";
-import { useEffect, useState } from "react";
-import { BadgeCheck, Check, Circle, ClipboardCopy, Megaphone, Package, Palette, RotateCcw, Star, Type, Users } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { BadgeCheck, Check, Circle, ClipboardCopy, Megaphone, Package, Palette, RotateCcw, Type, Users } from "lucide-react";
 import { Panel } from "@/components/chapter/Panel";
 import { ActivityLabel, SectionIntro } from "@/components/chapter/SectionIntro";
 import { GlossaryText } from "@/components/chapter/Glossary";
 import { createActivityStore } from "@/lib/activities";
-import { AREAS, ELEMENTS, NAME_READING, NAMES, OFFICIAL_LINES, PALETTE, PROMISES, TAGLINE, TOUCH_IMAGES, type AreaId } from "./content";
+import { IconFlow, Marquee, PhotoFan } from "@/components/rich";
+import { LearnLab, type LabSpec } from "@/components/learn/LearnLab";
+import { LABS_21 } from "./labs";
+import { AREAS, OFFICIAL_LINES, PALETTE, TAGLINE, TOUCHPOINTS, type AreaId } from "./content";
 import { useBrand21 } from "./store";
 
-export const ACTIVITY_IDS = ["name", "logo", "pack", "colour", "tone", "perception", "reflect"] as const;
+export const ACTIVITY_IDS = ["name", "logo", "colour", "pack", "tone", "perception", "lab", "reflect"] as const;
 export type ActivityId21 = (typeof ACTIVITY_IDS)[number];
 export const useActivities21 = createActivityStore(ACTIVITY_IDS);
 
@@ -70,79 +73,10 @@ export function IdentityMap() {
             <AreaCard key={a.id} a={a} i={i} />
           ))}
         </div>
-      </Panel>
-    </section>
-  );
-}
-
-/* ── 2 · Brand name + Name test ───────────────────────────────── */
-
-export function NameSection() {
-  const names = useBrand21((s) => s.names);
-  const memorable = useBrand21((s) => s.memorable);
-  const set = useBrand21((s) => s.set);
-  const complete = useActivities21((s) => s.complete);
-  const ok = NAMES.every((n) => (names[n.id]?.length ?? 0) > 0) && !!memorable;
-  useEffect(() => {
-    if (ok) complete("name");
-  }, [ok, complete]);
-  const tagged = (names.eatbetter?.length ?? 0) > 0;
-  return (
-    <section id="name" className={sectionCls}>
-      <Panel tone="peach" reveal="left" width="max-w-7xl">
-        <SectionIntro index="2" kicker="Brand name" title="Two words, one promise" />
-        <div className="mt-6 grid gap-4 lg:grid-cols-[1fr_1.4fr]">
-          <motion.div initial={{ opacity: 0, scale: 0.96 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="flex flex-col items-center justify-center gap-4 rounded-[22px] border border-cocoa bg-cream p-6 shadow-[3px_3px_0_0_#2f1c1a]">
-            <Image src="/brand/eat-better-logo.svg" alt="Eat Better Co logo" width={300} height={145} className="h-auto w-[min(260px,70%)]" />
-            <p className="text-center font-display text-[clamp(1.3rem,2.6vw,1.8rem)] font-semibold leading-tight text-cocoa">&ldquo;{TAGLINE}&rdquo;</p>
-            <div className="flex flex-wrap justify-center gap-1.5">
-              {OFFICIAL_LINES.filter((l) => l !== TAGLINE).map((l) => (
-                <span key={l} className="rounded-full border border-cocoa/15 bg-white px-3 py-1 text-[0.88rem] font-semibold text-cocoa">
-                  {l}
-                </span>
-              ))}
-            </div>
-            <span className="text-[0.78rem] text-cocoa-2">Lines from eatbetterco.com</span>
-          </motion.div>
-
-          <div className="rounded-[22px] bg-cream p-4 sm:p-5">
-            <ActivityLabel done={ok}>Activity · Name test</ActivityLabel>
-            <p className="mt-1 text-[1rem] text-cocoa">Tag what each name promises. Then star the easiest to remember.</p>
-            <div className="mt-3 grid gap-2.5 sm:grid-cols-2">
-              {NAMES.map((n) => {
-                const tags = names[n.id] ?? [];
-                const star = memorable === n.id;
-                return (
-                  <div key={n.id} className={`rounded-2xl border-2 bg-white p-3 ${star ? "border-haldi" : "border-cocoa/10"}`}>
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <div className="font-display text-[1.25rem] font-semibold leading-tight text-cocoa">{n.name}</div>
-                        <div className="text-[0.88rem] text-cocoa-2">{n.line}</div>
-                      </div>
-                      <button onClick={() => set({ memorable: n.id })} aria-pressed={star} aria-label={`Star ${n.name} as easiest to remember`} className={`grid size-9 shrink-0 place-items-center rounded-full border-2 ${star ? "border-cocoa bg-haldi" : "border-cocoa/15 hover:border-cocoa"}`}>
-                        <Star className="size-4" fill={star ? "currentColor" : "none"} />
-                      </button>
-                    </div>
-                    <div className="mt-2 flex flex-wrap gap-1">
-                      {PROMISES.map((pr) => {
-                        const on = tags.includes(pr);
-                        return (
-                          <button key={pr} onClick={() => useBrand21.setState((st) => { const cur = st.names[n.id] ?? []; return { names: { ...st.names, [n.id]: cur.includes(pr) ? cur.filter((t) => t !== pr) : [...cur, pr] } }; })} aria-pressed={on} className={`rounded-full border px-2.5 py-1 text-[0.82rem] font-bold ${on ? "border-orange bg-orange text-white" : "border-cocoa/15 text-cocoa-2 hover:border-cocoa"}`}>
-                            {pr}
-                          </button>
-                        );
-                      })}
-                    </div>
-                    <div className="mt-1.5 text-[0.75rem] font-bold uppercase tracking-[0.08em] text-cocoa-2/70">{n.real ? "Real brand" : "Practice name"}</div>
-                  </div>
-                );
-              })}
-            </div>
-            {tagged && (
-              <motion.p initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="mt-3 rounded-xl bg-success/10 px-4 py-2.5 text-[0.98rem] font-semibold text-cocoa">
-                {NAME_READING}
-              </motion.p>
-            )}
+        <div className="mt-10">
+          <div className="text-center text-[0.85rem] font-extrabold uppercase tracking-[0.14em] text-orange">One identity, every touchpoint</div>
+          <div className="mt-4">
+            <PhotoFan items={TOUCHPOINTS.map((t) => ({ img: t.img, caption: t.label, alt: t.note }))} />
           </div>
         </div>
       </Panel>
@@ -150,115 +84,216 @@ export function NameSection() {
   );
 }
 
-/* ── 3 · Logo & visual identity + Spot the consistency ────────── */
+/* ── 2–7 · One learnable lab per area ─────────────────────────── */
 
-function TouchImage({ t, find }: { t: (typeof TOUCH_IMAGES)[number]; find: "logo" | "letters" }) {
-  const found = useBrand21((s) => s.logoFound);
-  const [miss, setMiss] = useState<{ x: number; y: number; k: number } | null>(null);
-  const portrait = t.h > t.w;
+function AreaLab({ id, index, kicker, title, act, spec, tone, aside }: { id: string; index: string; kicker: string; title: string; act: ActivityId21; spec: LabSpec; tone: "light" | "peach"; aside: React.ReactNode }) {
+  const complete = useActivities21((s) => s.complete);
+  const done = useActivities21((s) => s.done[act]);
   return (
-    <figure className="flex flex-col overflow-hidden rounded-[18px] border border-cocoa bg-white shadow-[2px_2px_0_0_#2f1c1a]">
-      <div className={`flex flex-1 items-center justify-center ${portrait ? "bg-[#3A231C]" : ""}`}>
-        <div
-          className="relative w-full cursor-crosshair select-none"
-          style={portrait ? { aspectRatio: `${t.w} / ${t.h}`, maxWidth: 230 } : { aspectRatio: `${t.w} / ${t.h}` }}
-          onClick={(e) => {
-            const r = e.currentTarget.getBoundingClientRect();
-            const x = (e.clientX - r.left) / r.width;
-            const y = (e.clientY - r.top) / r.height;
-            const z = t.zones[find];
-            if (x >= z[0] && x <= z[2] && y >= z[1] && y <= z[3]) {
-              const key = `${t.id}:${find}`;
-              useBrand21.setState((st) => (st.logoFound.includes(key) ? st : { logoFound: [...st.logoFound, key] }));
-            } else setMiss({ x, y, k: Date.now() });
-          }}
-        >
-          <Image src={t.src} alt={`${t.label} — official Eat Better ${t.label.toLowerCase()}`} fill sizes="(max-width: 640px) 100vw, 50vw" className="object-cover" />
-          {ELEMENTS.map((el) => {
-            const z = t.zones[el.id];
-            if (!found.includes(`${t.id}:${el.id}`)) return null;
-            return (
-              <motion.span
-                key={el.id}
-                initial={{ scale: 1.2, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                className="pointer-events-none absolute rounded-lg border-[3px] border-success bg-success/10"
-                style={{ left: `${z[0] * 100}%`, top: `${z[1] * 100}%`, width: `${(z[2] - z[0]) * 100}%`, height: `${(z[3] - z[1]) * 100}%` }}
-              >
-                <span className="absolute -top-3 left-1 rounded-full bg-success px-2 text-[0.72rem] font-bold text-white">{el.id === "logo" ? "Logo" : "Lettering"}</span>
-              </motion.span>
-            );
-          })}
-          {miss && (
-            <motion.span key={miss.k} initial={{ scale: 0.4, opacity: 1 }} animate={{ scale: 1.6, opacity: 0 }} transition={{ duration: 0.6 }} className="pointer-events-none absolute size-8 -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-error" style={{ left: `${miss.x * 100}%`, top: `${miss.y * 100}%` }} />
-          )}
+    <section id={id} className={sectionCls}>
+      <Panel tone={tone} reveal="up" width="max-w-7xl">
+        <SectionIntro index={index} kicker={kicker} title={title} />
+        <div className="mt-6 grid gap-5 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)] lg:items-start">
+          <div className="min-w-0">{aside}</div>
+          <div className="min-w-0">
+            <ActivityLabel done={!!done}>Learning lab · Learn → Apply → Check → Create</ActivityLabel>
+            <div className="mt-2">
+              <LearnLab
+                spec={spec}
+                onDone={(r) => {
+                  useBrand21.setState((st) => ({ labs: { ...st.labs, [spec.id]: r } }));
+                  complete(act);
+                }}
+              />
+            </div>
+          </div>
         </div>
+      </Panel>
+    </section>
+  );
+}
+
+function Pic({ src, alt, caption, ratio = "4/3" }: { src: string; alt: string; caption: string; ratio?: string }) {
+  return (
+    <motion.figure initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="overflow-hidden rounded-[22px] border border-cocoa bg-white shadow-[3px_3px_0_0_#2f1c1a]">
+      <div className="relative" style={{ aspectRatio: ratio }}>
+        <Image src={src} alt={alt} fill sizes="(max-width: 1024px) 100vw, 440px" className="object-cover" />
       </div>
-      <figcaption className="px-3 py-2 font-display text-[1.05rem] font-semibold text-cocoa">{t.label}</figcaption>
-    </figure>
+      <figcaption className="border-t border-cocoa/10 bg-cream px-4 py-2 text-[0.85rem] text-cocoa-2">{caption}</figcaption>
+    </motion.figure>
+  );
+}
+
+const RANGE_PHOTOS: [string, string][] = [
+  ["/brand/products/millet-bhujia-1.webp", "Millets · forest green"],
+  ["/brand/products/hazelnut-laddoo-1.webp", "Laddoos · deep cocoa"],
+  ["/brand/products/nut-mix-2.webp", "Nut mix · terracotta"],
+  ["/brand/products/laddoo-tin-0.webp", "Laddoo tin · mustard"],
+];
+
+export function NameSection() {
+  return (
+    <AreaLab
+      id="name"
+      index="2"
+      kicker="Brand name"
+      title="Two words, one promise"
+      act="name"
+      spec={LABS_21.name}
+      tone="peach"
+      aside={
+        <motion.div initial={{ opacity: 0, scale: 0.96 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="flex flex-col items-center gap-4 rounded-[22px] border border-cocoa bg-cream p-6 shadow-[3px_3px_0_0_#2f1c1a]">
+          <Image src="/brand/eat-better-logo.svg" alt="Eat Better Co logo" width={300} height={145} className="h-auto w-[min(240px,70%)]" />
+          <p className="text-center font-display text-[clamp(1.3rem,2.6vw,1.7rem)] font-semibold leading-tight text-cocoa">&ldquo;{TAGLINE}&rdquo;</p>
+          <div className="w-full min-w-0">
+            <Marquee items={OFFICIAL_LINES.filter((l) => l !== TAGLINE).map((l) => ({ label: l }))} speed={28} />
+          </div>
+          <span className="text-[0.78rem] text-cocoa-2">Lines from eatbetterco.com</span>
+        </motion.div>
+      }
+    />
   );
 }
 
 export function LookSection() {
-  const found = useBrand21((s) => s.logoFound);
-  const complete = useActivities21((s) => s.complete);
-  const logos = TOUCH_IMAGES.filter((t) => found.includes(`${t.id}:logo`)).length;
-  const letters = TOUCH_IMAGES.filter((t) => found.includes(`${t.id}:letters`)).length;
-  const find: "logo" | "letters" = logos < TOUCH_IMAGES.length ? "logo" : "letters";
-  const ok = logos + letters === TOUCH_IMAGES.length * 2;
-  useEffect(() => {
-    if (ok) complete("logo");
-  }, [ok, complete]);
   return (
-    <section id="look" className={sectionCls}>
-      <Panel tone="light" reveal="right" width="max-w-7xl">
-        <SectionIntro index="3" kicker="Logo & visual identity" title="Spot the same face everywhere" />
-        <div className="mt-6 rounded-[22px] bg-cream p-4">
-          <div className="text-[0.8rem] font-extrabold uppercase tracking-[0.12em] text-orange">Brand colours (official website)</div>
-          <div className="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-6">
-            {PALETTE.map((p, i) => (
-              <motion.div key={p.name} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} className="text-center">
-                <div className="aspect-[2/1] rounded-xl border border-cocoa/20" style={{ background: p.hex }} />
-                <div className="mt-1 text-[0.78rem] font-bold leading-tight text-cocoa">{p.name}</div>
-              </motion.div>
-            ))}
+    <AreaLab
+      id="look"
+      index="3"
+      kicker="Logo & visual identity"
+      title="The same face, everywhere"
+      act="logo"
+      spec={LABS_21.logo}
+      tone="light"
+      aside={
+        <div className="grid gap-3">
+          <div className="rounded-[22px] bg-cream p-4">
+            <div className="text-[0.8rem] font-extrabold uppercase tracking-[0.12em] text-orange">Brand colours (official website)</div>
+            <div className="mt-3 grid grid-cols-3 gap-2">
+              {PALETTE.map((p, i) => (
+                <motion.div key={p.name} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} className="text-center">
+                  <div className="aspect-[2/1] rounded-xl border border-cocoa/20" style={{ background: p.hex }} />
+                  <div className="mt-1 text-[0.78rem] font-bold leading-tight text-cocoa">{p.name}</div>
+                </motion.div>
+              ))}
+            </div>
           </div>
+          <PhotoFan items={TOUCHPOINTS.map((t) => ({ img: t.img, caption: t.label, alt: t.note }))} />
         </div>
-        <div className="mt-5 flex flex-wrap items-center justify-between gap-2">
-          <ActivityLabel done={ok}>Activity · Spot the consistency</ActivityLabel>
-          <span className="rounded-full bg-cocoa px-3 py-1 text-[0.9rem] font-bold text-cream">
-            {ok ? "All found" : `Tap ${ELEMENTS.find((e) => e.id === find)?.label} · ${find === "logo" ? logos : letters}/3`}
-          </span>
-        </div>
-        <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_0.42fr]">
-          <div className="grid gap-3">
-            <TouchImage t={TOUCH_IMAGES[0]} find={find} />
-            <TouchImage t={TOUCH_IMAGES[2]} find={find} />
-          </div>
-          <TouchImage t={TOUCH_IMAGES[1]} find={find} />
-        </div>
-        {ok && (
-          <motion.p initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="mt-3 text-center font-display text-[1.15rem] font-semibold text-cocoa">
-            Same logo · same lettering · same warm colours → people recognise it anywhere.
-          </motion.p>
-        )}
-      </Panel>
-    </section>
+      }
+    />
   );
 }
 
-/* ── 3 · Activity: Brand Identity Lab ─────────────────────────── */
+export function ColourSection() {
+  return (
+    <AreaLab
+      id="colour"
+      index="4"
+      kicker="Colour psychology"
+      title="Every range has its colour"
+      act="colour"
+      spec={LABS_21.colour}
+      tone="peach"
+      aside={
+        <div className="grid grid-cols-2 gap-2">
+          {RANGE_PHOTOS.map(([src, cap], i) => (
+            <motion.figure key={src} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }} className="overflow-hidden rounded-2xl border border-cocoa bg-white">
+              <div className="relative aspect-square">
+                <Image src={src} alt="" fill sizes="220px" className="object-cover" />
+              </div>
+              <figcaption className="px-2 py-1.5 text-[0.85rem] font-bold text-cocoa">{cap}</figcaption>
+            </motion.figure>
+          ))}
+          <p className="col-span-2 text-[0.82rem] text-cocoa-2">Official Eat Better product photos.</p>
+        </div>
+      }
+    />
+  );
+}
+
+export function PackSection() {
+  return (
+    <AreaLab
+      id="pack"
+      index="5"
+      kicker="Packaging design"
+      title="A pack sells in seconds"
+      act="pack"
+      spec={LABS_21.pack}
+      tone="light"
+      aside={<Pic src="/brand/products/laddoo-box-42-1.webp" alt="Eat Better laddoo box with single-serve sachets" caption="Official photo · box and sachets in one range" ratio="1/1" />}
+    />
+  );
+}
+
+export function ToneSection() {
+  return (
+    <AreaLab
+      id="tone"
+      index="6"
+      kicker="Brand communication & tone"
+      title="Sound like Eat Better"
+      act="tone"
+      spec={LABS_21.tone}
+      tone="peach"
+      aside={
+        <div className="grid gap-2">
+          {OFFICIAL_LINES.map((l, i) => (
+            <motion.div key={l} initial={{ opacity: 0, x: -14 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }} className="rounded-2xl border border-cocoa bg-white px-4 py-3 font-display text-[1.15rem] font-semibold text-cocoa shadow-[2px_2px_0_0_#2f1c1a]">
+              &ldquo;{l}&rdquo;
+            </motion.div>
+          ))}
+          <p className="text-[0.82rem] text-cocoa-2">Official lines from eatbetterco.com</p>
+        </div>
+      }
+    />
+  );
+}
+
+export function PerceptionSection() {
+  return (
+    <AreaLab
+      id="perception"
+      index="7"
+      kicker="Consumer perception"
+      title="Same brand, different eyes"
+      act="perception"
+      spec={LABS_21.perception}
+      tone="light"
+      aside={<Pic src="/brand/products/hazelnut-laddoo-0.webp" alt="Hazelnut Chocolate Laddoos pack" caption="Official pack · what does it make you expect?" ratio="1/1" />}
+    />
+  );
+}
+
+/* ── 8 · Capstone: Brand Identity Lab (3D) ───────────────────── */
 
 export function LabSection() {
   const complete = useActivities21((s) => s.complete);
+  const stations = useRef(new Set<string>());
   return (
     <section id="lab" className={sectionCls}>
       <Panel tone="light" reveal="up" width="max-w-7xl">
-        <SectionIntro index="4" kicker="Activity · Brand Identity Lab" title="Audit a real Eat Better pack">
-          Packaging · colour · tone · shoppers — four stations, one audit.
+        <SectionIntro index="8" kicker="Capstone · Brand Identity Lab" title="Put it all together on a real pack">
+          Use every rule you just learned in one 3D studio, then sign your Brand Identity Audit.
         </SectionIntro>
         <div className="mt-6">
-          <IdentityLab onStation={complete} />
+          <IconFlow
+            nodes={[
+              { icon: Package, title: "Packaging", text: "Find the identity elements on a real pack" },
+              { icon: Palette, title: "Colour", text: "Test colours on a concept pack" },
+              { icon: Megaphone, title: "Tone", text: "Tune the brand voice" },
+              { icon: Users, title: "Shoppers", text: "Predict what fictional shoppers notice" },
+            ]}
+          />
+        </div>
+        <div className="mt-8">
+          <IdentityLab
+            onStation={(id) => {
+              stations.current.add(id);
+              if (stations.current.size >= 4) complete("lab");
+            }}
+          />
         </div>
       </Panel>
     </section>
@@ -307,7 +342,7 @@ export function Reflect() {
   return (
     <section id="reflect" className={sectionCls}>
       <Panel tone="peach" reveal="right" width="max-w-7xl">
-        <SectionIntro index="5" kicker="Activity · Reflect" title="What would make you pick it up?" />
+        <SectionIntro index="9" kicker="Activity · Reflect" title="What would make you pick it up?" />
         <div className="mt-6 grid gap-4 lg:grid-cols-[1.3fr_1fr]">
           <div className="grid grid-cols-3 gap-2">
             {AREAS.map((a) => {
@@ -350,12 +385,13 @@ export function Reflect() {
 /* ── Wrap-up: the six key learnings ───────────────────────────── */
 
 const ACT: { id: ActivityId21; label: string }[] = [
-  { id: "name", label: "Name test" },
-  { id: "logo", label: "Spot the consistency" },
-  { id: "pack", label: "Lab · Pack hotspots" },
-  { id: "colour", label: "Lab · Colour lab" },
-  { id: "tone", label: "Lab · Voice tuner" },
+  { id: "name", label: "Lab · Brand name" },
+  { id: "logo", label: "Lab · Visual consistency" },
+  { id: "colour", label: "Lab · Colour system" },
+  { id: "pack", label: "Lab · Pack formats" },
+  { id: "tone", label: "Lab · Brand voice" },
   { id: "perception", label: "Lab · Shopper perception" },
+  { id: "lab", label: "Capstone · 3D Identity Lab" },
   { id: "reflect", label: "Reflect" },
 ];
 

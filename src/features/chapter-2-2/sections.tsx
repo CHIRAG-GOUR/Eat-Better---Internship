@@ -5,7 +5,6 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import {
-  ArrowRight,
   BookOpen,
   Briefcase,
   Camera,
@@ -36,7 +35,9 @@ import { Panel } from "@/components/chapter/Panel";
 import { SectionIntro } from "@/components/chapter/SectionIntro";
 import { GlossaryText } from "@/components/chapter/Glossary";
 import { VideoBlock } from "@/components/chapter/VideoBlock";
-import { BasketPractice, CommunityPractice, MarketsPractice, OwnedPractice, ReviewsPractice, SocialPractice, StoryPractice, useActivities22, ACTIVITY_IDS } from "./practice";
+import { FlipCards, IconFlow, SplitStory, StatBand } from "@/components/rich";
+import { Lab22, useActivities22, ACTIVITY_IDS } from "./practice";
+import { LABS_22 } from "./labs";
 import { COMMUNITY, MARKETS, OFFERS, OWNED, REVIEWS, SOCIAL, STORY, TAKEAWAY, THINK, VIDEOS } from "./content";
 
 const GrowthDesk = dynamic(() => import("./three/GrowthDesk"), {
@@ -74,27 +75,6 @@ function Example({ children }: { children: string }) {
   );
 }
 
-function Tile({ icon: Icon, name, line, i }: { icon: LucideIcon; name: string; line: string; i: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 22 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: i * 0.07, type: "spring", stiffness: 140, damping: 18 }}
-      whileHover={{ y: -4 }}
-      className="rounded-2xl border border-cocoa bg-cream p-4 shadow-[2px_2px_0_0_#2f1c1a]"
-    >
-      <span className="grid size-11 place-items-center rounded-xl bg-orange text-white">
-        <Icon className="size-6" />
-      </span>
-      <div className="mt-2.5 font-display text-[1.15rem] font-semibold leading-tight text-cocoa">{name}</div>
-      <p className="mt-1 text-[0.98rem] leading-snug text-cocoa-2">
-        <GlossaryText>{line}</GlossaryText>
-      </p>
-    </motion.div>
-  );
-}
-
 /** A supplied LMS image, shown unaltered with its caption. */
 function Shot({ src, w, h, alt, caption, className = "" }: { src: string; w: number; h: number; alt: string; caption: string; className?: string }) {
   return (
@@ -115,39 +95,19 @@ export function Community() {
         <SectionIntro index="1" kicker="Community-first marketing" title="Listen before you sell">
           <GlossaryText>{COMMUNITY.text}</GlossaryText>
         </SectionIntro>
-        <div className="mt-6 grid gap-5 lg:grid-cols-[1fr_1.1fr] lg:items-center">
-          <div className="relative aspect-[16/10] overflow-hidden rounded-[22px] border border-cocoa shadow-[3px_3px_0_0_#2f1c1a]">
-            <Image src="/chapter-1-3/exhibition-stall.webp" alt="A snack stall at an exhibition" fill sizes="(max-width: 1024px) 100vw, 600px" className="object-cover" />
-          </div>
-          <div className="space-y-4">
-            <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
-              {COMMUNITY.loop.map((s, i) => {
-                const Icon = icons[i];
-                return (
-                  <div key={s} className="flex items-center gap-2">
-                    <motion.div
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      whileInView={{ scale: 1, opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.15 }}
-                      className="flex flex-col items-center gap-1.5 rounded-2xl bg-peach/70 px-4 py-3"
-                    >
-                      <span className="grid size-12 place-items-center rounded-full bg-orange text-white">
-                        <Icon className="size-6" />
-                      </span>
-                      <span className="text-[0.95rem] font-bold text-cocoa">{s}</span>
-                    </motion.div>
-                    {i < COMMUNITY.loop.length - 1 && <ArrowRight className="size-5 text-orange" />}
-                  </div>
-                );
-              })}
+        <div className="mt-6">
+          <SplitStory img="/chapter-1-3/exhibition-stall.webp" alt="A snack stall at an exhibition" kicker="Where it started" title="Exhibitions and direct selling">
+            <div className="space-y-4">
+              <Example>{COMMUNITY.example}</Example>
+              <Concept>{COMMUNITY.concept}</Concept>
             </div>
-            <Example>{COMMUNITY.example}</Example>
-            <Concept>{COMMUNITY.concept}</Concept>
-          </div>
+          </SplitStory>
+        </div>
+        <div className="mt-8">
+          <IconFlow nodes={COMMUNITY.loop.map((t, i) => ({ icon: icons[i], title: t }))} />
         </div>
         <div className="mt-6">
-          <CommunityPractice />
+          <Lab22 spec={LABS_22.community} act="community" label="Community-first" />
         </div>
       </Panel>
     </section>
@@ -166,11 +126,7 @@ export function Owned() {
         </SectionIntro>
         <div className="mt-6 grid gap-5 lg:grid-cols-[1fr_minmax(0,340px)] lg:items-start">
           <div className="space-y-4">
-            <div className="grid gap-3 sm:grid-cols-2">
-              {OWNED.channels.map((c, i) => (
-                <Tile key={c.id} icon={icons[i]} name={c.name} line={c.line} i={i} />
-              ))}
-            </div>
+            <FlipCards cols={2} cards={OWNED.channels.map((c, i) => ({ front: c.name, back: c.line, icon: icons[i] }))} />
             <Example>{OWNED.example}</Example>
             <Concept>{OWNED.concept}</Concept>
           </div>
@@ -180,7 +136,7 @@ export function Owned() {
           </div>
         </div>
         <div className="mt-6">
-          <OwnedPractice />
+          <Lab22 spec={LABS_22.owned} act="owned" label="Owned channels" />
         </div>
       </Panel>
     </section>
@@ -211,10 +167,8 @@ export function Social() {
         <SectionIntro index="3" kicker="Social media marketing" title="One brand, four platforms">
           <GlossaryText>{SOCIAL.text}</GlossaryText>
         </SectionIntro>
-        <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {SOCIAL.platforms.map((p, i) => (
-            <Tile key={p.id} icon={icons[i]} name={p.name} line={p.line} i={i} />
-          ))}
+        <div className="mt-6">
+          <FlipCards cols={4} cards={SOCIAL.platforms.map((p, i) => ({ front: p.name, back: p.line, icon: icons[i] }))} />
         </div>
         <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <VideoBlock kind="file" portrait h264={VIDEOS.reel.h264} poster={VIDEOS.reel.poster} title={VIDEOS.reel.title} caption="Instagram: a reel from Eat Better Co." />
@@ -226,7 +180,7 @@ export function Social() {
           <Concept>{SOCIAL.concept}</Concept>
         </div>
         <div className="mt-6">
-          <SocialPractice />
+          <Lab22 spec={LABS_22.social} act="social" label="Social platforms" />
         </div>
       </Panel>
     </section>
@@ -272,7 +226,7 @@ export function Story() {
           </div>
         </div>
         <div className="mt-6">
-          <StoryPractice />
+          <Lab22 spec={LABS_22.story} act="story" label="Brand story" />
         </div>
       </Panel>
     </section>
@@ -333,7 +287,7 @@ export function Reviews() {
           </div>
         </div>
         <div className="mt-6">
-          <ReviewsPractice />
+          <Lab22 spec={LABS_22.reviews} act="reviews" label="Reviews & replies" />
         </div>
       </Panel>
     </section>
@@ -350,13 +304,20 @@ export function Offers() {
         <SectionIntro index="6" kicker="Offers & conversion strategies" title="A reason to buy today">
           <GlossaryText>{OFFERS.text}</GlossaryText>
         </SectionIntro>
-        <div className="mt-6 grid gap-3 sm:grid-cols-3">
-          {OFFERS.types.map((t, i) => (
-            <Tile key={t.id} icon={icons[i]} name={t.name} line={t.line} i={i} />
-          ))}
+        <div className="mt-6">
+          <FlipCards cols={3} cards={OFFERS.types.map((t, i) => ({ front: t.name, back: t.line, icon: icons[i] }))} />
+        </div>
+        <div className="mt-6">
+          <StatBand
+            tone="cocoa"
+            stats={[
+              { value: OFFERS.basket, prefix: "₹", label: "The customer's basket", icon: ShoppingCart, note: "From the chapter's example" },
+              { value: OFFERS.threshold, prefix: "₹", label: "Free shipping on orders above", icon: Truck, note: "From the chapter's example" },
+            ]}
+          />
         </div>
         <div className="mt-6 grid gap-5 lg:grid-cols-[1.1fr_1fr] lg:items-start">
-          <BasketPractice />
+          <Lab22 spec={LABS_22.offers} act="basket" label="Offers & margin" />
           <div className="space-y-4">
             <Example>{OFFERS.example}</Example>
             <Concept>{OFFERS.concept}</Concept>
@@ -419,7 +380,7 @@ export function Markets() {
           </div>
         </div>
         <div className="mt-6">
-          <MarketsPractice />
+          <Lab22 spec={LABS_22.markets} act="markets" label="Sales channels" />
         </div>
       </Panel>
     </section>
@@ -540,14 +501,14 @@ const RECAP: { title: string; icon: LucideIcon }[] = [
   { title: "Sell everywhere", icon: ShoppingCart },
 ];
 const ACT: { id: (typeof ACTIVITY_IDS)[number]; label: string }[] = [
-  { id: "community", label: "Feedback into a product idea" },
-  { id: "owned", label: "Route the message" },
-  { id: "social", label: "Pick the platform" },
-  { id: "story", label: "Build the founder story" },
-  { id: "reviews", label: "Read reviews, then reply" },
-  { id: "basket", label: "Reach free shipping" },
-  { id: "markets", label: "Where will they buy?" },
-  { id: "desk", label: "D2C Growth Desk" },
+  { id: "community", label: "Lab · Feedback into improvement" },
+  { id: "owned", label: "Lab · Owned channels" },
+  { id: "social", label: "Lab · Social platforms" },
+  { id: "story", label: "Lab · Brand story arc" },
+  { id: "reviews", label: "Lab · Reply to a review" },
+  { id: "basket", label: "Lab · Offers vs margin" },
+  { id: "markets", label: "Lab · Sales channels" },
+  { id: "desk", label: "Capstone · D2C Growth Desk" },
   { id: "reflect", label: "Think & Discuss" },
 ];
 

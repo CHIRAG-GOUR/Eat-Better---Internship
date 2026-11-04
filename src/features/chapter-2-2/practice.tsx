@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { ActivityLabel } from "@/components/chapter/SectionIntro";
 import { createActivityStore } from "@/lib/activities";
+import { LearnLab, type LabSpec } from "@/components/learn/LearnLab";
 import { OFFERS } from "./content";
 
 /**
@@ -516,5 +517,27 @@ export function MarketsPractice() {
         })}
       </div>
     </Card>
+  );
+}
+
+/* ── Learnable labs (Learn → Apply → Check → Create), one per part ── */
+
+export function Lab22({ spec, act, label }: { spec: LabSpec; act: (typeof ACTIVITY_IDS)[number]; label: string }) {
+  const complete = useActivities22((s) => s.complete);
+  const note = usePractice22((s) => s.note);
+  return (
+    <div>
+      <div className="mb-2 flex flex-wrap items-center gap-2">
+        <span className="rounded-full bg-cocoa px-3 py-1 text-[0.8rem] font-extrabold uppercase tracking-[0.1em] text-cream">Learning lab · {label}</span>
+        <span className="text-[0.85rem] font-bold text-cocoa-2">Learn → Apply → Check → Create</span>
+      </div>
+      <LearnLab
+        spec={spec}
+        onDone={(r) => {
+          note(spec.id, `${label}: ${r.score}/5 on the first check${r.attempts > 1 ? `, fixed in ${r.attempts} checks` : ""} · my work: ${r.created}`);
+          complete(act);
+        }}
+      />
+    </div>
   );
 }

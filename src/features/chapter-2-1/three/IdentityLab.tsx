@@ -9,8 +9,17 @@ import { AnimatePresence, motion } from "motion/react";
 import { ArrowRight, Check, Lightbulb, Megaphone, Palette, Search, Users, Volume2, X } from "lucide-react";
 import { InspectPanel, LiteToggle, ObjectiveTracker, RoleBadge, SimReport, liteCanvasProps, useLiteMode, type Objective, type ReportData } from "@/components/sim";
 import { Person, still, type Pose } from "@/components/sim/Person";
-import { COLOUR_NOTE, ELEMENTS, HOTSPOTS, LAB_COLOURS, NAMES, PERCEPTIONS, SHOPPERS, TONE_LINES, TOUCH_IMAGES } from "../content";
+import { COLOUR_NOTE, HOTSPOTS, LAB_COLOURS, PERCEPTIONS, SHOPPERS, TONE_LINES } from "../content";
 import { useBrand21 } from "../store";
+
+const LAB_ORDER: [string, string][] = [
+  ["21-name", "Brand name"],
+  ["21-logo", "Logo & visual identity"],
+  ["21-colour", "Colour psychology"],
+  ["21-pack", "Packaging design"],
+  ["21-tone", "Communication & tone"],
+  ["21-perception", "Consumer perception"],
+];
 
 /**
  * Brand Identity Lab — Role: Junior Brand Analyst.
@@ -375,9 +384,7 @@ function Studio({ s, lite, active, onHotspot, onShopper, shopState, speakerMood 
 type StationId = "pack" | "colour" | "tone" | "perception";
 
 export default function IdentityLab({ onStation }: { onStation: (id: StationId) => void }) {
-  const names = useBrand21((x) => x.names);
-  const memorable = useBrand21((x) => x.memorable);
-  const logoFound = useBrand21((x) => x.logoFound);
+  const labs = useBrand21((x) => x.labs);
   const lite = useLiteMode();
   const host = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -446,8 +453,11 @@ export default function IdentityLab({ onStation }: { onStation: (id: StationId) 
       chapter: "Chapter 2.1 · Brand Identity Lab",
       role: "Junior Brand Analyst",
       sections: [
-        { heading: "Brand name — what each name promises", items: NAMES.map((n) => `${n.name}${n.real ? "" : " (practice)"}: ${(names[n.id] ?? []).join(", ") || "—"}${memorable === n.id ? " · easiest to remember" : ""}`) },
-        { heading: "Visual consistency spotted", items: TOUCH_IMAGES.flatMap((t) => ELEMENTS.filter((e) => logoFound.includes(`${t.id}:${e.id}`)).map((e) => `${t.label}: ${e.id === "logo" ? "logo" : "lettering"}`)) },
+        {
+          heading: "Learning labs — first-check scores",
+          items: LAB_ORDER.map(([id, label]) => `${label}: ${labs[id] ? `${labs[id].score}/5${labs[id].attempts > 1 ? ` (fixed in ${labs[id].attempts} checks)` : ""}` : "not done yet"}`),
+        },
+        ...LAB_ORDER.filter(([id]) => labs[id]?.created).map(([id, label]) => ({ heading: `My work · ${label}`, body: labs[id].created })),
         { heading: "Identity elements spotted", items: HOTSPOTS.filter((h) => s.found.includes(h.id)).map((h) => h.label) },
         { heading: "Colour test", items: [c ? c.name : "—", ...s.feel], body: c ? COLOUR_NOTE[c.id] + " (general explanation)" : undefined },
         { heading: "Brand voice", body: `${toneRight}/${TONE_LINES.length} lines sorted right · ${s.toneMiss} ${s.toneMiss === 1 ? "slip" : "slips"} along the way` },
@@ -456,7 +466,7 @@ export default function IdentityLab({ onStation }: { onStation: (id: StationId) 
       ],
       footnote: "Practice exercise: the concept pack, off-tone lines and shoppers are fictional",
     };
-  }, [s, toneRight, names, memorable, logoFound]);
+  }, [s, toneRight, labs]);
 
   const step = s.step;
   const go = (n: Step) => set({ step: n });
