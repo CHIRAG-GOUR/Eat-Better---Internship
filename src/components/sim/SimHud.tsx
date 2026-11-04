@@ -62,7 +62,9 @@ export function LiteToggle({ className = "" }: { className?: string }) {
       title="Lighter graphics run faster on phones and older computers"
       className={`flex items-center gap-1.5 rounded-xl border border-cocoa/20 bg-cream/95 px-2.5 py-1.5 text-[0.8rem] font-bold text-cocoa hover:border-cocoa ${className}`}
     >
-      <Gauge className="size-4 text-orange" /> Lighter graphics: {lite ? "On" : "Off"}
+      <Gauge className="size-4 text-orange" />
+      <span className="hidden sm:inline">Lighter graphics:</span>
+      <span className="sr-only sm:hidden">Lighter graphics</span> {lite ? "On" : "Off"}
     </button>
   );
 }
