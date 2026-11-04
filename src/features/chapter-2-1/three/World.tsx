@@ -23,17 +23,67 @@ const PALETTE = [
 ];
 const PACKS = ["millet-bhujia", "quinoa-namkeen", "nut-mix", "hazelnut-laddoo", "trail-mix", "ragi-chips"];
 
+/** A paint-chip card: the colour on top, a white label band with name and hex (canvas texture). */
+function chipTexture(name: string, hex: string) {
+  const c = document.createElement("canvas");
+  c.width = 256;
+  c.height = 640;
+  const g = c.getContext("2d")!;
+  g.fillStyle = hex;
+  g.fillRect(0, 0, 256, 640);
+  g.fillStyle = "#FFFFFF";
+  g.fillRect(0, 470, 256, 170);
+  g.fillStyle = "#2F1C1A";
+  const fam = getComputedStyle(document.body).fontFamily || "sans-serif";
+  g.font = `800 34px ${fam}`;
+  g.fillText(name.toUpperCase(), 20, 528, 216);
+  g.font = `600 28px ${fam}`;
+  g.fillStyle = "#4A3230";
+  g.fillText(hex.toUpperCase(), 20, 574);
+  g.strokeStyle = "rgba(47,28,26,0.18)";
+  g.lineWidth = 6;
+  g.strokeRect(3, 3, 250, 634);
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  t.anisotropy = 8;
+  return t;
+}
+
+/** The brand palette as a fanned deck of paint-chip cards on a pedestal (a designer's swatch book). */
 function Swatches({ position, rotation = 0, compact }: { position: [number, number, number]; rotation?: number; compact: boolean }) {
   const list = compact ? PALETTE.slice(0, 4) : PALETTE;
+  const tex = useMemo(() => list.map((p) => chipTexture(p.name, p.hex)), [list]);
+  useEffect(() => () => tex.forEach((t) => t.dispose()), [tex]);
+  const n = list.length;
   return (
     <group position={position} rotation={[0, rotation, 0]}>
+      {/* pedestal */}
+      <RoundedBox args={[1.5, 0.5, 0.7]} radius={0.08} position={[0, 0.25, 0]} castShadow receiveShadow>
+        <meshStandardMaterial color="#2F1C1A" roughness={0.6} />
+      </RoundedBox>
+      <mesh position={[0, 0.505, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[1.42, 0.62]} />
+        <meshStandardMaterial color="#C8963E" metalness={0.7} roughness={0.35} />
+      </mesh>
+      {/* pivot pin */}
+      <mesh position={[0, 0.62, 0.04]} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.05, 0.05, 0.12, 12]} />
+        <meshStandardMaterial color="#C8963E" metalness={0.8} roughness={0.25} />
+      </mesh>
       {list.map((p, i) => {
-        const h = 1.6 + (i % 3) * 0.55;
+        const a = (i - (n - 1) / 2) * 0.2;
         return (
           <Hoverable key={p.name} label={`${p.name} · ${p.hex} (Eat Better palette)`}>
-            <RoundedBox args={[0.55, h, 0.55]} radius={0.05} position={[(i - (list.length - 1) / 2) * 0.68, h / 2, 0]} castShadow>
-              <meshStandardMaterial color={p.hex} roughness={0.45} />
-            </RoundedBox>
+            <group position={[0, 0.62, -0.02 - i * 0.012]} rotation={[0, 0, a]}>
+              <mesh position={[0, 1.0, 0]} castShadow>
+                <boxGeometry args={[0.5, 2.0, 0.025]} />
+                <meshStandardMaterial color="#FFFFFF" roughness={0.7} />
+              </mesh>
+              <mesh position={[0, 1.0, 0.0135]}>
+                <planeGeometry args={[0.5, 2.0]} />
+                <meshStandardMaterial map={tex[i]} roughness={0.55} />
+              </mesh>
+            </group>
           </Hoverable>
         );
       })}
@@ -182,7 +232,7 @@ export default function World() {
       chapter="2.1"
       scenes={({ compact, reduced }) => (
         <>
-          <Swatches position={[4.6, 0, -4]} rotation={-0.55} compact={compact} />
+          <Swatches position={[5.9, 0, -4]} rotation={-1.15} compact={compact} />
           <Hoverable label="eatbetterco.com header — official website">
             <Billboard src="/chapter-2-1/lms-1.png" position={[0.6, 5.7, -12]} width={6.4} height={1} posts={false} />
           </Hoverable>
@@ -193,26 +243,26 @@ export default function World() {
             </mesh>
           ))}
           <Hoverable label="Official Eat Better product photo">
-            <Billboard src="/brand/products/millet-namkeen-0.webp" position={[-4.7, 3.2, -8]} rotation={[0, 0.5, 0]} width={2.4} height={2.4} />
+            <Billboard src="/brand/products/millet-namkeen-0.webp" position={[-6.0, 3.2, -10.5]} rotation={[0, 0.9, 0]} width={2.4} height={2.4} />
           </Hoverable>
           <Suspense fallback={null}>
-            <PackPlinths position={[4.4, 0, -15]} rotation={-0.75} ids={compact ? PACKS.slice(0, 2) : PACKS.slice(0, 3)} />
+            <PackPlinths position={[5.9, 0, -13]} rotation={-1.2} ids={compact ? PACKS.slice(0, 2) : PACKS.slice(0, 3)} />
           </Suspense>
-          <LogoStandee position={[-4.5, 0, -18]} rotation={0.55} />
+          <LogoStandee position={[-5.9, 0, -19]} rotation={1.0} />
           <Hoverable label="eatbetterco.com — official website">
-            <Billboard src="/chapter-1-5/all-products-collection.png" position={[4.8, 3.3, -27]} rotation={[0, -0.55, 0]} width={4.2} height={2.37} />
+            <Billboard src="/chapter-1-5/all-products-collection.png" position={[6.0, 3.3, -28]} rotation={[0, -0.9, 0]} width={4.2} height={2.37} />
           </Hoverable>
-          <ToneSpeaker position={[-4.4, 0, -29]} rotation={0.6} reduced={reduced} />
-          <Swatches position={[-4.6, 0, -38]} rotation={0.6} compact={compact} />
+          <ToneSpeaker position={[-5.9, 0, -31]} rotation={1.0} reduced={reduced} />
+          <Swatches position={[-5.9, 0, -39]} rotation={1.15} compact={compact} />
           <Hoverable label="Official Eat Better creative">
-            <Billboard src="/brand/products/laddoo-box-42-0.webp" position={[4.7, 3.2, -40]} rotation={[0, -0.5, 0]} width={2.4} height={2.4} />
+            <Billboard src="/brand/products/laddoo-box-42-0.webp" position={[6.0, 3.2, -42]} rotation={[0, -0.9, 0]} width={2.4} height={2.4} />
           </Hoverable>
           {!compact && (
             <Suspense fallback={null}>
-              <PackPlinths position={[-4.4, 0, -49]} rotation={0.75} ids={PACKS.slice(3, 6)} />
+              <PackPlinths position={[-5.9, 0, -50]} rotation={1.2} ids={PACKS.slice(3, 6)} />
             </Suspense>
           )}
-          <LogoStandee position={[4.5, 0, -55]} rotation={-0.55} />
+          <LogoStandee position={[5.9, 0, -58]} rotation={-1.0} />
         </>
       )}
     />

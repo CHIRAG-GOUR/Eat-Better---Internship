@@ -236,14 +236,14 @@ function TrafficItem({ v, reduced }: { v: Vehicle; reduced: boolean }) {
 }
 
 const WALKERS: { look: Look; side: 1 | -1; lane: number; dir: 1 | -1; speed: number; offset: number }[] = [
-  { look: { skin: "#C68B59", top: "#2E6F95", bottom: "#3B3B3B", hair: "#1E1410", hairStyle: "short", extra: "backpack", extraColor: "#35401D" }, side: -1, lane: 4.25, dir: 1, speed: 1.2, offset: 4 },
-  { look: { skin: "#9C6644", top: "#C2185B", bottom: "#C2185B", hair: "#140C08", hairStyle: "long", dress: true, extra: "dupatta", extraColor: "#FED300" }, side: -1, lane: 5.0, dir: -1, speed: 1.0, offset: 22 },
-  { look: { skin: "#D4A373", top: "#3E8E41", bottom: "#2B3A55", hair: "#2A1A12", hairStyle: "short", extra: "cap", extraColor: "#FF5C00" }, side: 1, lane: 4.3, dir: -1, speed: 1.3, offset: 9 },
-  { look: { skin: "#A86B45", top: "#7B1FA2", bottom: "#7B1FA2", hair: "#BDB6B0", hairStyle: "bun", dress: true, extra: "glasses", extraColor: "#C8963E" }, side: 1, lane: 5.1, dir: 1, speed: 0.8, offset: 35 },
-  { look: { skin: "#8D5A3B", top: "#F2A900", bottom: "#4E342E", hair: "#1A110C", hairStyle: "short" }, side: -1, lane: 4.6, dir: 1, speed: 1.1, offset: 47 },
-  { look: { skin: "#B5764A", top: "#26A69A", bottom: "#26A69A", hair: "#140C08", hairStyle: "long", dress: true }, side: 1, lane: 4.7, dir: 1, speed: 1.05, offset: 58 },
-  { look: { skin: "#C68B59", top: "#FFF5EE", bottom: "#4A3230", hair: "#1E1410", hairStyle: "short", extra: "glasses", extraColor: "#2F1C1A" }, side: -1, lane: 5.2, dir: -1, speed: 1.15, offset: 66 },
-  { look: { skin: "#D9A066", top: "#E98A7B", bottom: "#2B3A55", hair: "#3E2723", hairStyle: "bun", extra: "backpack", extraColor: "#1565C0" }, side: 1, lane: 4.4, dir: -1, speed: 1.25, offset: 28 },
+  { look: { skin: "#C68B59", top: "#2E6F95", bottom: "#3B3B3B", hair: "#1E1410", hairStyle: "short", extra: "backpack", extraColor: "#35401D" }, side: -1, lane: 4.15, dir: 1, speed: 1.2, offset: 4 },
+  { look: { skin: "#9C6644", top: "#C2185B", bottom: "#C2185B", hair: "#140C08", hairStyle: "long", dress: true, extra: "dupatta", extraColor: "#FED300" }, side: -1, lane: 4.75, dir: -1, speed: 1.0, offset: 22 },
+  { look: { skin: "#D4A373", top: "#3E8E41", bottom: "#2B3A55", hair: "#2A1A12", hairStyle: "short", extra: "cap", extraColor: "#FF5C00" }, side: 1, lane: 4.2, dir: -1, speed: 1.3, offset: 9 },
+  { look: { skin: "#A86B45", top: "#7B1FA2", bottom: "#7B1FA2", hair: "#BDB6B0", hairStyle: "bun", dress: true, extra: "glasses", extraColor: "#C8963E" }, side: 1, lane: 4.7, dir: 1, speed: 0.8, offset: 35 },
+  { look: { skin: "#8D5A3B", top: "#F2A900", bottom: "#4E342E", hair: "#1A110C", hairStyle: "short" }, side: -1, lane: 4.45, dir: 1, speed: 1.1, offset: 47 },
+  { look: { skin: "#B5764A", top: "#26A69A", bottom: "#26A69A", hair: "#140C08", hairStyle: "long", dress: true }, side: 1, lane: 4.55, dir: 1, speed: 1.05, offset: 58 },
+  { look: { skin: "#C68B59", top: "#FFF5EE", bottom: "#4A3230", hair: "#1E1410", hairStyle: "short", extra: "glasses", extraColor: "#2F1C1A" }, side: -1, lane: 4.8, dir: -1, speed: 1.15, offset: 66 },
+  { look: { skin: "#D9A066", top: "#E98A7B", bottom: "#2B3A55", hair: "#3E2723", hairStyle: "bun", extra: "backpack", extraColor: "#1565C0" }, side: 1, lane: 4.3, dir: -1, speed: 1.25, offset: 28 },
 ];
 
 function Walker({ w, reduced }: { w: (typeof WALKERS)[number]; reduced: boolean }) {

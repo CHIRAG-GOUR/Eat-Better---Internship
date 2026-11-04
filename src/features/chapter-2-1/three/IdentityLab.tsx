@@ -12,14 +12,7 @@ import { Person, still, type Pose } from "@/components/sim/Person";
 import { COLOUR_NOTE, HOTSPOTS, LAB_COLOURS, PERCEPTIONS, SHOPPERS, TONE_LINES } from "../content";
 import { useBrand21 } from "../store";
 
-const LAB_ORDER: [string, string][] = [
-  ["21-name", "Brand name"],
-  ["21-logo", "Logo & visual identity"],
-  ["21-colour", "Colour psychology"],
-  ["21-pack", "Packaging design"],
-  ["21-tone", "Communication & tone"],
-  ["21-perception", "Consumer perception"],
-];
+const LAB_ORDER: [string, string][] = [["21-pack", "Match the pack to the moment"]];
 
 /**
  * Brand Identity Lab — Role: Junior Brand Analyst.
@@ -454,7 +447,7 @@ export default function IdentityLab({ onStation }: { onStation: (id: StationId) 
       role: "Junior Brand Analyst",
       sections: [
         {
-          heading: "Learning labs — first-check scores",
+          heading: "Packaging activity — first-check score",
           items: LAB_ORDER.map(([id, label]) => `${label}: ${labs[id] ? `${labs[id].score}/5${labs[id].attempts > 1 ? ` (fixed in ${labs[id].attempts} checks)` : ""}` : "not done yet"}`),
         },
         ...LAB_ORDER.filter(([id]) => labs[id]?.created).map(([id, label]) => ({ heading: `My work · ${label}`, body: labs[id].created })),

@@ -9,8 +9,9 @@ import { Panel } from "@/components/chapter/Panel";
 import { ActivityLabel, SectionIntro } from "@/components/chapter/SectionIntro";
 import { GlossaryText } from "@/components/chapter/Glossary";
 import { createActivityStore } from "@/lib/activities";
-import { IconFlow, Marquee, PhotoFan } from "@/components/rich";
-import { LearnLab, type LabSpec } from "@/components/learn/LearnLab";
+import { IconFlow, PhotoFan } from "@/components/rich";
+import { LearnLab } from "@/components/learn/LearnLab";
+import { LeafBulb } from "@/components/icons/EbIcons";
 import { LABS_21 } from "./labs";
 import { AREAS, OFFICIAL_LINES, PALETTE, TAGLINE, TOUCHPOINTS, type AreaId } from "./content";
 import { useBrand21 } from "./store";
@@ -84,72 +85,74 @@ export function IdentityMap() {
   );
 }
 
-/* ── 2–7 · One learnable lab per area ─────────────────────────── */
+/* ── 2–7 · The six areas: the supplied data, picture-led ─────────── */
 
-function AreaLab({ id, index, kicker, title, act, spec, tone, aside }: { id: string; index: string; kicker: string; title: string; act: ActivityId21; spec: LabSpec; tone: "light" | "peach"; aside: React.ReactNode }) {
-  const complete = useActivities21((s) => s.complete);
-  const done = useActivities21((s) => s.done[act]);
+function AreaShow({ id, index, areaId, tone, title, media, children }: { id: string; index: string; areaId: AreaId; tone: "light" | "peach"; title: string; media: React.ReactNode; children?: React.ReactNode }) {
+  const a = AREAS.find((x) => x.id === areaId)!;
+  const Icon = ICONS[areaId];
   return (
     <section id={id} className={sectionCls}>
       <Panel tone={tone} reveal="up" width="max-w-7xl">
-        <SectionIntro index={index} kicker={kicker} title={title} />
-        <div className="mt-6 grid gap-5 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)] lg:items-start">
-          <div className="min-w-0">{aside}</div>
-          <div className="min-w-0">
-            <ActivityLabel done={!!done}>Learning lab · Learn → Apply → Check → Create</ActivityLabel>
-            <div className="mt-2">
-              <LearnLab
-                spec={spec}
-                onDone={(r) => {
-                  useBrand21.setState((st) => ({ labs: { ...st.labs, [spec.id]: r } }));
-                  complete(act);
-                }}
-              />
-            </div>
+        <SectionIntro index={index} kicker={a.area} title={title} />
+        <div className="mt-6 grid gap-5 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:items-start">
+          <div className="min-w-0">{media}</div>
+          <div className="grid min-w-0 gap-3">
+            <motion.div initial={{ opacity: 0, x: 18 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="rounded-[22px] border border-cocoa bg-cream p-5 shadow-[3px_3px_0_0_#2f1c1a]">
+              <div className="flex items-center gap-2 text-[0.8rem] font-extrabold uppercase tracking-[0.12em] text-orange">
+                <Icon className="size-4" /> What students will analyse
+              </div>
+              <p className="mt-2 font-display text-[1.2rem] font-semibold leading-snug text-cocoa">
+                <GlossaryText>{a.analyse}</GlossaryText>
+              </p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 18 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.08 }} className="rounded-[22px] bg-cocoa p-5 text-cream shadow-[3px_3px_0_0_#ff5c00]">
+              <div className="flex items-center gap-2 text-[0.8rem] font-extrabold uppercase tracking-[0.12em] text-haldi">
+                <LeafBulb className="size-4" /> Key learning
+              </div>
+              <p className="mt-2 font-display text-[1.25rem] font-semibold leading-snug">{a.learn}</p>
+            </motion.div>
           </div>
         </div>
+        {children && <div className="mt-6">{children}</div>}
       </Panel>
     </section>
   );
 }
 
-function Pic({ src, alt, caption, ratio = "4/3" }: { src: string; alt: string; caption: string; ratio?: string }) {
+function Shot({ src, alt, caption, w, h }: { src: string; alt: string; caption: string; w: number; h: number }) {
   return (
     <motion.figure initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="overflow-hidden rounded-[22px] border border-cocoa bg-white shadow-[3px_3px_0_0_#2f1c1a]">
-      <div className="relative" style={{ aspectRatio: ratio }}>
-        <Image src={src} alt={alt} fill sizes="(max-width: 1024px) 100vw, 440px" className="object-cover" />
-      </div>
+      <Image src={src} alt={alt} width={w} height={h} sizes="(max-width: 1024px) 100vw, 700px" className="h-auto w-full" />
       <figcaption className="border-t border-cocoa/10 bg-cream px-4 py-2 text-[0.85rem] text-cocoa-2">{caption}</figcaption>
     </motion.figure>
   );
 }
 
-const RANGE_PHOTOS: [string, string][] = [
-  ["/brand/products/millet-bhujia-1.webp", "Millets · forest green"],
-  ["/brand/products/hazelnut-laddoo-1.webp", "Laddoos · deep cocoa"],
-  ["/brand/products/nut-mix-2.webp", "Nut mix · terracotta"],
-  ["/brand/products/laddoo-tin-0.webp", "Laddoo tin · mustard"],
+const RANGE_PHOTOS: [string, string, string][] = [
+  ["/brand/products/millet-bhujia-1.webp", "Millet range", "#35401D"],
+  ["/brand/products/hazelnut-laddoo-1.webp", "Laddoos", "#381C11"],
+  ["/brand/products/nut-mix-2.webp", "Nut mixes", "#AF4300"],
+  ["/brand/products/laddoo-tin-0.webp", "Laddoo tin", "#E7BA68"],
+  ["/brand/products/diwali-hamper-0.webp", "Gifting", "#550D10"],
+  ["/brand/products/quinoa-namkeen-0.webp", "Quinoa namkeen", "#D81F45"],
 ];
 
 export function NameSection() {
   return (
-    <AreaLab
+    <AreaShow
       id="name"
       index="2"
-      kicker="Brand name"
-      title="Two words, one promise"
-      act="name"
-      spec={LABS_21.name}
+      areaId="name"
       tone="peach"
-      aside={
-        <motion.div initial={{ opacity: 0, scale: 0.96 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="flex flex-col items-center gap-4 rounded-[22px] border border-cocoa bg-cream p-6 shadow-[3px_3px_0_0_#2f1c1a]">
-          <Image src="/brand/eat-better-logo.svg" alt="Eat Better Co logo" width={300} height={145} className="h-auto w-[min(240px,70%)]" />
-          <p className="text-center font-display text-[clamp(1.3rem,2.6vw,1.7rem)] font-semibold leading-tight text-cocoa">&ldquo;{TAGLINE}&rdquo;</p>
-          <div className="w-full min-w-0">
-            <Marquee items={OFFICIAL_LINES.filter((l) => l !== TAGLINE).map((l) => ({ label: l }))} speed={28} />
+      title="Two words, one promise"
+      media={
+        <div className="grid gap-3">
+          <Shot src="/chapter-2-1/web/home.webp" alt="eatbetterco.com home page" caption="eatbetterco.com home page (screenshot)" w={1440} h={900} />
+          <div className="flex flex-col items-center gap-3 rounded-[22px] border border-cocoa bg-cream p-5 shadow-[3px_3px_0_0_#2f1c1a] sm:flex-row sm:justify-center sm:gap-6">
+            <Image src="/brand/eat-better-logo.svg" alt="Eat Better Co logo" width={300} height={145} className="h-auto w-[min(200px,60%)]" />
+            <p className="text-center font-display text-[clamp(1.25rem,2.4vw,1.6rem)] font-semibold leading-tight text-cocoa sm:text-left">&ldquo;{TAGLINE}&rdquo;</p>
           </div>
-          <span className="text-[0.78rem] text-cocoa-2">Lines from eatbetterco.com</span>
-        </motion.div>
+        </div>
       }
     />
   );
@@ -157,32 +160,23 @@ export function NameSection() {
 
 export function LookSection() {
   return (
-    <AreaLab
+    <AreaShow
       id="look"
       index="3"
-      kicker="Logo & visual identity"
-      title="The same face, everywhere"
-      act="logo"
-      spec={LABS_21.logo}
+      areaId="logo"
       tone="light"
-      aside={
+      title="The same face, everywhere"
+      media={
         <div className="grid gap-3">
-          <div className="rounded-[22px] bg-cream p-4">
-            <div className="text-[0.8rem] font-extrabold uppercase tracking-[0.12em] text-orange">Brand colours (official website)</div>
-            <div className="mt-3 grid grid-cols-3 gap-2">
-              {PALETTE.map((p, i) => (
-                <motion.div key={p.name} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} className="text-center">
-                  <div className="aspect-[2/1] rounded-xl border border-cocoa/20" style={{ background: p.hex }} />
-                  <div className="mt-1 text-[0.78rem] font-bold leading-tight text-cocoa">{p.name}</div>
-                </motion.div>
-              ))}
-            </div>
+          <div className="grid grid-cols-[minmax(0,2.4fr)_minmax(0,1fr)] gap-3">
+            <Shot src="/chapter-2-1/web/home2.webp" alt="eatbetterco.com product range on desktop" caption="Website, desktop" w={1440} h={900} />
+            <Shot src="/chapter-2-1/web/mobile.webp" alt="eatbetterco.com on a phone" caption="Website, phone" w={390} h={844} />
           </div>
           <div className="grid grid-cols-3 gap-2">
             {TOUCHPOINTS.map((t, i) => (
               <motion.figure key={t.id} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }} className="min-w-0 overflow-hidden rounded-2xl border border-cocoa bg-white">
-                <div className="relative aspect-[3/4]">
-                  <Image src={t.img} alt={t.note} fill sizes="160px" className="object-cover" />
+                <div className="relative aspect-[4/3]">
+                  <Image src={t.img} alt={t.note} fill sizes="220px" className="object-cover" />
                 </div>
                 <figcaption className="px-2 py-1.5 text-[0.82rem] font-bold leading-tight text-cocoa">{t.label}</figcaption>
               </motion.figure>
@@ -190,31 +184,45 @@ export function LookSection() {
           </div>
         </div>
       }
-    />
+    >
+      <div className="rounded-[22px] bg-cream p-4">
+        <div className="text-[0.8rem] font-extrabold uppercase tracking-[0.12em] text-orange">Brand colours (official website)</div>
+        <div className="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-6">
+          {PALETTE.map((p, i) => (
+            <motion.div key={p.name} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} className="text-center">
+              <div className="aspect-[2/1] rounded-xl border border-cocoa/20" style={{ background: p.hex }} />
+              <div className="mt-1 text-[0.8rem] font-bold leading-tight text-cocoa">{p.name}</div>
+              <div className="text-[0.75rem] text-cocoa-2">{p.hex}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </AreaShow>
   );
 }
 
 export function ColourSection() {
   return (
-    <AreaLab
+    <AreaShow
       id="colour"
       index="4"
-      kicker="Colour psychology"
-      title="Every range has its colour"
-      act="colour"
-      spec={LABS_21.colour}
+      areaId="colour"
       tone="peach"
-      aside={
-        <div className="grid grid-cols-2 gap-2">
-          {RANGE_PHOTOS.map(([src, cap], i) => (
+      title="Every range has its colour"
+      media={
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+          {RANGE_PHOTOS.map(([src, cap, hex], i) => (
             <motion.figure key={src} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }} className="overflow-hidden rounded-2xl border border-cocoa bg-white">
               <div className="relative aspect-square">
-                <Image src={src} alt="" fill sizes="220px" className="object-cover" />
+                <Image src={src} alt={`${cap} — official Eat Better photo`} fill sizes="240px" className="object-cover" />
               </div>
-              <figcaption className="px-2 py-1.5 text-[0.85rem] font-bold text-cocoa">{cap}</figcaption>
+              <figcaption className="flex items-center gap-2 px-2.5 py-2 text-[0.88rem] font-bold text-cocoa">
+                <span className="size-4 shrink-0 rounded-full border border-cocoa/20" style={{ background: hex }} />
+                {cap}
+              </figcaption>
             </motion.figure>
           ))}
-          <p className="col-span-2 text-[0.82rem] text-cocoa-2">Official Eat Better product photos.</p>
+          <p className="col-span-full text-[0.82rem] text-cocoa-2">Official Eat Better product photos; dots show each photo&apos;s backdrop colour.</p>
         </div>
       }
     />
@@ -222,38 +230,70 @@ export function ColourSection() {
 }
 
 export function PackSection() {
+  const complete = useActivities21((s) => s.complete);
+  const done = useActivities21((s) => s.done.pack);
   return (
-    <AreaLab
+    <AreaShow
       id="pack"
       index="5"
-      kicker="Packaging design"
-      title="A pack sells in seconds"
-      act="pack"
-      spec={LABS_21.pack}
+      areaId="pack"
       tone="light"
-      aside={<Pic src="/brand/products/laddoo-box-42-1.webp" alt="Eat Better laddoo box with single-serve sachets" caption="Official photo · box and sachets in one range" ratio="1/1" />}
-    />
+      title="A pack sells in seconds"
+      media={
+        <div className="grid grid-cols-2 gap-2">
+          {[
+            ["/brand/products/millet-bhujia-0.webp", "Pouch", "Millet Bhujia"],
+            ["/brand/products/hazelnut-laddoo-0.webp", "Sachet", "Hazelnut Chocolate Laddoos"],
+            ["/brand/products/laddoo-box-24-0.webp", "Box", "Assorted Laddoo Box"],
+            ["/brand/products/laddoo-tin-0.webp", "Tin", "Assorted Laddoo Tin"],
+          ].map(([src, fmt, name], i) => (
+            <motion.figure key={src} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }} className="overflow-hidden rounded-2xl border border-cocoa bg-white">
+              <div className="relative aspect-square">
+                <Image src={src} alt={`${name} — official Eat Better photo`} fill sizes="300px" className="object-cover" />
+                <span className="absolute left-2 top-2 rounded-full border border-cocoa bg-haldi px-2.5 py-0.5 text-[0.8rem] font-extrabold text-cocoa">{fmt}</span>
+              </div>
+              <figcaption className="px-2.5 py-2 text-[0.88rem] font-bold leading-tight text-cocoa">{name}</figcaption>
+            </motion.figure>
+          ))}
+        </div>
+      }
+    >
+      <ActivityLabel done={!!done}>Activity · Match the pack to the moment</ActivityLabel>
+      <div className="mt-2">
+        <LearnLab
+          spec={LABS_21.pack}
+          onDone={(r) => {
+            useBrand21.setState((st) => ({ labs: { ...st.labs, [LABS_21.pack.id]: r } }));
+            complete("pack");
+          }}
+        />
+      </div>
+    </AreaShow>
   );
 }
 
 export function ToneSection() {
   return (
-    <AreaLab
+    <AreaShow
       id="tone"
       index="6"
-      kicker="Brand communication & tone"
-      title="Sound like Eat Better"
-      act="tone"
-      spec={LABS_21.tone}
+      areaId="tone"
       tone="peach"
-      aside={
-        <div className="grid gap-2">
-          {OFFICIAL_LINES.map((l, i) => (
-            <motion.div key={l} initial={{ opacity: 0, x: -14 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }} className="rounded-2xl border border-cocoa bg-white px-4 py-3 font-display text-[1.15rem] font-semibold text-cocoa shadow-[2px_2px_0_0_#2f1c1a]">
-              &ldquo;{l}&rdquo;
-            </motion.div>
-          ))}
-          <p className="text-[0.82rem] text-cocoa-2">Official lines from eatbetterco.com</p>
+      title="How Eat Better sounds"
+      media={
+        <div className="grid gap-3">
+          <Shot src="/chapter-2-1/web/bhujia.webp" alt="Millet Bhujia product page on eatbetterco.com" caption="Product page copy, eatbetterco.com (screenshot)" w={1440} h={900} />
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Shot src="/chapter-2-1/web/story2.webp" alt="Our Story copy on eatbetterco.com" caption="“Our Story” copy, eatbetterco.com (screenshot)" w={1440} h={900} />
+            <div className="grid content-start gap-2">
+              {OFFICIAL_LINES.map((l, i) => (
+                <motion.div key={l} initial={{ opacity: 0, x: -14 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }} className="rounded-2xl border border-cocoa bg-white px-3.5 py-2.5 font-display text-[1.02rem] font-semibold text-cocoa shadow-[2px_2px_0_0_#2f1c1a]">
+                  &ldquo;{l}&rdquo;
+                </motion.div>
+              ))}
+              <p className="text-[0.8rem] text-cocoa-2">Official lines from eatbetterco.com</p>
+            </div>
+          </div>
         </div>
       }
     />
@@ -262,20 +302,23 @@ export function ToneSection() {
 
 export function PerceptionSection() {
   return (
-    <AreaLab
+    <AreaShow
       id="perception"
       index="7"
-      kicker="Consumer perception"
-      title="Same brand, different eyes"
-      act="perception"
-      spec={LABS_21.perception}
+      areaId="perception"
       tone="light"
-      aside={<Pic src="/brand/products/hazelnut-laddoo-0.webp" alt="Hazelnut Chocolate Laddoos pack" caption="Official pack · what does it make you expect?" ratio="1/1" />}
+      title="Same brand, different eyes"
+      media={
+        <div className="grid gap-3">
+          <Shot src="/chapter-2-1/web/story.webp" alt="Our Story page on eatbetterco.com" caption="Our Story page, eatbetterco.com (screenshot)" w={1440} h={900} />
+          <Shot src="/chapter-2-1/web/laddoo.webp" alt="Hazelnut Chocolate Laddoos product page on eatbetterco.com" caption="Product page, eatbetterco.com (screenshot)" w={1440} h={900} />
+        </div>
+      }
     />
   );
 }
 
-/* ── 8 · Capstone: Brand Identity Lab (3D) ───────────────────── */
+/* ── 8 · Activity: Brand Identity Lab (3D) ───────────────────── */
 
 export function LabSection() {
   const complete = useActivities21((s) => s.complete);
@@ -283,8 +326,8 @@ export function LabSection() {
   return (
     <section id="lab" className={sectionCls}>
       <Panel tone="light" reveal="up" width="max-w-7xl">
-        <SectionIntro index="8" kicker="Capstone · Brand Identity Lab" title="Put it all together on a real pack">
-          Use every rule you just learned in one 3D studio, then sign your Brand Identity Audit.
+        <SectionIntro index="8" kicker="Activity · Brand Identity Lab" title="Audit a real Eat Better pack in 3D">
+          Four stations in one studio, then sign your Brand Identity Audit.
         </SectionIntro>
         <div className="mt-6">
           <IconFlow
@@ -394,14 +437,8 @@ export function Reflect() {
 /* ── Wrap-up: the six key learnings ───────────────────────────── */
 
 const ACT: { id: ActivityId21; label: string }[] = [
-  { id: "name", label: "Lab · Brand name" },
-  { id: "logo", label: "Lab · Visual consistency" },
-  { id: "colour", label: "Lab · Colour system" },
-  { id: "pack", label: "Lab · Pack formats" },
-  { id: "tone", label: "Lab · Brand voice" },
-  { id: "perception", label: "Lab · Shopper perception" },
-  { id: "lab", label: "Capstone · 3D Identity Lab" },
-  { id: "reflect", label: "Reflect" },
+  { id: "pack", label: "Match the pack to the moment" },
+  { id: "lab", label: "3D Brand Identity Lab" },
 ];
 
 export function WrapUp() {
@@ -437,7 +474,7 @@ export function WrapUp() {
               {n}/{ACT.length}
             </span>
           </div>
-          <ul className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          <ul className="mt-3 grid gap-2 sm:grid-cols-2">
             {ACT.map((a) => (
               <li key={a.id} className="flex items-center gap-2 text-[1rem] text-cocoa">
                 {done[a.id] ? <Check className="size-5 shrink-0 text-success" strokeWidth={3} /> : <Circle className="size-5 shrink-0 text-cocoa-2/40" />}

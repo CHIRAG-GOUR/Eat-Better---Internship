@@ -13,7 +13,9 @@ import { StreetLife } from "./StreetLife";
  * Module 2 world — "Brand Boulevard": an Indian high street the camera glides down as the student
  * scrolls. Each chapter of Module 2 is a different time of day (2.1 golden hour → 2.2 sunset →
  * 2.3 dusk → 2.4 neon night) and passes its own district props as `scenes`, placed along the street:
- * z from about 0 (top of page) to -travel (end of page); sidewalks at |x| 3.6–6, road |x| < 3.
+ * z from about 0 (top of page) to -travel (end of page); road |x| < 3, pavements |x| 3–7.
+ * The strip |x| 4.0–4.9 is reserved for walking pedestrians: put district props at |x| >= 5.3
+ * (against the shopfronts) or overhead, never in the walking strip.
  * Shop names on the street are generic (no real brands). Wrap the chapter's World in <WorldShell>.
  */
 

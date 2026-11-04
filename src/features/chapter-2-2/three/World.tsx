@@ -122,7 +122,7 @@ function PhoneTower({ x, z, h, seed, kit, label }: { x: number; z: number; h: nu
 /** A small crowd on the pavement, linked by glowing lines — a community. */
 function Community({ x, z, kit, label }: { x: number; z: number; kit: BoulevardKit; label: string }) {
   const people = useMemo(() => {
-    return Array.from({ length: kit.compact ? 4 : 6 }, (_, i) => ({ px: Math.cos(i * 1.7) * 0.9, pz: Math.sin(i * 1.7) * 0.7, look: CROWD[i % CROWD.length] }));
+    return Array.from({ length: kit.compact ? 4 : 6 }, (_, i) => ({ px: Math.cos(i * 1.7) * 0.45, pz: Math.sin(i * 1.7) * 0.8, look: CROWD[i % CROWD.length] }));
   }, [kit.compact]);
   const poses = useMemo(() => people.map((_, i) => ({ current: { walk: 0, mood: 1, arm: i % 3 === 0 ? 0.25 : 0, shake: 0, jump: 0, holding: false } as Pose })), [people]);
   const lines = useMemo(() => {
@@ -187,7 +187,7 @@ function DistrictSign({ z, text, kit }: { z: number; text: string; kit: Boulevar
   const tex = useMemo(() => signTexture(text, "#2F1C1A", "#FED300", 768, 128), [text]);
   useEffect(() => () => tex.dispose(), [tex]);
   return (
-    <group position={[4.4, 0, z]} rotation={[0, -0.35, 0]}>
+    <group position={[5.6, 0, z]} rotation={[0, -0.6, 0]}>
       <mesh position={[0, 1.4, 0]}>
         <cylinderGeometry args={[0.05, 0.05, 2.8, 8]} />
         <meshStandardMaterial color="#3B3B3B" />
@@ -207,15 +207,15 @@ export default function World() {
       scenes={(kit) => (
         <>
           <DistrictSign z={-9} text="PHONE-SCREEN SKYLINE" kit={kit} />
-          <PhoneTower x={4.6} z={-6} h={3.6} seed={1} kit={kit} label="Social feed — reach new people" />
-          <PhoneTower x={-4.6} z={-12} h={3.0} seed={2} kit={kit} label="Reels and posts — showcase products" />
-          <Community x={4.7} z={-17} kit={kit} label="A community of customers" />
-          <PhoneTower x={4.6} z={-23} h={4.0} seed={3} kit={kit} label="Founder stories — build trust" />
-          <Community x={-4.7} z={-28} kit={kit} label="Squad members talking to each other" />
-          <PhoneTower x={-4.6} z={-35} h={3.4} seed={4} kit={kit} label="Reviews and ratings — social proof" />
-          <PhoneTower x={4.6} z={-42} h={3.2} seed={5} kit={kit} label="Offers that give a reason to buy" />
-          {!kit.compact && <Community x={4.7} z={-50} kit={kit} label="Repeat customers" />}
-          <PhoneTower x={-4.6} z={-54} h={3.8} seed={6} kit={kit} label="Quick-commerce apps — delivered in minutes" />
+          <PhoneTower x={5.9} z={-6} h={3.6} seed={1} kit={kit} label="Social feed — reach new people" />
+          <PhoneTower x={-5.9} z={-12} h={3.0} seed={2} kit={kit} label="Reels and posts — showcase products" />
+          <Community x={5.8} z={-19.5} kit={kit} label="A community of customers" />
+          <PhoneTower x={5.9} z={-23} h={4.0} seed={3} kit={kit} label="Founder stories — build trust" />
+          <Community x={-5.8} z={-30} kit={kit} label="Squad members talking to each other" />
+          <PhoneTower x={-5.9} z={-35} h={3.4} seed={4} kit={kit} label="Reviews and ratings — social proof" />
+          <PhoneTower x={5.9} z={-42} h={3.2} seed={5} kit={kit} label="Offers that give a reason to buy" />
+          {!kit.compact && <Community x={5.8} z={-50} kit={kit} label="Repeat customers" />}
+          <PhoneTower x={-5.9} z={-54} h={3.8} seed={6} kit={kit} label="Quick-commerce apps — delivered in minutes" />
           <DeliveryRun kit={kit} />
         </>
       )}

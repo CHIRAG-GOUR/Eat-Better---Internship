@@ -9,21 +9,20 @@ import { GlossaryProvider } from "@/components/chapter/Glossary";
 import { WorldShell } from "@/components/world/WorldShell";
 import { CHAPTER } from "./content";
 import { GLOSSARY_2_1 } from "./glossary";
-import { ColourSection, IdentityMap, LabSection, LookSection, NameSection, PackSection, PerceptionSection, Reflect, ToneSection, WrapUp } from "./sections";
+import { ColourSection, IdentityMap, LabSection, LookSection, NameSection, PackSection, PerceptionSection, ToneSection, WrapUp } from "./sections";
 
 const World = dynamic(() => import("./three/World"), { ssr: false, loading: () => null });
 
 const SECTIONS: ProgressSection[] = [
   { id: "intro", label: "Introduction" },
   { id: "identity", label: "Six parts of an identity" },
-  { id: "name", label: "Lab: Brand name" },
-  { id: "look", label: "Lab: Logo & visual identity" },
-  { id: "colour", label: "Lab: Colour psychology" },
-  { id: "pack", label: "Lab: Packaging design" },
-  { id: "tone", label: "Lab: Communication & tone" },
-  { id: "perception", label: "Lab: Consumer perception" },
-  { id: "lab", label: "Capstone: Brand Identity Lab" },
-  { id: "reflect", label: "Activity: Reflect" },
+  { id: "name", label: "Brand name" },
+  { id: "look", label: "Logo & visual identity" },
+  { id: "colour", label: "Colour psychology" },
+  { id: "pack", label: "Packaging design · activity" },
+  { id: "tone", label: "Communication & tone" },
+  { id: "perception", label: "Consumer perception" },
+  { id: "lab", label: "Activity: Brand Identity Lab" },
   { id: "wrap-up", label: "Wrap-up" },
 ];
 
@@ -49,7 +48,6 @@ export default function Chapter() {
         <ToneSection />
         <PerceptionSection />
         <LabSection />
-        <Reflect />
         <WrapUp />
       </main>
     </GlossaryProvider>
