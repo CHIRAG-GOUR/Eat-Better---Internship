@@ -20,7 +20,7 @@ export type Look = {
   extraColor?: string;
 };
 
-export type Pose = { walk: number; mood: number; arm: number; shake: number; jump: number; holding: boolean };
+export type Pose = { walk: number; mood: number; arm: number; shake: number; jump: number; holding: boolean; /** 0..1 seated (riders, drivers) */ sit?: number };
 
 export function Person({ look, pose, holdColor }: { look: Look; pose: React.RefObject<Pose>; holdColor?: string }) {
   const body = useRef<THREE.Group>(null);
@@ -38,8 +38,9 @@ export function Person({ look, pose, holdColor }: { look: Look; pose: React.RefO
     if (!p) return;
     const t = clock.elapsedTime + seed;
     const sw = Math.sin(t * 8.5) * 0.6 * p.walk;
-    if (legL.current) legL.current.rotation.x = sw;
-    if (legR.current) legR.current.rotation.x = -sw;
+    const sit = p.sit ?? 0;
+    if (legL.current) legL.current.rotation.x = sw - sit * 1.45;
+    if (legR.current) legR.current.rotation.x = -sw - sit * 1.45;
     if (armL.current) {
       armL.current.rotation.x = -sw * 0.7 - p.arm * 2.7;
       armL.current.rotation.z = p.arm * 0.35;
@@ -48,7 +49,7 @@ export function Person({ look, pose, holdColor }: { look: Look; pose: React.RefO
       armR.current.rotation.x = sw * 0.7 - p.arm * 2.7 - (p.holding && p.arm < 0.1 ? 0.5 : 0);
       armR.current.rotation.z = -p.arm * 0.35;
     }
-    if (body.current) body.current.position.y = Math.abs(Math.sin(t * 8.5)) * 0.045 * p.walk + p.jump + Math.sin(t * 1.6) * 0.008;
+    if (body.current) body.current.position.y = Math.abs(Math.sin(t * 8.5)) * 0.045 * p.walk + p.jump + Math.sin(t * 1.6) * 0.008 - sit * 0.22;
     if (head.current) {
       head.current.rotation.y = Math.sin(t * 15) * 0.5 * p.shake;
       head.current.rotation.x = p.mood < 0 ? 0.12 : p.mood > 0 ? -0.08 : 0;

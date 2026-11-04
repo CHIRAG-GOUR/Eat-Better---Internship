@@ -7,6 +7,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { PerformanceMonitor, RoundedBox, useTexture } from "@react-three/drei";
 import { useReducedMotion } from "motion/react";
 import { useMediaQuery } from "@/lib/useClient";
+import { StreetLife } from "./StreetLife";
 
 /**
  * Module 2 world — "Brand Boulevard": an Indian high street the camera glides down as the student
@@ -415,6 +416,7 @@ function BoulevardScene({ chapter, travel, compact, reduced, scenes, drive }: { 
       <primitive object={target} />
       <ambientLight intensity={0.25 + look.night * 0.15} color={look.night > 0.6 ? "#8C7BFF" : "#FFE8CF"} />
       <Street compact={compact} nightRef={nightRef} />
+      <StreetLife compact={compact} reduced={reduced} />
       {scenes?.({ compact, reduced, night: look.night })}
     </>
   );

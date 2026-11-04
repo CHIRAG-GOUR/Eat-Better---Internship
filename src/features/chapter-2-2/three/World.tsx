@@ -5,6 +5,8 @@ import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { RoundedBox } from "@react-three/drei";
 import BoulevardWorld, { signTexture, type BoulevardKit } from "@/components/world2/BoulevardWorld";
+import { Scooter } from "@/components/world2/StreetLife";
+import { Person, type Look, type Pose } from "@/components/sim/Person";
 import { Hoverable } from "@/components/world/hover";
 
 /**
@@ -120,14 +122,14 @@ function PhoneTower({ x, z, h, seed, kit, label }: { x: number; z: number; h: nu
 /** A small crowd on the pavement, linked by glowing lines — a community. */
 function Community({ x, z, kit, label }: { x: number; z: number; kit: BoulevardKit; label: string }) {
   const people = useMemo(() => {
-    const cols = ["#FF5C00", "#2E7D6B", "#1E5AA8", "#C9A400", "#B3261E", "#7B4BB7"];
-    return Array.from({ length: kit.compact ? 4 : 6 }, (_, i) => ({ px: Math.cos(i * 1.7) * 0.9, pz: Math.sin(i * 1.7) * 0.7, c: cols[i % cols.length] }));
+    return Array.from({ length: kit.compact ? 4 : 6 }, (_, i) => ({ px: Math.cos(i * 1.7) * 0.9, pz: Math.sin(i * 1.7) * 0.7, look: CROWD[i % CROWD.length] }));
   }, [kit.compact]);
+  const poses = useMemo(() => people.map((_, i) => ({ current: { walk: 0, mood: 1, arm: i % 3 === 0 ? 0.25 : 0, shake: 0, jump: 0, holding: false } as Pose })), [people]);
   const lines = useMemo(() => {
     const pts: THREE.Vector3[] = [];
     people.forEach((a, i) => {
       const b = people[(i + 1) % people.length];
-      pts.push(new THREE.Vector3(a.px, 1.75, a.pz), new THREE.Vector3(b.px, 1.75, b.pz));
+      pts.push(new THREE.Vector3(a.px, 2.05, a.pz), new THREE.Vector3(b.px, 2.05, b.pz));
     });
     return new THREE.BufferGeometry().setFromPoints(pts);
   }, [people]);
@@ -140,15 +142,8 @@ function Community({ x, z, kit, label }: { x: number; z: number; kit: BoulevardK
     <Hoverable label={label}>
       <group position={[x, 0, z]}>
         {people.map((p, i) => (
-          <group key={i} position={[p.px, 0, p.pz]}>
-            <mesh position={[0, 0.62, 0]} castShadow>
-              <capsuleGeometry args={[0.16, 0.7, 4, 10]} />
-              <meshStandardMaterial color={p.c} roughness={0.7} />
-            </mesh>
-            <mesh position={[0, 1.36, 0]} castShadow>
-              <sphereGeometry args={[0.15, 14, 10]} />
-              <meshStandardMaterial color="#B98157" roughness={0.6} />
-            </mesh>
+          <group key={i} position={[p.px, 0.12, p.pz]} rotation={[0, Math.atan2(-p.px, -p.pz), 0]} scale={0.9}>
+            <Person look={p.look} pose={poses[i]} />
           </group>
         ))}
         <lineSegments geometry={lines}>
@@ -159,41 +154,33 @@ function Community({ x, z, kit, label }: { x: number; z: number; kit: BoulevardK
   );
 }
 
-/** Delivery scooter riding up and down the road. */
-function Scooter({ kit }: { kit: BoulevardKit }) {
+/** Delivery scooter riding up the road (the shared street scooter with a hover label). */
+function DeliveryRun({ kit }: { kit: BoulevardKit }) {
   const g = useRef<THREE.Group>(null);
-  useFrame(({ clock }) => {
+  const spin = useRef(0);
+  useFrame(({ clock }, dt) => {
     if (!g.current) return;
     const t = kit.reduced ? 0.3 : (clock.elapsedTime * 0.06) % 1;
-    g.current.position.set(-1.6, 0, 4 - t * 64);
+    g.current.position.set(-1.45, 0, 4 - t * 64);
+    if (!kit.reduced) spin.current += dt * 14;
   });
   return (
-    <group ref={g}>
+    <group ref={g} rotation={[0, Math.PI, 0]}>
       <Hoverable label="Delivery on its way — online orders reach the doorstep">
-        <RoundedBox args={[0.5, 0.42, 1.3]} radius={0.12} position={[0, 0.55, 0]} castShadow>
-          <meshStandardMaterial color="#FF5C00" roughness={0.5} />
-        </RoundedBox>
-        {[-0.5, 0.5].map((zz) => (
-          <mesh key={zz} position={[0, 0.25, zz]} rotation={[0, 0, Math.PI / 2]}>
-            <torusGeometry args={[0.2, 0.07, 8, 18]} />
-            <meshStandardMaterial color="#1E1A18" />
-          </mesh>
-        ))}
-        <RoundedBox args={[0.56, 0.5, 0.5]} radius={0.06} position={[0, 1.05, -0.35]} castShadow>
-          <meshStandardMaterial color="#FFF5EE" roughness={0.6} />
-        </RoundedBox>
-        <mesh position={[0, 1.2, 0.35]} castShadow>
-          <capsuleGeometry args={[0.17, 0.5, 4, 10]} />
-          <meshStandardMaterial color="#2F1C1A" />
-        </mesh>
-        <mesh position={[0, 1.72, 0.35]}>
-          <sphereGeometry args={[0.18, 14, 10]} />
-          <meshStandardMaterial color="#FF5C00" roughness={0.4} />
-        </mesh>
+        <Scooter spin={spin} />
       </Hoverable>
     </group>
   );
 }
+
+const CROWD: Look[] = [
+  { skin: "#C68B59", top: "#FF5C00", bottom: "#3B3B3B", hair: "#1E1410", hairStyle: "short" },
+  { skin: "#9C6644", top: "#2E7D6B", bottom: "#2E7D6B", hair: "#140C08", hairStyle: "long", dress: true },
+  { skin: "#D4A373", top: "#1E5AA8", bottom: "#263238", hair: "#3E2723", hairStyle: "short", extra: "cap", extraColor: "#FED300" },
+  { skin: "#A86B45", top: "#C9A400", bottom: "#795548", hair: "#9E9E9E", hairStyle: "bun", dress: true, extra: "glasses", extraColor: "#2F1C1A" },
+  { skin: "#B5764A", top: "#B3261E", bottom: "#4E342E", hair: "#1A110C", hairStyle: "short", extra: "backpack", extraColor: "#35401D" },
+  { skin: "#8D5A3B", top: "#7B4BB7", bottom: "#7B4BB7", hair: "#140C08", hairStyle: "long", dress: true, extra: "dupatta", extraColor: "#FFC24D" },
+];
 
 /** Street sign for the district. */
 function DistrictSign({ z, text, kit }: { z: number; text: string; kit: BoulevardKit }) {
@@ -229,7 +216,7 @@ export default function World() {
           <PhoneTower x={4.6} z={-42} h={3.2} seed={5} kit={kit} label="Offers that give a reason to buy" />
           {!kit.compact && <Community x={4.7} z={-50} kit={kit} label="Repeat customers" />}
           <PhoneTower x={-4.6} z={-54} h={3.8} seed={6} kit={kit} label="Quick-commerce apps — delivered in minutes" />
-          <Scooter kit={kit} />
+          <DeliveryRun kit={kit} />
         </>
       )}
     />
