@@ -1,7 +1,7 @@
 "use client";
 /* eslint-disable react-hooks/immutability -- three.js materials and the camera are updated inside useFrame by design */
 
-import { Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { createContext, Suspense, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { PerformanceMonitor, RoundedBox, useTexture } from "@react-three/drei";
@@ -25,6 +25,12 @@ export type BoulevardKit = {
   /** 0 = daylight … 1 = full night for this chapter (use for emissive signs) */
   night: number;
 };
+
+/**
+ * Optional external "drive" for previews: provide a ref holding 0..1 and the camera follows it instead
+ * of the page scroll. Chapters don't use this.
+ */
+export const BoulevardDrive = createContext<React.RefObject<number> | null>(null);
 
 const LOOK: Record<Chapter2, { top: string; horizon: string; fog: string; sun: string; sunI: number; hemi: number; night: number }> = {
   "2.1": { top: "#F2A86B", horizon: "#FFE6C4", fog: "#F8D7B4", sun: "#FFD39A", sunI: 2.3, hemi: 0.95, night: 0.12 },
@@ -375,7 +381,7 @@ function Sky({ top, horizon }: { top: string; horizon: string }) {
   );
 }
 
-function BoulevardScene({ chapter, travel, compact, reduced, scenes }: { chapter: Chapter2; travel: number; compact: boolean; reduced: boolean; scenes?: (kit: BoulevardKit) => ReactNode }) {
+function BoulevardScene({ chapter, travel, compact, reduced, scenes, drive }: { chapter: Chapter2; travel: number; compact: boolean; reduced: boolean; scenes?: (kit: BoulevardKit) => ReactNode; drive: React.RefObject<number> | null }) {
   const look = LOOK[chapter];
   const { camera } = useThree();
   const z = useRef(0);
@@ -385,7 +391,7 @@ function BoulevardScene({ chapter, travel, compact, reduced, scenes }: { chapter
   const target = useMemo(() => new THREE.Object3D(), []);
   useFrame((_, dt) => {
     const max = document.documentElement.scrollHeight - window.innerHeight;
-    const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    const p = drive ? drive.current : max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
     const goal = 2 - p * travel;
     z.current = reduced ? goal : THREE.MathUtils.damp(z.current, goal, 3, dt);
     t.current += dt;
@@ -418,6 +424,7 @@ export default function BoulevardWorld({ chapter, scenes, travel = 60 }: { chapt
   const reduced = !!useReducedMotion();
   const compact = useMediaQuery("(max-width: 767px)");
   const [dpr, setDpr] = useState(1.5);
+  const drive = useContext(BoulevardDrive);
   return (
     <Canvas
       shadows={compact ? false : "percentage"}
@@ -430,7 +437,7 @@ export default function BoulevardWorld({ chapter, scenes, travel = 60 }: { chapt
       }}
     >
       <PerformanceMonitor onDecline={() => setDpr(1)} onIncline={() => setDpr(1.5)} />
-      <BoulevardScene chapter={chapter} travel={travel} compact={compact} reduced={reduced} scenes={scenes} />
+      <BoulevardScene chapter={chapter} travel={travel} compact={compact} reduced={reduced} scenes={scenes} drive={drive} />
     </Canvas>
   );
 }
