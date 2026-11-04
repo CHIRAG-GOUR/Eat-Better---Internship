@@ -36,8 +36,7 @@ import { SectionIntro } from "@/components/chapter/SectionIntro";
 import { GlossaryText } from "@/components/chapter/Glossary";
 import { VideoBlock } from "@/components/chapter/VideoBlock";
 import { FlipCards, IconFlow, SplitStory, StatBand } from "@/components/rich";
-import { Lab22, useActivities22, ACTIVITY_IDS } from "./practice";
-import { LABS_22 } from "./labs";
+import { useActivities22, usePractice22, ACTIVITY_IDS } from "./practice";
 import { COMMUNITY, MARKETS, OFFERS, OWNED, REVIEWS, SOCIAL, STORY, TAKEAWAY, THINK, VIDEOS } from "./content";
 
 const GrowthDesk = dynamic(() => import("./three/GrowthDesk"), {
@@ -106,9 +105,6 @@ export function Community() {
         <div className="mt-8">
           <IconFlow nodes={COMMUNITY.loop.map((t, i) => ({ icon: icons[i], title: t }))} />
         </div>
-        <div className="mt-6">
-          <Lab22 spec={LABS_22.community} act="community" label="Community-first" />
-        </div>
       </Panel>
     </section>
   );
@@ -134,9 +130,6 @@ export function Owned() {
             <Shot src="/chapter-2-2/lms-2.png" w={866} h={731} alt="Product cards on the Eat Better Co website" caption="The official Eat Better Co website (screenshot)." />
             <VideoBlock kind="file" portrait h264={VIDEOS.perfectSnack.h264} poster={VIDEOS.perfectSnack.poster} title={VIDEOS.perfectSnack.title} caption="From Eat Better Co's own YouTube channel." />
           </div>
-        </div>
-        <div className="mt-6">
-          <Lab22 spec={LABS_22.owned} act="owned" label="Owned channels" />
         </div>
       </Panel>
     </section>
@@ -178,9 +171,6 @@ export function Social() {
         <div className="mt-5 grid gap-3 lg:grid-cols-2">
           <Example>{SOCIAL.example}</Example>
           <Concept>{SOCIAL.concept}</Concept>
-        </div>
-        <div className="mt-6">
-          <Lab22 spec={LABS_22.social} act="social" label="Social platforms" />
         </div>
       </Panel>
     </section>
@@ -224,9 +214,6 @@ export function Story() {
               </p>
             </div>
           </div>
-        </div>
-        <div className="mt-6">
-          <Lab22 spec={LABS_22.story} act="story" label="Brand story" />
         </div>
       </Panel>
     </section>
@@ -286,9 +273,6 @@ export function Reviews() {
             <Concept>{REVIEWS.concept}</Concept>
           </div>
         </div>
-        <div className="mt-6">
-          <Lab22 spec={LABS_22.reviews} act="reviews" label="Reviews & replies" />
-        </div>
       </Panel>
     </section>
   );
@@ -316,9 +300,8 @@ export function Offers() {
             ]}
           />
         </div>
-        <div className="mt-6 grid gap-5 lg:grid-cols-[1.1fr_1fr] lg:items-start">
-          <Lab22 spec={LABS_22.offers} act="basket" label="Offers & margin" />
-          <div className="space-y-4">
+        <div className="mt-6 grid gap-5 lg:items-start">
+          <div className="grid gap-4 md:grid-cols-2">
             <Example>{OFFERS.example}</Example>
             <Concept>{OFFERS.concept}</Concept>
           </div>
@@ -379,9 +362,6 @@ export function Markets() {
             <Concept>{MARKETS.concept}</Concept>
           </div>
         </div>
-        <div className="mt-6">
-          <Lab22 spec={LABS_22.markets} act="markets" label="Sales channels" />
-        </div>
       </Panel>
     </section>
   );
@@ -389,12 +369,36 @@ export function Markets() {
 
 /* ── Activity: D2C Growth Desk ────────────────────────────────── */
 
+const NotificationRush = dynamic(() => import("./NotificationRush"), { ssr: false, loading: () => <div className="h-[560px] animate-pulse rounded-[24px] bg-[#F6E3CF]" /> });
+
+export function RushSection() {
+  const complete = useActivities22((s) => s.complete);
+  const note = usePractice22((s) => s.note);
+  return (
+    <section id="rush" className={sectionCls}>
+      <Panel tone="peach" reveal="up" width="max-w-7xl">
+        <SectionIntro index="8" kicker="Game · Notification Rush" title="Answer the brand's phone">
+          Notifications are pouring in. Answer each one the way this chapter teaches, before the timer runs out.
+        </SectionIntro>
+        <div className="mt-6">
+          <NotificationRush
+            onDone={(summary) => {
+              note("rush", summary);
+              complete("rush");
+            }}
+          />
+        </div>
+      </Panel>
+    </section>
+  );
+}
+
 export function DeskSection() {
   const complete = useActivities22((s) => s.complete);
   return (
     <section id="growth-desk" className={sectionCls}>
       <Panel tone="light" reveal="up" width="max-w-7xl">
-        <SectionIntro index="8" kicker="Activity · D2C Growth Desk" title="Run a two-week launch">
+        <SectionIntro index="9" kicker="Game · D2C Growth Desk" title="Run a two-week launch">
           Pick channels, answer reviews, set an offer — then watch shoppers flow. A fictional practice launch with simulated numbers.
         </SectionIntro>
         <div className="mt-6">
@@ -501,14 +505,8 @@ const RECAP: { title: string; icon: LucideIcon }[] = [
   { title: "Sell everywhere", icon: ShoppingCart },
 ];
 const ACT: { id: (typeof ACTIVITY_IDS)[number]; label: string }[] = [
-  { id: "community", label: "Lab · Feedback into improvement" },
-  { id: "owned", label: "Lab · Owned channels" },
-  { id: "social", label: "Lab · Social platforms" },
-  { id: "story", label: "Lab · Brand story arc" },
-  { id: "reviews", label: "Lab · Reply to a review" },
-  { id: "basket", label: "Lab · Offers vs margin" },
-  { id: "markets", label: "Lab · Sales channels" },
-  { id: "desk", label: "Capstone · D2C Growth Desk" },
+  { id: "rush", label: "Game · Notification Rush" },
+  { id: "desk", label: "Game · D2C Growth Desk" },
   { id: "reflect", label: "Think & Discuss" },
 ];
 

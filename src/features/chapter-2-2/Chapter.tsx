@@ -10,7 +10,7 @@ import { GlossaryProvider } from "@/components/chapter/Glossary";
 import { WorldShell } from "@/components/world/WorldShell";
 import { CHAPTER, TAKEAWAY } from "./content";
 import { GLOSSARY_2_2 } from "./glossary";
-import { Community, DeskSection, Markets, Offers, Owned, Reviews, Social, Story, Think, WrapUp } from "./sections";
+import { Community, DeskSection, RushSection, Markets, Offers, Owned, Reviews, Social, Story, Think, WrapUp } from "./sections";
 
 const World = dynamic(() => import("./three/World"), { ssr: false, loading: () => null });
 
@@ -23,7 +23,8 @@ const SECTIONS: ProgressSection[] = [
   { id: "reviews", label: "Reviews & ratings" },
   { id: "offers", label: "Offers & conversion" },
   { id: "markets", label: "Marketplaces & quick commerce" },
-  { id: "growth-desk", label: "Activity: D2C Growth Desk" },
+  { id: "rush", label: "Game: Notification Rush" },
+  { id: "growth-desk", label: "Game: D2C Growth Desk" },
   { id: "takeaway", label: "Key takeaway" },
   { id: "think", label: "Think & Discuss" },
   { id: "wrap-up", label: "Wrap-up" },
@@ -50,6 +51,7 @@ export default function Chapter() {
         <Reviews />
         <Offers />
         <Markets />
+        <RushSection />
         <DeskSection />
         <TakeawayMoment
           text={TAKEAWAY}
