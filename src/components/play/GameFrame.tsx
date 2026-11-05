@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Check, RotateCcw, Star } from "lucide-react";
+import { BookOpenCheck, Check, Lightbulb, PencilLine, RotateCcw, Star } from "lucide-react";
 
 /**
  * Shared frame for the evidence-based activities (2.3, 2.4): a header with the mission, a step track
@@ -11,6 +11,9 @@ import { Check, RotateCcw, Star } from "lucide-react";
  */
 
 export type Feedback = { tone: "good" | "bad" | "info"; text: string } | null;
+
+/** Where an activity's material comes from: real chapter/brand material vs made-up practice material, plus an optional tip. */
+export type SourceNote = { real?: string; practice?: string; tip?: string };
 
 export function GameFrame({
   kicker,
@@ -32,7 +35,7 @@ export function GameFrame({
   stars?: number; // 0..3, shown once the activity is finished
   onReset?: () => void;
   feedback?: Feedback;
-  note?: string;
+  note?: string | SourceNote;
   children: ReactNode;
 }) {
   return (
@@ -73,22 +76,56 @@ export function GameFrame({
         </ol>
       </div>
       <div className="p-4 sm:p-6">{children}</div>
-      <AnimatePresence mode="wait">
-        {feedback && (
-          <motion.div
-            key={feedback.text}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            role="status"
-            className={`mx-4 mb-4 rounded-2xl px-4 py-3 text-[1rem] leading-snug sm:mx-6 ${feedback.tone === "good" ? "bg-success/12 text-cocoa" : feedback.tone === "bad" ? "bg-error/10 text-cocoa" : "bg-peach/70 text-cocoa"}`}
-          >
-            <strong className={feedback.tone === "good" ? "text-success" : feedback.tone === "bad" ? "text-error" : "text-orange"}>{feedback.tone === "good" ? "Yes. " : feedback.tone === "bad" ? "Not yet. " : ""}</strong>
-            {feedback.text}
-          </motion.div>
-        )}
-      </AnimatePresence>
-      {note && <p className="border-t border-cocoa/10 px-4 py-2.5 text-[0.82rem] text-cocoa-2 sm:px-6">{note}</p>}
+      <FeedbackStrip feedback={feedback} className="mx-4 mb-4 sm:mx-6" />
+      {note && <SourceFooter note={note} />}
+    </div>
+  );
+}
+
+/** The "Yes / Not yet" explanation strip. GameFrame shows it under the activity; an activity can also place it inline. */
+export function FeedbackStrip({ feedback, className = "" }: { feedback?: Feedback; className?: string }) {
+  return (
+    <AnimatePresence mode="wait">
+      {feedback && (
+        <motion.div
+          key={feedback.text}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          role="status"
+          aria-live="polite"
+          className={`rounded-2xl px-4 py-3 text-[0.98rem] leading-snug sm:text-[1rem] ${feedback.tone === "good" ? "bg-success/12 text-cocoa" : feedback.tone === "bad" ? "bg-error/10 text-cocoa" : "bg-peach/70 text-cocoa"} ${className}`}
+        >
+          <strong className={feedback.tone === "good" ? "text-success" : feedback.tone === "bad" ? "text-error" : "text-orange"}>{feedback.tone === "good" ? "Yes. " : feedback.tone === "bad" ? "Not yet. " : ""}</strong>
+          {feedback.text}
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+/** "Where this comes from" footer: tells students which parts are real chapter material and which are practice. */
+function SourceFooter({ note }: { note: string | SourceNote }) {
+  const n: SourceNote = typeof note === "string" ? { real: note } : note;
+  const rows = [
+    n.real && { icon: BookOpenCheck, tag: "From the chapter", text: n.real, cls: "bg-success/12 text-success" },
+    n.practice && { icon: PencilLine, tag: "Practice only", text: n.practice, cls: "bg-haldi/40 text-cocoa" },
+    n.tip && { icon: Lightbulb, tag: "Tip", text: n.tip, cls: "bg-orange/12 text-orange" },
+  ].filter(Boolean) as { icon: typeof BookOpenCheck; tag: string; text: string; cls: string }[];
+  return (
+    <div className="border-t border-cocoa/10 bg-cream/60 px-4 py-3 sm:px-6">
+      <div className="text-[0.75rem] font-extrabold uppercase tracking-[0.12em] text-cocoa-2">Where this comes from</div>
+      <ul className="mt-2 grid gap-2 md:grid-flow-col md:auto-cols-fr md:gap-5">
+        {rows.map(({ icon: Icon, tag, text, cls }) => (
+          <li key={tag} className="flex min-w-0 flex-col items-start gap-1">
+            <span className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[0.75rem] font-extrabold ${cls}`}>
+              <Icon className="size-3.5" />
+              {tag}
+            </span>
+            <span className="min-w-0 text-[0.88rem] leading-snug text-cocoa">{text}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

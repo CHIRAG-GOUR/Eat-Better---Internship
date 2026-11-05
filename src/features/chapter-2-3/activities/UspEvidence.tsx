@@ -214,7 +214,7 @@ export default function UspEvidence({ onDone }: { onDone: (summary: string) => v
       stars={step === 3 ? starsFor(mistakes) : undefined}
       onReset={reset}
       feedback={fb}
-      note="Packs and badges are official Eat Better images. Claims can vary across products — always check the label."
+      note={{ real: "Packs and badges are official Eat Better images. The five differentiators are the ones in this chapter.", practice: "The weak line “Our snacks are really tasty!” was written for this exercise.", tip: "Claims can differ from one product to the next. Always check the label of that exact pack." }}
     >
       <AnimatePresence mode="wait">
         {step === 0 && (

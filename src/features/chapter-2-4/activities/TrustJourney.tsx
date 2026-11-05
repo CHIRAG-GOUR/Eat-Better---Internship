@@ -1,16 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { BadgePercent, Building2, Gift, MessageCircleQuestion, Newspaper, Tv, User } from "lucide-react";
-import { GameFrame, starsFor, type Feedback } from "@/components/play/GameFrame";
+import { BadgePercent, Building2, Check, Gift, Heart, MessageCircleQuestion, Newspaper, NotebookPen, RotateCcw, Tv, User, X } from "lucide-react";
+import { FeedbackStrip, GameFrame, starsFor, type Feedback } from "@/components/play/GameFrame";
 
 /**
  * Activity 3 · The Trust Journey.
  * Each FICTIONAL buyer has a real doubt that stops them buying. The student answers it with the asset that,
  * according to the chapter, actually removes that doubt. Assets can be used more than once and one tempting
  * asset (a big discount) never works — so matching by elimination doesn't help; only understanding does.
- * Every wrong pick shows what that asset really does, quoted from the chapter.
+ * Every asset tried is written into a field notebook (what it really does, from the chapter) that survives a
+ * restart, a wrong asset is blocked for that doubt, and stars still count every mistake in the current run.
  */
 
 type AssetId = "tv" | "funding" | "roster" | "featured" | "hamper" | "discount";
@@ -39,32 +40,46 @@ export default function TrustJourney({ onDone }: { onDone: (summary: string) => 
   const [fb, setFb] = useState<Feedback>(null);
   const [solved, setSolved] = useState<Record<string, AssetId>>({});
   const [wrongs, setWrongs] = useState<AssetId[]>([]);
+  const [notes, setNotes] = useState<AssetId[]>([]); // field notes survive a restart
+  const doubtRef = useRef<HTMLDivElement>(null);
   const done = i >= DOUBTS.length;
-  const out = hearts <= 0;
+  const out = hearts <= 0 && !done;
   const D = DOUBTS[i];
 
   const reset = () => {
     setI(0);
     setHearts(4);
     setMistakes(0);
-    setFb(null);
+    setFb(notes.length ? { tone: "info", text: "New run. Your field notes are still here, so read them before you answer." } : null);
     setSolved({});
     setWrongs([]);
   };
+
+  // on small screens the assets sit below the buyer card: after each pick, bring the card and its result back into view
+  const showDoubt = () =>
+    requestAnimationFrame(() => {
+      const el = doubtRef.current;
+      if (el && el.getBoundingClientRect().top < 72) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
   const play = (a: AssetId) => {
-    if (done || out) return;
+    if (done || out || wrongs.includes(a)) return;
     const A = ASSETS.find((x) => x.id === a)!;
+    setNotes((n) => (n.includes(a) ? n : [...n, a]));
     if (a !== D.answer) {
       setMistakes((m) => m + 1);
       setHearts((h) => h - 1);
       setWrongs((w) => [...w, a]);
-      return setFb({ tone: "bad", text: `${A.name}: ${A.does} Does that answer “${D.text}”?` });
+      setFb({ tone: "bad", text: `${A.name}: ${A.does} Does that answer ${D.who}'s doubt, “${D.text}”?` });
+      showDoubt();
+      return;
     }
     setSolved((s) => ({ ...s, [D.id]: a }));
     setWrongs([]);
     setFb({ tone: "good", text: D.win });
     const n = i + 1;
     setI(n);
+    showDoubt();
     if (n >= DOUBTS.length) onDone(`Trust Journey: cleared 6 buyer doubts with the right trust asset (${mistakes} ${mistakes === 1 ? "mistake" : "mistakes"}).`);
   };
 
@@ -79,42 +94,53 @@ export default function TrustJourney({ onDone }: { onDone: (summary: string) => 
       step={step}
       stars={done ? starsFor(mistakes) : undefined}
       onReset={reset}
-      feedback={fb}
-      note="Riya, Karan, Meera and Dev are fictional buyers. What each asset does is quoted from this chapter."
+      note={{
+        real: "What each asset does is taken from this chapter. The point about discounts comes from Chapter 2.2.",
+        practice: "Riya, Karan, Meera and Dev are made-up buyers for practice.",
+        tip: "Every asset you try is saved in your field notes, and the notes stay if you restart.",
+      }}
     >
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:items-start">
         {/* the doubt */}
-        <div className="min-w-0">
-          <div className="flex items-center justify-between text-[0.85rem] font-bold text-cocoa-2">
+        <div ref={doubtRef} className="order-1 min-w-0 scroll-mt-20 lg:col-start-1 lg:row-start-1">
+          <div className="flex items-center justify-between text-[0.9rem] font-bold text-cocoa-2">
             <span>{done ? "All doubts cleared" : `Doubt ${i + 1} of ${DOUBTS.length}`}</span>
-            <span className="flex gap-1" aria-label={`${hearts} hearts left`}>
+            <span className="flex gap-1" aria-label={`${hearts} of 4 hearts left`}>
               {[0, 1, 2, 3].map((k) => (
-                <span key={k} className={`size-3 rounded-full ${k < hearts ? "bg-error" : "bg-cocoa/15"}`} />
+                <Heart key={k} className={`size-4 ${k < hearts ? "fill-error text-error" : "text-cocoa/20"}`} />
               ))}
             </span>
           </div>
           <AnimatePresence mode="wait">
             {!done && !out && D && (
-              <motion.div key={D.id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, x: 60 }} className="mt-3 rounded-[22px] border-2 border-cocoa bg-white p-5 shadow-[3px_3px_0_0_#2f1c1a]">
+              <motion.div key={D.id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, x: 60 }} className="mt-3 rounded-[22px] border-2 border-cocoa bg-white p-4 shadow-[3px_3px_0_0_#2f1c1a] sm:p-5">
                 <div className="flex items-center gap-3">
-                  <span className="grid size-12 place-items-center rounded-full bg-cocoa text-cream">
-                    <User className="size-6" />
+                  <span className="grid size-11 shrink-0 place-items-center rounded-full bg-cocoa text-cream">
+                    <User className="size-5" />
                   </span>
-                  <div>
+                  <div className="min-w-0">
                     <div className="font-display text-[1.2rem] font-semibold leading-tight text-cocoa">{D.who}</div>
-                    <div className="text-[0.88rem] font-bold text-cocoa-2">{D.role}</div>
+                    <div className="text-[0.9rem] font-bold text-cocoa-2">{D.role}</div>
                   </div>
                 </div>
-                <div className="relative mt-4 rounded-2xl bg-haldi/30 px-4 py-3">
+                <div className="relative mt-4 rounded-2xl bg-haldi/30 px-4 pb-3 pt-4">
                   <MessageCircleQuestion className="absolute -top-3 left-4 size-6 rounded-full bg-haldi p-1 text-cocoa" />
-                  <p className="font-display text-[1.25rem] font-semibold leading-snug text-cocoa">“{D.text}”</p>
+                  <p className="font-display text-[1.2rem] font-semibold leading-snug text-cocoa sm:text-[1.25rem]">“{D.text}”</p>
                 </div>
+                {wrongs.length > 0 && (
+                  <p className="mt-3 text-[0.9rem] text-cocoa-2">
+                    Ruled out for {D.who}: {wrongs.map((w) => ASSETS.find((x) => x.id === w)!.name).join(", ")}.
+                  </p>
+                )}
               </motion.div>
             )}
-            {out && !done && (
+            {out && (
               <motion.div key="out" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-3 rounded-[22px] border-2 border-error bg-error/5 p-5">
                 <div className="font-display text-[1.3rem] font-semibold text-error">Out of hearts</div>
-                <p className="mt-1 text-[1rem] text-cocoa">Read what each asset really does, then restart the journey.</p>
+                <p className="mt-1 text-[1rem] leading-snug text-cocoa">Every asset you tried is now in your field notes. Read what each one really does, then start the journey again.</p>
+                <button onClick={reset} className="mt-3 inline-flex items-center gap-2 rounded-xl bg-orange px-4 py-2 text-[0.95rem] font-bold text-white hover:bg-cocoa">
+                  <RotateCcw className="size-4" /> Restart the journey
+                </button>
               </motion.div>
             )}
             {done && (
@@ -124,37 +150,73 @@ export default function TrustJourney({ onDone }: { onDone: (summary: string) => 
               </motion.div>
             )}
           </AnimatePresence>
+          <FeedbackStrip feedback={fb} className="mt-3" />
+        </div>
 
-          {/* journey so far */}
-          <ol className="mt-4 grid gap-1.5">
+        {/* the assets */}
+        <div className="order-2 grid min-w-0 grid-cols-2 gap-2 lg:col-start-2 lg:row-span-2 lg:row-start-1">
+          {ASSETS.map((a) => {
+            const Icon = a.icon;
+            const isWrong = !done && wrongs.includes(a.id);
+            const known = notes.includes(a.id);
+            return (
+              <button
+                key={a.id}
+                disabled={done || out || isWrong}
+                onClick={() => play(a.id)}
+                aria-label={isWrong ? `${a.name} (ruled out for this buyer)` : a.name}
+                className={`relative flex min-h-[4.5rem] flex-col items-start gap-2 rounded-2xl border-2 p-3 text-left transition-colors sm:flex-row sm:gap-3 ${isWrong ? "border-error/40 bg-error/5 opacity-70" : "border-cocoa/15 bg-white hover:border-orange disabled:opacity-60"}`}
+              >
+                <span className={`grid size-9 shrink-0 place-items-center rounded-xl sm:size-10 ${isWrong ? "bg-error/15 text-error" : a.id === "discount" ? "bg-cocoa/10 text-cocoa" : "bg-orange text-white"}`}>
+                  {isWrong ? <X className="size-5" /> : <Icon className="size-5" />}
+                </span>
+                <span className="min-w-0 pr-5 font-display text-[0.98rem] font-semibold leading-snug text-cocoa sm:text-[1.02rem]">{a.name}</span>
+                {known && !isWrong && (
+                  <span className="absolute right-2 top-2 grid size-5 place-items-center rounded-full bg-cream text-cocoa-2" title="In your field notes">
+                    <NotebookPen className="size-3" />
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* journey so far + field notes */}
+        <div className="order-3 grid min-w-0 gap-4 lg:col-start-1 lg:row-start-2">
+          <ol className="grid gap-1.5" aria-label="Journey so far">
             {DOUBTS.map((d, k) => {
               const a = solved[d.id];
+              const now = k === i && !out;
               return (
-                <li key={d.id} className={`flex items-center gap-2 rounded-xl px-3 py-1.5 text-[0.88rem] ${a ? "bg-success/10 text-cocoa" : k === i ? "bg-orange/10 font-bold text-cocoa" : "bg-cream text-cocoa-2/60"}`}>
-                  <span className="tabular-nums">{k + 1}.</span>
+                <li key={d.id} className={`flex items-center gap-2 rounded-xl px-3 py-1.5 text-[0.9rem] ${a ? "bg-success/10 text-cocoa" : now ? "bg-orange/10 font-bold text-cocoa" : "bg-cream text-cocoa-2/70"}`}>
+                  {a ? <Check className="size-4 shrink-0 text-success" strokeWidth={3} /> : <span className="w-4 shrink-0 text-center tabular-nums">{k + 1}</span>}
                   <span className="min-w-0 flex-1 truncate">
-                    {d.who}: {a ? ASSETS.find((x) => x.id === a)!.name : k === i ? "now" : "…"}
+                    {d.who}: {a ? ASSETS.find((x) => x.id === a)!.name : now ? "now" : "…"}
                   </span>
                 </li>
               );
             })}
           </ol>
-        </div>
 
-        {/* the assets */}
-        <div className="grid min-w-0 gap-2 sm:grid-cols-2">
-          {ASSETS.map((a) => {
-            const Icon = a.icon;
-            const isWrong = wrongs.includes(a.id);
-            return (
-              <button key={a.id} disabled={done || out} onClick={() => play(a.id)} className={`flex items-start gap-3 rounded-2xl border-2 p-3 text-left transition-colors disabled:opacity-60 ${isWrong ? "border-error/50 bg-error/5" : "border-cocoa/15 bg-white hover:border-orange"}`}>
-                <span className={`grid size-10 shrink-0 place-items-center rounded-xl ${a.id === "discount" ? "bg-cocoa/10 text-cocoa" : "bg-orange text-white"}`}>
-                  <Icon className="size-5" />
-                </span>
-                <span className="min-w-0 font-display text-[1.02rem] font-semibold leading-snug text-cocoa">{a.name}</span>
-              </button>
-            );
-          })}
+          <div className="rounded-[20px] border border-cocoa/15 bg-cream/70 p-4">
+            <div className="flex items-center gap-2 font-display text-[1.1rem] font-semibold text-cocoa">
+              <NotebookPen className="size-5 text-orange" /> Field notes
+              <span className="ml-auto text-[0.85rem] font-bold text-cocoa-2">
+                {notes.length} of {ASSETS.length} assets
+              </span>
+            </div>
+            {notes.length === 0 ? (
+              <p className="mt-2 text-[0.92rem] leading-snug text-cocoa-2">Empty for now. Each asset you try is added here with what it really does.</p>
+            ) : (
+              <ul className="mt-2 grid gap-2">
+                {ASSETS.filter((a) => notes.includes(a.id)).map((a) => (
+                  <li key={a.id} className="rounded-xl bg-white px-3 py-2 text-[0.92rem] leading-snug text-cocoa">
+                    <strong>{a.name}.</strong> {a.does}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       </div>
     </GameFrame>

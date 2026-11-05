@@ -190,7 +190,7 @@ export default function PositionMap({ onDone }: { onDone: (summary: string) => v
       stars={step === 3 ? starsFor(mistakes) : undefined}
       onReset={reset}
       feedback={fb}
-      note="Mithai Mahal, Crunch Masters and ProteinPeak are fictional examples of the competitor types named in this chapter. Eat Better's clues are printed on its own packs."
+      note={{ real: "Eat Better's clues are printed on its own packs. The competitor types are the ones named in this chapter.", practice: "Mithai Mahal, Crunch Masters and ProteinPeak are made-up brands for practice.", tip: "Place a brand from what it is, not how it is sold. Price, pack size and where it is sold are not on these axes." }}
     >
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start">
         {/* the map */}

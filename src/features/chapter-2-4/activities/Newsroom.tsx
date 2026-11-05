@@ -133,7 +133,7 @@ export default function Newsroom({ onDone }: { onDone: (summary: string) => void
       stars={step === 3 ? starsFor(mistakes) : undefined}
       onReset={reset}
       feedback={fb}
-      note="Funding facts are from the chapter. The cake and printer facts are practice distractors."
+      note={{ real: "The funding facts (₹17 crore Pre-Series A, co-led by Prath Ventures and Spring Marketing Capital) are from this chapter.", practice: "The cake and printer facts are made-up distractors. They are true-sounding, but they are not news.", tip: "Newsworthy first: who did what, how much, and who backed it. Background goes last." }}
     >
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:items-start">
         <div className="min-w-0">

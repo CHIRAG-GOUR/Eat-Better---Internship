@@ -169,7 +169,7 @@ export default function PersonaLab({ onDone }: { onDone: (summary: string) => vo
       stars={step === 3 ? starsFor(mistakes) : undefined}
       onReset={reset}
       feedback={fb}
-      note="Aman, Neha, Farah and Mr Gupta are fictional interviewees for classroom learning, not Eat Better customer research."
+      note={{ real: "The four audiences and what working professionals need come from this chapter's target-audience table.", practice: "Aman, Neha, Farah and Mr Gupta are made-up interviewees for practice, not Eat Better customer research.", tip: "A trait only counts when two different people say it. One loud voice is not a pattern." }}
     >
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:items-start">
         {/* interviews */}

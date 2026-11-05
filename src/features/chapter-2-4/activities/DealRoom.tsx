@@ -139,7 +139,7 @@ export default function DealRoom({ onDone }: { onDone: (summary: string) => void
       stars={step === 3 ? starsFor(mistakes) : undefined}
       onReset={reset}
       feedback={fb}
-      note="Step 1 uses the real Shark Tank India (Season 4) ask from the chapter. Investors A–C and the monthly sales figures are fictional practice numbers, not Eat Better data."
+      note={{ real: "Eat Better's Shark Tank India (Season 4) pitch and Namita Thapar's deal (₹50 lakh for 0.5% plus a 1% royalty) are from this chapter.", practice: "Investors A–C and the monthly sales figures are made-up practice numbers. They change every restart and are not Eat Better data.", tip: "1 crore = 100 lakh. Valuation = amount ÷ equity share." }}
     >
       <AnimatePresence mode="wait">
         {step === 0 && (
