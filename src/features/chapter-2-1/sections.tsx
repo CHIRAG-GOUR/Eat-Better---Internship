@@ -9,7 +9,7 @@ import { Panel } from "@/components/chapter/Panel";
 import { ActivityLabel, SectionIntro } from "@/components/chapter/SectionIntro";
 import { GlossaryText } from "@/components/chapter/Glossary";
 import { createActivityStore } from "@/lib/activities";
-import { IconFlow, PhotoFan } from "@/components/rich";
+import { IconFlow, MediaRow } from "@/components/rich";
 import { LearnLab } from "@/components/learn/LearnLab";
 import { LeafBulb } from "@/components/icons/EbIcons";
 import { LABS_21 } from "./labs";
@@ -76,8 +76,15 @@ export function IdentityMap() {
         </div>
         <div className="mt-10">
           <div className="text-center text-[0.85rem] font-extrabold uppercase tracking-[0.14em] text-orange">One identity, every touchpoint</div>
-          <div className="mt-4">
-            <PhotoFan items={TOUCHPOINTS.map((t) => ({ img: t.img, caption: t.label, alt: t.note }))} />
+          <div className="mx-auto mt-4 grid max-w-4xl grid-cols-1 gap-3 sm:grid-cols-3">
+            {TOUCHPOINTS.map((t, i) => (
+              <motion.figure key={t.id} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }} className="overflow-hidden rounded-2xl border border-cocoa bg-white shadow-[2px_2px_0_0_#2f1c1a]">
+                <div className="relative aspect-[4/3]">
+                  <Image src={t.img} alt={t.note} fill sizes="(max-width: 640px) 100vw, 300px" className="object-cover object-top" />
+                </div>
+                <figcaption className="px-3 py-2 text-[0.92rem] font-bold text-cocoa">{t.label}</figcaption>
+              </motion.figure>
+            ))}
           </div>
         </div>
       </Panel>
@@ -94,9 +101,8 @@ function AreaShow({ id, index, areaId, tone, title, media, children }: { id: str
     <section id={id} className={sectionCls}>
       <Panel tone={tone} reveal="up" width="max-w-7xl">
         <SectionIntro index={index} kicker={a.area} title={title} />
-        <div className="mt-6 grid gap-5 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:items-start">
-          <div className="min-w-0">{media}</div>
-          <div className="grid min-w-0 gap-3">
+        <div className="mt-6 grid gap-5">
+          <div className="grid min-w-0 gap-3 md:grid-cols-2">
             <motion.div initial={{ opacity: 0, x: 18 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="rounded-[22px] border border-cocoa bg-cream p-5 shadow-[3px_3px_0_0_#2f1c1a]">
               <div className="flex items-center gap-2 text-[0.8rem] font-extrabold uppercase tracking-[0.12em] text-orange">
                 <Icon className="size-4" /> What students will analyse
@@ -112,6 +118,7 @@ function AreaShow({ id, index, areaId, tone, title, media, children }: { id: str
               <p className="mt-2 font-display text-[1.25rem] font-semibold leading-snug">{a.learn}</p>
             </motion.div>
           </div>
+          <div className="min-w-0">{media}</div>
         </div>
         {children && <div className="mt-6">{children}</div>}
       </Panel>
@@ -119,14 +126,6 @@ function AreaShow({ id, index, areaId, tone, title, media, children }: { id: str
   );
 }
 
-function Shot({ src, alt, caption, w, h }: { src: string; alt: string; caption: string; w: number; h: number }) {
-  return (
-    <motion.figure initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="overflow-hidden rounded-[22px] border border-cocoa bg-white shadow-[3px_3px_0_0_#2f1c1a]">
-      <Image src={src} alt={alt} width={w} height={h} sizes="(max-width: 1024px) 100vw, 700px" className="h-auto w-full" />
-      <figcaption className="border-t border-cocoa/10 bg-cream px-4 py-2 text-[0.85rem] text-cocoa-2">{caption}</figcaption>
-    </motion.figure>
-  );
-}
 
 const RANGE_PHOTOS: [string, string, string][] = [
   ["/brand/products/millet-bhujia-1.webp", "Millet range", "#35401D"],
@@ -146,13 +145,22 @@ export function NameSection() {
       tone="peach"
       title="Two words, one promise"
       media={
-        <div className="grid gap-3">
-          <Shot src="/chapter-2-1/web/home.webp" alt="eatbetterco.com home page" caption="eatbetterco.com home page (screenshot)" w={1440} h={900} />
-          <div className="flex flex-col items-center gap-3 rounded-[22px] border border-cocoa bg-cream p-5 shadow-[3px_3px_0_0_#2f1c1a] sm:flex-row sm:justify-center sm:gap-6">
-            <Image src="/brand/eat-better-logo.svg" alt="Eat Better Co logo" width={300} height={145} className="h-auto w-[min(200px,60%)]" />
-            <p className="text-center font-display text-[clamp(1.25rem,2.4vw,1.6rem)] font-semibold leading-tight text-cocoa sm:text-left">&ldquo;{TAGLINE}&rdquo;</p>
-          </div>
-        </div>
+        <MediaRow
+          items={[
+            { kind: "image", src: "/chapter-2-1/web/home.webp", alt: "eatbetterco.com home page", ratio: 1.6, caption: "eatbetterco.com home page (screenshot)" },
+            {
+              kind: "node",
+              ratio: 0.8,
+              node: (
+                <div className="flex size-full flex-col items-center justify-center gap-5 rounded-2xl border border-cocoa bg-cream p-6 shadow-[3px_3px_0_0_#2f1c1a]">
+                  <Image src="/brand/eat-better-logo.svg" alt="Eat Better Co logo" width={300} height={145} className="h-auto w-[78%]" />
+                  <p className="text-center font-display text-[clamp(1.2rem,2.2vw,1.6rem)] font-semibold leading-tight text-cocoa">&ldquo;{TAGLINE}&rdquo;</p>
+                </div>
+              ),
+              caption: "Logo and tagline (official)",
+            },
+          ]}
+        />
       }
     />
   );
@@ -167,21 +175,13 @@ export function LookSection() {
       tone="light"
       title="The same face, everywhere"
       media={
-        <div className="grid gap-3">
-          <div className="grid grid-cols-[minmax(0,2.4fr)_minmax(0,1fr)] gap-3">
-            <Shot src="/chapter-2-1/web/home2.webp" alt="eatbetterco.com product range on desktop" caption="Website, desktop" w={1440} h={900} />
-            <Shot src="/chapter-2-1/web/mobile.webp" alt="eatbetterco.com on a phone" caption="Website, phone" w={390} h={844} />
-          </div>
-          <div className="grid grid-cols-3 gap-2">
-            {TOUCHPOINTS.map((t, i) => (
-              <motion.figure key={t.id} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }} className="min-w-0 overflow-hidden rounded-2xl border border-cocoa bg-white">
-                <div className="relative aspect-[4/3]">
-                  <Image src={t.img} alt={t.note} fill sizes="220px" className="object-cover" />
-                </div>
-                <figcaption className="px-2 py-1.5 text-[0.82rem] font-bold leading-tight text-cocoa">{t.label}</figcaption>
-              </motion.figure>
-            ))}
-          </div>
+        <div className="grid gap-4">
+          <MediaRow
+            items={[
+              { kind: "image", src: "/chapter-2-1/web/home2.webp", alt: "eatbetterco.com product range on desktop", ratio: 1.6, caption: "Website, desktop (screenshot)" },
+              { kind: "image", src: "/chapter-2-1/web/mobile.webp", alt: "eatbetterco.com on a phone", ratio: 390 / 844, caption: "Website, phone (screenshot)" },
+            ]}
+          />
         </div>
       }
     >
@@ -210,7 +210,7 @@ export function ColourSection() {
       tone="peach"
       title="Every range has its colour"
       media={
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {RANGE_PHOTOS.map(([src, cap, hex], i) => (
             <motion.figure key={src} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }} className="overflow-hidden rounded-2xl border border-cocoa bg-white">
               <div className="relative aspect-square">
@@ -240,7 +240,7 @@ export function PackSection() {
       tone="light"
       title="A pack sells in seconds"
       media={
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {[
             ["/brand/products/millet-bhujia-0.webp", "Pouch", "Millet Bhujia"],
             ["/brand/products/hazelnut-laddoo-0.webp", "Sachet", "Hazelnut Chocolate Laddoos"],
@@ -281,19 +281,21 @@ export function ToneSection() {
       tone="peach"
       title="How Eat Better sounds"
       media={
-        <div className="grid gap-3">
-          <Shot src="/chapter-2-1/web/bhujia.webp" alt="Millet Bhujia product page on eatbetterco.com" caption="Product page copy, eatbetterco.com (screenshot)" w={1440} h={900} />
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Shot src="/chapter-2-1/web/story2.webp" alt="Our Story copy on eatbetterco.com" caption="“Our Story” copy, eatbetterco.com (screenshot)" w={1440} h={900} />
-            <div className="grid content-start gap-2">
-              {OFFICIAL_LINES.map((l, i) => (
-                <motion.div key={l} initial={{ opacity: 0, x: -14 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }} className="rounded-2xl border border-cocoa bg-white px-3.5 py-2.5 font-display text-[1.02rem] font-semibold text-cocoa shadow-[2px_2px_0_0_#2f1c1a]">
-                  &ldquo;{l}&rdquo;
-                </motion.div>
-              ))}
-              <p className="text-[0.8rem] text-cocoa-2">Official lines from eatbetterco.com</p>
-            </div>
+        <div className="grid gap-4">
+          <MediaRow
+            items={[
+              { kind: "image", src: "/chapter-2-1/web/bhujia.webp", alt: "Millet Bhujia product page on eatbetterco.com", ratio: 1.6, caption: "Product page copy, eatbetterco.com (screenshot)" },
+              { kind: "image", src: "/chapter-2-1/web/story2.webp", alt: "Our Story copy on eatbetterco.com", ratio: 1.6, caption: "“Our Story” copy, eatbetterco.com (screenshot)" },
+            ]}
+          />
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+            {OFFICIAL_LINES.map((l, i) => (
+              <motion.div key={l} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }} className="flex items-center rounded-2xl border border-cocoa bg-white px-4 py-3 font-display text-[1.05rem] font-semibold leading-snug text-cocoa shadow-[2px_2px_0_0_#2f1c1a]">
+                &ldquo;{l}&rdquo;
+              </motion.div>
+            ))}
           </div>
+          <p className="text-[0.82rem] text-cocoa-2">Official lines from eatbetterco.com</p>
         </div>
       }
     />
@@ -309,10 +311,12 @@ export function PerceptionSection() {
       tone="light"
       title="Same brand, different eyes"
       media={
-        <div className="grid gap-3">
-          <Shot src="/chapter-2-1/web/story.webp" alt="Our Story page on eatbetterco.com" caption="Our Story page, eatbetterco.com (screenshot)" w={1440} h={900} />
-          <Shot src="/chapter-2-1/web/laddoo.webp" alt="Hazelnut Chocolate Laddoos product page on eatbetterco.com" caption="Product page, eatbetterco.com (screenshot)" w={1440} h={900} />
-        </div>
+        <MediaRow
+          items={[
+            { kind: "image", src: "/chapter-2-1/web/story.webp", alt: "Our Story page on eatbetterco.com", ratio: 1.6, caption: "Our Story page, eatbetterco.com (screenshot)" },
+            { kind: "image", src: "/chapter-2-1/web/laddoo.webp", alt: "Hazelnut Chocolate Laddoos product page on eatbetterco.com", ratio: 1.6, caption: "Product page, eatbetterco.com (screenshot)" },
+          ]}
+        />
       }
     />
   );

@@ -11,6 +11,8 @@ type Props = {
   caption?: string;
   /** vertical (9:16) clips such as social posts */
   portrait?: boolean;
+  /** fill the parent's width exactly (used inside MediaRow so heights line up) */
+  fill?: boolean;
 } & (
   | { kind: "file"; av1?: string; h264: string; poster?: string }
   | { kind: "youtube"; id: string; poster?: string }
@@ -24,7 +26,7 @@ type Props = {
  */
 export function VideoBlock(props: Props) {
   const [play, setPlay] = useState(false);
-  const frame = props.portrait ? "mx-auto aspect-[9/16] max-h-[78vh] w-auto max-w-full" : "aspect-video w-full";
+  const frame = props.portrait ? (props.fill ? "aspect-[9/16] w-full" : "mx-auto aspect-[9/16] max-h-[78vh] w-auto max-w-full") : "aspect-video w-full";
   return (
     <figure>
       <motion.div

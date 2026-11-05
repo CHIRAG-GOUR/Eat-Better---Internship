@@ -35,7 +35,7 @@ import { Panel } from "@/components/chapter/Panel";
 import { SectionIntro } from "@/components/chapter/SectionIntro";
 import { GlossaryText } from "@/components/chapter/Glossary";
 import { VideoBlock } from "@/components/chapter/VideoBlock";
-import { FlipCards, IconFlow, SplitStory, StatBand } from "@/components/rich";
+import { FlipCards, IconFlow, MediaRow, SplitStory, StatBand } from "@/components/rich";
 import { useActivities22, usePractice22, ACTIVITY_IDS } from "./practice";
 import { COMMUNITY, MARKETS, OFFERS, OWNED, REVIEWS, SOCIAL, STORY, TAKEAWAY, THINK, VIDEOS } from "./content";
 
@@ -74,15 +74,6 @@ function Example({ children }: { children: string }) {
   );
 }
 
-/** A supplied LMS image, shown unaltered with its caption. */
-function Shot({ src, w, h, alt, caption, className = "" }: { src: string; w: number; h: number; alt: string; caption: string; className?: string }) {
-  return (
-    <motion.figure initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className={className}>
-      <Image src={src} alt={alt} width={w} height={h} sizes="(max-width: 1024px) 100vw, 640px" className="h-auto w-full rounded-2xl border border-cocoa shadow-[3px_3px_0_0_#2f1c1a]" />
-      <figcaption className="mt-2 text-[0.88rem] text-cocoa-2">{caption}</figcaption>
-    </motion.figure>
-  );
-}
 
 /* ── 1 · Community-first marketing ────────────────────────────── */
 
@@ -120,16 +111,19 @@ export function Owned() {
         <SectionIntro index="2" kicker="Owned digital channels" title="Channels the brand controls">
           <GlossaryText>{OWNED.text}</GlossaryText>
         </SectionIntro>
-        <div className="mt-6 grid gap-5 lg:grid-cols-[1fr_minmax(0,340px)] lg:items-start">
-          <div className="space-y-4">
-            <FlipCards cols={2} cards={OWNED.channels.map((c, i) => ({ front: c.name, back: c.line, icon: icons[i] }))} />
-            <Example>{OWNED.example}</Example>
-            <Concept>{OWNED.concept}</Concept>
-          </div>
-          <div className="space-y-5">
-            <Shot src="/chapter-2-2/lms-2.png" w={866} h={731} alt="Product cards on the Eat Better Co website" caption="The official Eat Better Co website (screenshot)." />
-            <VideoBlock kind="file" portrait h264={VIDEOS.perfectSnack.h264} poster={VIDEOS.perfectSnack.poster} title={VIDEOS.perfectSnack.title} caption="From Eat Better Co's own YouTube channel." />
-          </div>
+        <div className="mt-6">
+          <FlipCards cols={4} cards={OWNED.channels.map((c, i) => ({ front: c.name, back: c.line, icon: icons[i] }))} />
+        </div>
+        <MediaRow
+          className="mx-auto mt-6 max-w-4xl"
+          items={[
+            { kind: "image", src: "/chapter-2-2/lms-2.png", alt: "Product cards on the Eat Better Co website", ratio: 866 / 731, fit: "contain", caption: "The official Eat Better Co website (screenshot)." },
+            { kind: "node", ratio: 9 / 16, framed: false, node: <VideoBlock kind="file" portrait fill h264={VIDEOS.perfectSnack.h264} poster={VIDEOS.perfectSnack.poster} title={VIDEOS.perfectSnack.title} caption="From Eat Better Co's own YouTube channel." /> },
+          ]}
+        />
+        <div className="mt-6 grid gap-3 lg:grid-cols-2">
+          <Example>{OWNED.example}</Example>
+          <Concept>{OWNED.concept}</Concept>
         </div>
       </Panel>
     </section>
@@ -141,8 +135,8 @@ export function Owned() {
 function InstagramPost() {
   return (
     <figure>
-      <Image src="/chapter-2-2/lms-3.png" alt="Eat Better Co's founders with their products — an Instagram post" width={800} height={1067} sizes="(max-width: 640px) 100vw, 340px" className="mx-auto h-auto w-full max-w-[340px] rounded-2xl border border-cocoa shadow-[4px_4px_0_0_#ff5c00]" />
-      <figcaption className="mt-2 text-center text-[0.88rem] text-cocoa-2">
+      <Image src="/chapter-2-2/lms-3.png" alt="Eat Better Co's founders with their products — an Instagram post" width={800} height={1067} sizes="(max-width: 640px) 100vw, 340px" className="h-auto w-full rounded-2xl border border-cocoa shadow-[4px_4px_0_0_#ff5c00]" />
+      <figcaption className="mt-3 text-[0.95rem] leading-snug text-cocoa-2">
         A post from Eat Better Co on Instagram.{" "}
         <a href={`https://www.instagram.com/p/${VIDEOS.instagramPost}/`} target="_blank" rel="noopener noreferrer" className="pointer-events-auto font-bold text-orange underline underline-offset-2">
           View on Instagram
@@ -163,11 +157,14 @@ export function Social() {
         <div className="mt-6">
           <FlipCards cols={4} cards={SOCIAL.platforms.map((p, i) => ({ front: p.name, back: p.line, icon: icons[i] }))} />
         </div>
-        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          <VideoBlock kind="file" portrait h264={VIDEOS.reel.h264} poster={VIDEOS.reel.poster} title={VIDEOS.reel.title} caption="Instagram: a reel from Eat Better Co." />
-          <VideoBlock kind="file" portrait av1={VIDEOS.factory.av1} h264={VIDEOS.factory.h264} poster={VIDEOS.factory.poster} title={VIDEOS.factory.title} caption="YouTube: a Short from Eat Better Co." />
-          <InstagramPost />
-        </div>
+        <MediaRow
+          className="mx-auto mt-6 max-w-4xl"
+          items={[
+            { kind: "node", ratio: 9 / 16, framed: false, node: <VideoBlock kind="file" portrait fill h264={VIDEOS.reel.h264} poster={VIDEOS.reel.poster} title={VIDEOS.reel.title} caption="Instagram: a reel from Eat Better Co." /> },
+            { kind: "node", ratio: 9 / 16, framed: false, node: <VideoBlock kind="file" portrait fill av1={VIDEOS.factory.av1} h264={VIDEOS.factory.h264} poster={VIDEOS.factory.poster} title={VIDEOS.factory.title} caption="YouTube: a Short from Eat Better Co." /> },
+            { kind: "node", ratio: 800 / 1067, framed: false, node: <InstagramPost /> },
+          ]}
+        />
         <div className="mt-5 grid gap-3 lg:grid-cols-2">
           <Example>{SOCIAL.example}</Example>
           <Concept>{SOCIAL.concept}</Concept>
@@ -187,8 +184,8 @@ export function Story() {
         <SectionIntro index="4" kicker="Brand storytelling & transparency" title="Story, purpose, people" tone="dark">
           <GlossaryText>{STORY.text}</GlossaryText>
         </SectionIntro>
-        <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,340px)_1fr] lg:items-center">
-          <VideoBlock kind="file" portrait av1={VIDEOS.sharks.av1} h264={VIDEOS.sharks.h264} poster={VIDEOS.sharks.poster} title={VIDEOS.sharks.title} caption="From Eat Better Co's own YouTube channel." />
+        <div className="mt-6 grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)] lg:items-center">
+          <div className="mx-auto w-full max-w-[300px]"><VideoBlock kind="file" portrait fill av1={VIDEOS.sharks.av1} h264={VIDEOS.sharks.h264} poster={VIDEOS.sharks.poster} title={VIDEOS.sharks.title} caption="From Eat Better Co's own YouTube channel." /></div>
           <div className="space-y-4">
             <div className="grid grid-cols-3 gap-2">
               {STORY.points.map((p, i) => {
@@ -230,7 +227,7 @@ export function Reviews() {
         <SectionIntro index="5" kicker="Customer reviews & ratings" title="Other buyers, before you buy">
           <GlossaryText>{REVIEWS.text}</GlossaryText>
         </SectionIntro>
-        <div className="mt-6 grid gap-5 lg:grid-cols-2 lg:items-start">
+        <div className="mt-6 grid gap-5 lg:grid-cols-2 lg:items-stretch">
           <div className="rounded-[22px] border border-cocoa bg-white p-5 shadow-[3px_3px_0_0_#2f1c1a]">
             <div className="text-[0.78rem] font-extrabold uppercase tracking-[0.12em] text-cocoa-2">What a shopper compares</div>
             <div className="mt-3 grid grid-cols-2 gap-2">
@@ -251,7 +248,6 @@ export function Reviews() {
                 <GlossaryText>{REVIEWS.negative}</GlossaryText>
               </p>
             </div>
-            <Shot src="/chapter-2-2/lms-4.png" w={1092} h={680} alt="A customer review of an Eat Better product on Amazon" caption="A customer review on Amazon (screenshot)." className="mt-4" />
           </div>
           <div className="space-y-4">
             <div className="grid grid-cols-3 gap-2">
@@ -273,6 +269,7 @@ export function Reviews() {
             <Concept>{REVIEWS.concept}</Concept>
           </div>
         </div>
+        <MediaRow className="mx-auto mt-6 max-w-3xl" items={[{ kind: "image", src: "/chapter-2-2/lms-4.png", alt: "A customer review of an Eat Better product on Amazon", ratio: 1092 / 680, fit: "contain", caption: "A customer review on Amazon (screenshot)." }]} />
       </Panel>
     </section>
   );
@@ -352,16 +349,14 @@ export function Markets() {
             </span>
           ))}
         </div>
-        <div className="mt-5 grid gap-5 lg:grid-cols-[1.2fr_1fr] lg:items-start">
-          <div className="space-y-5">
-            <VideoBlock kind="youtube" id={VIDEOS.sharkTank.id} poster="/chapter-1-3/shark-tank-thumb.jpg" title={VIDEOS.sharkTank.title} caption="Shark Tank India, Season 4 (Sony LIV on YouTube) — plays from YouTube." />
-            <Shot src="/chapter-2-2/lms-5.png" w={1181} h={497} alt="Eat Better namkeens in quick-commerce app search results" caption="Quick-commerce listings (screenshot); prices vary." />
-          </div>
+        <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:items-center">
+          <VideoBlock kind="youtube" id={VIDEOS.sharkTank.id} poster="/chapter-1-3/shark-tank-thumb.jpg" title={VIDEOS.sharkTank.title} caption="Shark Tank India, Season 4 (Sony LIV on YouTube) — plays from YouTube." />
           <div className="space-y-4">
             <Example>{MARKETS.example}</Example>
             <Concept>{MARKETS.concept}</Concept>
           </div>
         </div>
+        <MediaRow className="mt-6" items={[{ kind: "image", src: "/chapter-2-2/lms-5.png", alt: "Eat Better namkeens in quick-commerce app search results", ratio: 1181 / 497, fit: "contain", caption: "Quick-commerce listings (screenshot); prices vary." }]} />
       </Panel>
     </section>
   );
