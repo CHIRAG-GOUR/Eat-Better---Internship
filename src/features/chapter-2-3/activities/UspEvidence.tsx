@@ -201,7 +201,7 @@ export default function UspEvidence({ onDone }: { onDone: (summary: string) => v
   const finish = () => {
     setStep(3);
     setFb({ tone: "good", text: "That USP is specific, relevant, distinctive and backed by printed proof — the chapter's four tests." });
-    onDone(`USP Evidence Desk: proof found for 5 differentiators, 4 label checks (${mistakes} mistakes). My USP: “${usp.trim()}”`);
+    onDone(`USP Evidence Desk: proof found for 5 differentiators, 4 label checks (${mistakes} ${mistakes === 1 ? "mistake" : "mistakes"}). My USP: “${usp.trim()}”`);
   };
 
   return (

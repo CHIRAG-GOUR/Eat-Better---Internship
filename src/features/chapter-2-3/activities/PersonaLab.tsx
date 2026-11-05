@@ -154,7 +154,7 @@ export default function PersonaLab({ onDone }: { onDone: (summary: string) => vo
   const finish = () => {
     setStep(3);
     setFb({ tone: "good", text: "Your persona and message are built entirely from evidence — every word traces back to something two people said." });
-    onDone(`Persona Lab: The Desk-Break Snacker (working professionals), 5 traits each confirmed by 2+ interviews (${mistakes} mistakes). Message: “${msg.trim()}”`);
+    onDone(`Persona Lab: The Desk-Break Snacker (working professionals), 5 traits each confirmed by 2+ interviews (${mistakes} ${mistakes === 1 ? "mistake" : "mistakes"}). Message: “${msg.trim()}”`);
   };
 
   const selLine = ALL.find((l) => l.id === sel);

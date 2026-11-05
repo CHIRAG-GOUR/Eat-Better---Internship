@@ -177,7 +177,7 @@ export default function PositionMap({ onDone }: { onDone: (summary: string) => v
     const sentence = `For ${stmt.who.trim()} who ${stmt.need.trim()}, Eat Better is the snack brand that ${stmt.diff.trim()}, because ${stmt.proof.trim()}.`;
     setStep(3);
     setFb({ tone: "good", text: "Positioning statement saved. It names who, what they need, why Eat Better is different and the proof." });
-    onDone(`Positioning Map: mapped 4 brands with evidence (${mistakes} mistakes). Statement: ${sentence}`);
+    onDone(`Positioning Map: mapped 4 brands with evidence (${mistakes} ${mistakes === 1 ? "mistake" : "mistakes"}). Statement: ${sentence}`);
   };
 
   return (
