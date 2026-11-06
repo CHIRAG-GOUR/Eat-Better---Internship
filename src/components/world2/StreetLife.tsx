@@ -4,15 +4,13 @@ import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { RoundedBox } from "@react-three/drei";
-import { Person, type Look, type Pose } from "@/components/sim/Person";
+import { Human, type HumanLook } from "./Human";
 
 /**
  * Street life for Brand Boulevard: Indian traffic (auto-rickshaws, delivery scooters, hatchbacks) in
  * both lanes and pedestrians on both pavements, all looping around the camera so the street always
  * feels alive. Generic vehicles, no real brands. Lighter on phones.
  */
-
-const still = (o: Partial<Pose> = {}): Pose => ({ walk: 0, mood: 0, arm: 0, shake: 0, jump: 0, holding: false, ...o });
 
 function Wheel({ r = 0.24, w = 0.14, spin }: { r?: number; w?: number; spin: React.RefObject<number> }) {
   const g = useRef<THREE.Group>(null);
@@ -37,66 +35,145 @@ function Wheel({ r = 0.24, w = 0.14, spin }: { r?: number; w?: number; spin: Rea
   );
 }
 
-const RIDER: Look = { skin: "#B98157", top: "#FF5C00", bottom: "#2F2A28", hair: "#1A110C", hairStyle: "short", extra: "cap", extraColor: "#1E1A18" };
-const DRIVER: Look = { skin: "#A47148", top: "#7A8A99", bottom: "#3B3B3B", hair: "#1A110C", hairStyle: "short" };
+const RIDER: HumanLook = { skin: "#A86F45", hair: "#1A110C", hairStyle: "short", outfit: "tshirt", top: "#FF5C00", bottom: "#2F2A28", facial: "stubble", helmet: "#F4F1EC", bag: { kind: "sling", color: "#3A2F2A" } };
+const DRIVER: HumanLook = { skin: "#8D5A3B", hair: "#1A110C", hairStyle: "short", outfit: "shirt", top: "#7A8A99", bottom: "#3B3B3B", accent: "#6B7A88", facial: "moustache" };
 
-/** Delivery scooter with a seated rider and an insulated box. Faces +z. */
-export function Scooter({ spin, body = "#2E7D6B", box = "#FF5C00", rider = RIDER }: { spin: React.RefObject<number>; body?: string; box?: string; rider?: Look }) {
-  const pose = useRef<Pose>(still({ sit: 1, arm: 0.42 }));
+function ScooterWheel({ spin }: { spin: React.RefObject<number> }) {
+  const g = useRef<THREE.Group>(null);
+  useFrame(() => {
+    if (g.current) g.current.rotation.x = spin.current ?? 0;
+  });
   return (
-    <group>
-      {/* wheels */}
-      <group position={[0, 0.24, 0.62]}>
-        <Wheel spin={spin} />
-      </group>
-      <group position={[0, 0.24, -0.6]}>
-        <Wheel spin={spin} />
-      </group>
-      {/* floorboard + rear body */}
-      <RoundedBox args={[0.42, 0.14, 0.95]} radius={0.05} position={[0, 0.42, 0]} castShadow>
-        <meshStandardMaterial color="#2B2A29" roughness={0.6} />
-      </RoundedBox>
-      <RoundedBox args={[0.46, 0.42, 0.72]} radius={0.16} position={[0, 0.66, -0.34]} castShadow>
-        <meshStandardMaterial color={body} roughness={0.35} metalness={0.15} />
-      </RoundedBox>
-      {/* seat */}
-      <RoundedBox args={[0.34, 0.1, 0.62]} radius={0.05} position={[0, 0.92, -0.28]} castShadow>
-        <meshStandardMaterial color="#1F1D1C" roughness={0.7} />
-      </RoundedBox>
-      {/* front apron + stem */}
-      <RoundedBox args={[0.46, 0.78, 0.12]} radius={0.06} position={[0, 0.82, 0.5]} rotation={[-0.22, 0, 0]} castShadow>
-        <meshStandardMaterial color={body} roughness={0.35} metalness={0.15} />
-      </RoundedBox>
-      <mesh position={[0, 1.22, 0.58]} rotation={[-0.25, 0, 0]}>
-        <cylinderGeometry args={[0.04, 0.04, 0.5, 8]} />
-        <meshStandardMaterial color="#2B2A29" />
+    <group ref={g}>
+      <mesh rotation={[0, Math.PI / 2, 0]} castShadow>
+        <torusGeometry args={[0.16, 0.058, 12, 28]} />
+        <meshStandardMaterial color="#1B1A19" roughness={0.9} />
       </mesh>
-      {/* handlebar + headlight + mirrors */}
-      <mesh position={[0, 1.44, 0.52]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[0.025, 0.025, 0.7, 8]} />
-        <meshStandardMaterial color="#2B2A29" />
+      <mesh rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.12, 0.12, 0.07, 18]} />
+        <meshStandardMaterial color="#8E949A" metalness={0.75} roughness={0.3} />
       </mesh>
-      <mesh position={[0, 1.38, 0.66]}>
-        <sphereGeometry args={[0.08, 14, 10]} />
-        <meshStandardMaterial color="#FFF3C4" emissive="#FFE08A" emissiveIntensity={1.2} toneMapped={false} />
-      </mesh>
-      {[-1, 1].map((s) => (
-        <mesh key={s} position={[s * 0.3, 1.62, 0.5]}>
-          <boxGeometry args={[0.1, 0.07, 0.02]} />
-          <meshStandardMaterial color="#9AA4AE" metalness={0.8} roughness={0.2} />
+      {[0, 1, 2, 3, 4].map((k) => (
+        <mesh key={k} rotation={[(k / 5) * Math.PI * 2, 0, 0]} position={[0.038, 0, 0]}>
+          <boxGeometry args={[0.012, 0.22, 0.03]} />
+          <meshStandardMaterial color="#5E6368" metalness={0.7} roughness={0.35} />
         </mesh>
       ))}
-      {/* delivery box */}
-      <RoundedBox args={[0.5, 0.46, 0.46]} radius={0.06} position={[0, 1.25, -0.62]} castShadow>
+    </group>
+  );
+}
+
+/**
+ * A 110cc-style Indian scooter: curved front apron + leg shield, floorboard, smooth rear cowl, CVT casing,
+ * silencer, mirrors on stalks, integrated headlamp, tail lamp and a delivery box. Seated rider with an
+ * open-face helmet, hands on the grips and feet on the floorboard. Faces +z.
+ */
+export function Scooter({ spin, body = "#2E7D6B", box = "#FF5C00", rider = RIDER }: { spin: React.RefObject<number>; body?: string; box?: string; rider?: HumanLook }) {
+  const paint = { color: body, roughness: 0.28, metalness: 0.25 };
+  return (
+    <group>
+      {/* wheels: 10-inch tyres on alloy rims */}
+      {[0.6, -0.6].map((z) => (
+        <group key={z} position={[0, 0.215, z]}>
+          <ScooterWheel spin={spin} />
+        </group>
+      ))}
+      {/* front fork + fender */}
+      {[-0.07, 0.07].map((x) => (
+        <mesh key={x} position={[x, 0.55, 0.55]} rotation={[-0.16, 0, 0]} castShadow>
+          <cylinderGeometry args={[0.024, 0.024, 0.72, 10]} />
+          <meshStandardMaterial color="#2B2A29" metalness={0.5} roughness={0.4} />
+        </mesh>
+      ))}
+      <group position={[0, 0.215, 0.6]} rotation={[0, Math.PI / 2, 0]}>
+        <mesh rotation={[0, 0, 1.15]} castShadow>
+          <torusGeometry args={[0.255, 0.05, 8, 24, 1.75]} />
+          <meshStandardMaterial {...paint} />
+        </mesh>
+      </group>
+      {/* front apron (outer), chrome strip, inner leg shield, indicators */}
+      <RoundedBox args={[0.44, 0.8, 0.15]} radius={0.07} position={[0, 0.78, 0.43]} rotation={[-0.2, 0, 0]} castShadow>
+        <meshStandardMaterial {...paint} />
+      </RoundedBox>
+      <RoundedBox args={[0.12, 0.56, 0.04]} radius={0.02} position={[0, 0.74, 0.51]} rotation={[-0.2, 0, 0]}>
+        <meshStandardMaterial color="#C9CDD1" metalness={0.8} roughness={0.25} />
+      </RoundedBox>
+      <RoundedBox args={[0.42, 0.6, 0.05]} radius={0.02} position={[0, 0.68, 0.34]} rotation={[-0.2, 0, 0]}>
+        <meshStandardMaterial color="#1E1D1C" roughness={0.7} />
+      </RoundedBox>
+      {[-1, 1].map((s) => (
+        <mesh key={s} position={[s * 0.2, 0.92, 0.52]}>
+          <sphereGeometry args={[0.028, 10, 8]} />
+          <meshStandardMaterial color="#FFB300" emissive="#FF9800" emissiveIntensity={0.6} toneMapped={false} />
+        </mesh>
+      ))}
+      {/* floorboard + underbody */}
+      <RoundedBox args={[0.36, 0.07, 0.48]} radius={0.03} position={[0, 0.37, 0.08]} castShadow>
+        <meshStandardMaterial color="#2A2928" roughness={0.85} />
+      </RoundedBox>
+      <RoundedBox args={[0.28, 0.12, 0.7]} radius={0.04} position={[0, 0.27, -0.05]}>
+        <meshStandardMaterial color="#1F1E1D" roughness={0.8} />
+      </RoundedBox>
+      {/* rear cowl: one smooth body + side skirt */}
+      <mesh position={[0, 0.63, -0.44]} scale={[0.25, 0.25, 0.58]} castShadow>
+        <sphereGeometry args={[1, 28, 18]} />
+        <meshStandardMaterial {...paint} />
+      </mesh>
+      <RoundedBox args={[0.46, 0.22, 0.7]} radius={0.1} position={[0, 0.5, -0.36]} castShadow>
+        <meshStandardMaterial {...paint} />
+      </RoundedBox>
+      {/* engine / CVT casing (left) + silencer (right) */}
+      <RoundedBox args={[0.12, 0.2, 0.52]} radius={0.05} position={[-0.15, 0.3, -0.5]} castShadow>
+        <meshStandardMaterial color="#5C5F63" metalness={0.6} roughness={0.4} />
+      </RoundedBox>
+      <mesh position={[0.17, 0.3, -0.62]} rotation={[Math.PI / 2 - 0.12, 0, 0]} castShadow>
+        <cylinderGeometry args={[0.055, 0.05, 0.44, 14]} />
+        <meshStandardMaterial color="#3A3A3A" metalness={0.75} roughness={0.3} />
+      </mesh>
+      {/* seat + carrier + delivery box */}
+      <RoundedBox args={[0.3, 0.1, 0.7]} radius={0.045} position={[0, 0.88, -0.36]} rotation={[0.04, 0, 0]} castShadow>
+        <meshStandardMaterial color="#1A1918" roughness={0.6} />
+      </RoundedBox>
+      <RoundedBox args={[0.36, 0.03, 0.3]} radius={0.01} position={[0, 0.93, -0.84]}>
+        <meshStandardMaterial color="#222222" metalness={0.5} roughness={0.4} />
+      </RoundedBox>
+      <RoundedBox args={[0.46, 0.44, 0.44]} radius={0.05} position={[0, 1.17, -0.84]} castShadow>
         <meshStandardMaterial color={box} roughness={0.55} />
       </RoundedBox>
-      <mesh position={[0, 1.25, -0.384]}>
-        <planeGeometry args={[0.3, 0.12]} />
-        <meshStandardMaterial color="#FFF5EE" />
+      {/* tail lamp + number plate */}
+      <RoundedBox args={[0.18, 0.06, 0.04]} radius={0.02} position={[0, 0.72, -1.0]} rotation={[0.3, 0, 0]}>
+        <meshStandardMaterial color="#B71C1C" emissive="#FF3B30" emissiveIntensity={0.9} toneMapped={false} />
+      </RoundedBox>
+      <mesh position={[0, 0.56, -1.0]} rotation={[0, Math.PI, 0]}>
+        <planeGeometry args={[0.2, 0.1]} />
+        <meshStandardMaterial color="#F5F3EE" />
       </mesh>
-      {/* rider */}
-      <group position={[0, 0.34, -0.22]} scale={0.92}>
-        <Person look={rider} pose={pose} />
+      {/* handlebar cowl with headlamp, grips, mirrors */}
+      <RoundedBox args={[0.5, 0.13, 0.2]} radius={0.06} position={[0, 1.13, 0.42]} castShadow>
+        <meshStandardMaterial {...paint} />
+      </RoundedBox>
+      <RoundedBox args={[0.18, 0.08, 0.03]} radius={0.03} position={[0, 1.13, 0.525]}>
+        <meshStandardMaterial color="#FFF3C4" emissive="#FFE08A" emissiveIntensity={1.3} toneMapped={false} />
+      </RoundedBox>
+      {[-1, 1].map((s) => (
+        <group key={s}>
+          <mesh position={[s * 0.3, 1.12, 0.4]} rotation={[0, 0, Math.PI / 2]}>
+            <cylinderGeometry args={[0.022, 0.022, 0.12, 10]} />
+            <meshStandardMaterial color="#141414" roughness={0.9} />
+          </mesh>
+          <mesh position={[s * 0.22, 1.24, 0.41]} rotation={[0, 0, s * -0.4]}>
+            <cylinderGeometry args={[0.009, 0.009, 0.18, 6]} />
+            <meshStandardMaterial color="#222222" />
+          </mesh>
+          <mesh position={[s * 0.27, 1.33, 0.41]} rotation={[0, s * 0.3, 0]} scale={[0.085, 0.055, 0.016]}>
+            <sphereGeometry args={[1, 14, 10]} />
+            <meshStandardMaterial color="#2C3238" metalness={0.8} roughness={0.2} />
+          </mesh>
+        </group>
+      ))}
+      {/* rider: hips on the seat, feet on the floorboard, hands on the grips */}
+      <group position={[0, 0.02, -0.29]}>
+        <Human look={rider} mode="ride" />
       </group>
     </group>
   );
@@ -104,7 +181,6 @@ export function Scooter({ spin, body = "#2E7D6B", box = "#FF5C00", rider = RIDER
 
 /** Auto-rickshaw: green lower body, yellow canopy, three wheels, seated driver. Faces +z. */
 export function AutoRickshaw({ spin, body = "#2F7A3B", top = "#F6C21C" }: { spin: React.RefObject<number>; body?: string; top?: string }) {
-  const pose = useRef<Pose>(still({ sit: 1, arm: 0.4 }));
   return (
     <group>
       <group position={[0, 0.26, 0.95]}>
@@ -152,9 +228,13 @@ export function AutoRickshaw({ spin, body = "#2F7A3B", top = "#F6C21C" }: { spin
       <RoundedBox args={[1.18, 0.3, 0.45]} radius={0.06} position={[0, 1.03, -0.75]}>
         <meshStandardMaterial color="#3A2A22" roughness={0.8} />
       </RoundedBox>
-      {/* driver */}
-      <group position={[0, 0.62, 0.3]} scale={0.88}>
-        <Person look={DRIVER} pose={pose} />
+      {/* handlebar + driver */}
+      <mesh position={[0, 1.32, 0.62]} rotation={[0, 0, Math.PI / 2]}>
+        <cylinderGeometry args={[0.022, 0.022, 0.62, 8]} />
+        <meshStandardMaterial color="#1E1A18" />
+      </mesh>
+      <group position={[0, 0.16, 0.18]}>
+        <Human look={DRIVER} mode="drive" />
       </group>
     </group>
   );
@@ -235,20 +315,20 @@ function TrafficItem({ v, reduced }: { v: Vehicle; reduced: boolean }) {
   );
 }
 
-const WALKERS: { look: Look; side: 1 | -1; lane: number; dir: 1 | -1; speed: number; offset: number }[] = [
-  { look: { skin: "#C68B59", top: "#2E6F95", bottom: "#3B3B3B", hair: "#1E1410", hairStyle: "short", extra: "backpack", extraColor: "#35401D" }, side: -1, lane: 4.15, dir: 1, speed: 1.2, offset: 4 },
-  { look: { skin: "#9C6644", top: "#C2185B", bottom: "#C2185B", hair: "#140C08", hairStyle: "long", dress: true, extra: "dupatta", extraColor: "#FED300" }, side: -1, lane: 4.75, dir: -1, speed: 1.0, offset: 22 },
-  { look: { skin: "#D4A373", top: "#3E8E41", bottom: "#2B3A55", hair: "#2A1A12", hairStyle: "short", extra: "cap", extraColor: "#FF5C00" }, side: 1, lane: 4.2, dir: -1, speed: 1.3, offset: 9 },
-  { look: { skin: "#A86B45", top: "#7B1FA2", bottom: "#7B1FA2", hair: "#BDB6B0", hairStyle: "bun", dress: true, extra: "glasses", extraColor: "#C8963E" }, side: 1, lane: 4.7, dir: 1, speed: 0.8, offset: 35 },
-  { look: { skin: "#8D5A3B", top: "#F2A900", bottom: "#4E342E", hair: "#1A110C", hairStyle: "short" }, side: -1, lane: 4.45, dir: 1, speed: 1.1, offset: 47 },
-  { look: { skin: "#B5764A", top: "#26A69A", bottom: "#26A69A", hair: "#140C08", hairStyle: "long", dress: true }, side: 1, lane: 4.55, dir: 1, speed: 1.05, offset: 58 },
-  { look: { skin: "#C68B59", top: "#FFF5EE", bottom: "#4A3230", hair: "#1E1410", hairStyle: "short", extra: "glasses", extraColor: "#2F1C1A" }, side: -1, lane: 4.8, dir: -1, speed: 1.15, offset: 66 },
-  { look: { skin: "#D9A066", top: "#E98A7B", bottom: "#2B3A55", hair: "#3E2723", hairStyle: "bun", extra: "backpack", extraColor: "#1565C0" }, side: 1, lane: 4.3, dir: -1, speed: 1.25, offset: 28 },
+type WalkerSpec = { look: HumanLook; side: 1 | -1; lane: number; dir: 1 | -1; speed: number; offset: number };
+const WALKERS: WalkerSpec[] = [
+  { look: { skin: "#B98157", hair: "#1E1410", hairStyle: "side", outfit: "shirt", top: "#DCE6F0", bottom: "#2B3A55", accent: "#F4F7FA", facial: "stubble", bag: { kind: "shoulder", color: "#3E2B22" } }, side: -1, lane: 4.15, dir: 1, speed: 1.15, offset: 4 },
+  { look: { skin: "#9C6644", hair: "#140C08", hairStyle: "braid", outfit: "saree", top: "#C2185B", bottom: "#C2185B", accent: "#F2A900", bindi: true, slim: true, height: 0.95, bag: { kind: "shoulder", color: "#7A4B2A" } }, side: -1, lane: 4.75, dir: -1, speed: 0.95, offset: 22 },
+  { look: { skin: "#D1A276", hair: "#2A1A12", hairStyle: "curly", outfit: "tshirt", top: "#3E8E41", bottom: "#33475B", shoe: "#EDEDED", bag: { kind: "backpack", color: "#35401D" } }, side: 1, lane: 4.2, dir: -1, speed: 1.3, offset: 9 },
+  { look: { skin: "#A86B45", hair: "#CFC8C0", hairStyle: "bald", outfit: "kurta", top: "#F4EFE6", bottom: "#F4EFE6", facial: "moustache", glasses: "#3A2A1E", height: 0.97 }, side: 1, lane: 4.7, dir: 1, speed: 0.75, offset: 35 },
+  { look: { skin: "#8D5A3B", hair: "#1A110C", hairStyle: "short", outfit: "hoodie", top: "#4A4E69", bottom: "#2B2B2B", facial: "beard", shoe: "#F2F2F2" }, side: -1, lane: 4.45, dir: 1, speed: 1.1, offset: 47 },
+  { look: { skin: "#B5764A", hair: "#140C08", hairStyle: "long", outfit: "salwar", top: "#26A69A", bottom: "#F3E5D0", accent: "#FED300", bindi: true, slim: true, height: 0.94 }, side: 1, lane: 4.55, dir: 1, speed: 1.0, offset: 58 },
+  { look: { skin: "#C68B59", hair: "#1E1410", hairStyle: "side", outfit: "kurta", top: "#7B2D26", bottom: "#E8DCC8", facial: "beard", glasses: "#1A1A1A" }, side: -1, lane: 4.8, dir: -1, speed: 1.1, offset: 66 },
+  { look: { skin: "#D9A066", hair: "#3E2723", hairStyle: "bun", outfit: "shirt", top: "#E98A7B", bottom: "#2B3A55", accent: "#F7D2CB", slim: true, height: 0.95, bag: { kind: "backpack", color: "#1565C0" } }, side: 1, lane: 4.3, dir: -1, speed: 1.2, offset: 28 },
 ];
 
-function Walker({ w, reduced }: { w: (typeof WALKERS)[number]; reduced: boolean }) {
+function Walker({ w, reduced }: { w: WalkerSpec; reduced: boolean }) {
   const g = useRef<THREE.Group>(null);
-  const pose = useRef<Pose>(still({ walk: reduced ? 0 : 1 }));
   useFrame(({ camera, clock }) => {
     const grp = g.current;
     if (!grp) return;
@@ -260,7 +340,7 @@ function Walker({ w, reduced }: { w: (typeof WALKERS)[number]; reduced: boolean 
   });
   return (
     <group ref={g}>
-      <Person look={w.look} pose={pose} />
+      <Human look={w.look} mode={reduced ? "stand" : "walk"} speed={w.speed} phase={w.offset} />
     </group>
   );
 }

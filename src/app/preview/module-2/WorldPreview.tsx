@@ -10,13 +10,14 @@ import { BoulevardDrive, type Chapter2 } from "@/components/world2/BoulevardWorl
 
 const World21 = dynamic(() => import("@/features/chapter-2-1/three/World"), { ssr: false });
 const World22 = dynamic(() => import("@/features/chapter-2-2/three/World"), { ssr: false });
-const Bare = dynamic(() => import("@/components/world2/BoulevardWorld"), { ssr: false });
+const World23 = dynamic(() => import("@/features/chapter-2-3/three/World"), { ssr: false });
+const World24 = dynamic(() => import("@/features/chapter-2-4/three/World"), { ssr: false });
 
 const STOPS: { ch: Chapter2; time: string; district: string; what: string; built: boolean; sky: string }[] = [
   { ch: "2.1", time: "Golden hour", district: "Design studio storefronts", what: "Brand-colour columns, the website header banner, packs on plinths, logo standees and a giant tone-of-voice speaker.", built: true, sky: "from-[#F2A86B] to-[#FFE6C4]" },
   { ch: "2.2", time: "Sunset", district: "Phone-screen skyline", what: "Phone-shaped towers with feeds, rising like and comment shapes, linked customer groups and a delivery scooter.", built: true, sky: "from-[#C9768A] to-[#FFC9A1]" },
-  { ch: "2.3", time: "Dusk", district: "Market square (planned)", what: "The street at dusk. The positioning-map plaza and shopper segments arrive with the 2.3 content.", built: false, sky: "from-[#5E4A86] to-[#F09A86]" },
-  { ch: "2.4", time: "Neon night", district: "Pitch & media district (planned)", what: "The street at night. The generic pitch studio, press flashes and campaign billboard arrive with the 2.4 content.", built: false, sky: "from-[#141530] to-[#4A2F63]" },
+  { ch: "2.3", time: "Dusk", district: "Market square", what: "A positioning-map plaza, shopper groups for each target audience, competitor-type stalls beside an Eat Better stall and the persona board.", built: true, sky: "from-[#5E4A86] to-[#F09A86]" },
+  { ch: "2.4", time: "Neon night", district: "Pitch & media district", what: "A generic pitch studio, press flashes, a newspaper kiosk and festive hamper billboards, with silent fireworks over the city.", built: true, sky: "from-[#141530] to-[#4A2F63]" },
 ];
 
 export default function WorldPreview() {
@@ -52,7 +53,7 @@ export default function WorldPreview() {
 
   return (
     <BoulevardDrive.Provider value={drive}>
-      <WorldShell>{ch === "2.1" ? <World21 key="21" /> : ch === "2.2" ? <World22 key="22" /> : <Bare key={ch} chapter={ch} />}</WorldShell>
+      <WorldShell>{ch === "2.1" ? <World21 key="21" /> : ch === "2.2" ? <World22 key="22" /> : ch === "2.3" ? <World23 key="23" /> : <World24 key="24" />}</WorldShell>
 
       <main className="pointer-events-none relative z-10 flex min-h-dvh flex-col justify-between p-3 sm:p-6">
         {/* title */}
