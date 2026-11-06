@@ -50,8 +50,8 @@ export default function Chapter() {
           text={TAKEAWAY}
           emphasise={["middle", "right", "good", "side"]}
           steps={[
-            { img: "/chapter-3-2/kitchen-line.webp", label: "What it needs" },
-            { img: "/brand/library/site/kitchen-batch-testing.webp", label: "What it must be good at" },
+            { img: "/chapter-3-2/takeaway-clean-facility.webp", label: "What it needs" },
+            { img: "/chapter-3-2/takeaway-craftsmanship.webp", label: "What it must be good at" },
             { img: "/chapter-3-2/corporate-box.webp", label: "Who it needs on its side" },
           ]}
         />

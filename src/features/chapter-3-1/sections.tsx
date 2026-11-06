@@ -222,7 +222,7 @@ export function Channels() {
           <MediaRow
             items={[
               { kind: "image", src: "/chapter-3-1/web-channels.webp", alt: "eatbetterco.com: Also available on Blinkit, Zepto, Instamart, Amazon and BigBasket", ratio: 1376 / 225, fit: "contain", caption: "From eatbetterco.com: “Also available on”." },
-              { kind: "image", src: "/chapter-3-1/seg-corp.webp", alt: "A large corporate-size Ultimate Snack Box", ratio: 1, caption: "Bulk and corporate orders start as a request." },
+              { kind: "image", src: "/chapter-3-1/corporate-channel.webp", alt: "Corporate gifting setup with Eat Better gift boxes and healthy snack pouches on a conference table", ratio: 1, caption: "Bulk and corporate orders customized for modern workplaces." },
             ]}
           />
         </div>
@@ -262,7 +262,7 @@ export function Relationships() {
           <MediaRow
             items={[
               { kind: "image", src: "/chapter-3-1/web-reviews.webp", alt: "Happy customer reviews on eatbetterco.com", ratio: 1376 / 479, fit: "contain", caption: "Customer reviews on eatbetterco.com." },
-              { kind: "image", src: "/chapter-3-1/web-kitchen.webp", alt: "Made in the Better Kitchen section of eatbetterco.com", ratio: 1200 / 511, fit: "contain", caption: "“Made in the Better Kitchen”: transparency on the website." },
+              { kind: "image", src: "/chapter-3-1/customer-trust-relationship.webp", alt: "Eat Better unboxing flatlay with customer note, reviews, and wholesome snack ingredients", ratio: 1200 / 670, caption: "Transparent unboxing experience with verified customer reviews and honest ingredients." },
             ]}
           />
         </div>

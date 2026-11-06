@@ -50,8 +50,8 @@ export default function Chapter() {
           text={TAKEAWAY}
           emphasise={["people", "who", "need", "touch"]}
           steps={[
-            { img: "/chapter-3-1/seg-family.webp", label: "Who they are" },
-            { img: "/chapter-3-1/claim-ginger.webp", label: "What they need" },
+            { img: "/chapter-3-1/takeaway-who-they-are.webp", label: "Who they are" },
+            { img: "/chapter-3-1/takeaway-what-they-need.webp", label: "What they need" },
             { img: "/chapter-3-1/unbox.webp", label: "How you stay in touch" },
           ]}
         />

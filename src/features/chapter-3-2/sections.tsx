@@ -218,7 +218,7 @@ export function Partners() {
           className="mt-6"
           items={[
             { kind: "image", src: "/chapter-3-2/ingredients-nuts.webp", alt: "Ingredient grid for Premium Nut Mix: cashews, almonds, golden raisins, black raisins, pistachios, olive oil", ratio: 1, caption: "What suppliers deliver: the ingredients" },
-            { kind: "image", src: "/chapter-3-2/corporate-box.webp", alt: "An opened jumbo Diwali gift hamper box", ratio: 1, caption: "What corporate clients order: gift boxes in bulk" },
+            { kind: "image", src: "/chapter-3-2/packaging-supplier-partnership.webp", alt: "High-barrier sustainable packaging rolls, printed snack pouches, and supplier carton dispatch", ratio: 1, caption: "What packaging converters deliver: high-barrier protective pouches & sustainable cartons" },
           ]}
         />
       </Panel>
