@@ -245,7 +245,7 @@ export default function World() {
           </Hoverable>
           {!kit.compact && <Group id="corporate" position={[-5.9, 0, -50]} rotation={1.2} label="Corporate buyers" boxes />}
           <Hoverable label="Gifting: hampers for festive buyers">
-            <Billboard src="/brand/products/diwali-hamper-0.webp" position={[6.1, 3.2, -55]} rotation={[0, -0.9, 0]} width={2.4} height={2.4} />
+            <Billboard src="/brand/catalog/bb-roshni.webp" position={[6.1, 3.2, -55]} rotation={[0, -0.9, 0]} width={2.4} height={2.4} />
           </Hoverable>
         </>
       )}

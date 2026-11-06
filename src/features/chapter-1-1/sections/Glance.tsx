@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Building2, CalendarDays, Globe2, Info, MapPin, Quote, Store } from "lucide-react";
 import { GLANCE, GLANCE_TERMS, ROLE_EXPLAINERS } from "../content";
 import { SectionIntro } from "@/components/chapter/SectionIntro";
+import { NewsBlog } from "./NewsBlog";
 
 const FACTS = [
   { key: "name", label: "Name", value: GLANCE.name, icon: Store },
@@ -118,20 +119,7 @@ export function Glance() {
 
         {/* founders */}
         <div className="mt-12">
-          <motion.figure
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10% 0px" }}
-            className="mb-10 overflow-hidden rounded-2xl border border-cocoa bg-white shadow-[3px_3px_0_0_#2f1c1a]"
-          >
-            <div className="relative aspect-[1640/924] w-full">
-              <Image src="/chapter-1-1/founders.webp" alt="The founding team of Eat Better Co with the brand's laddoo box, snack box and pouches" fill sizes="(max-width: 1200px) 100vw, 1150px" className="object-cover" />
-            </div>
-            <figcaption className="flex flex-wrap items-center justify-between gap-2 border-t border-cocoa px-5 py-3 text-[0.98rem] text-cocoa">
-              <span className="font-bold">The founding team of Eat Better Co</span>
-              <span className="text-cocoa-2/80">Image: The Startup Trends</span>
-            </figcaption>
-          </motion.figure>
+          <NewsBlog />
           <h3 className="font-display text-[1.75rem] font-medium uppercase text-cocoa">The founding team</h3>
           <p className="mt-2 max-w-2xl text-[1.1rem] text-cocoa-2">Select a person to see what their role means.</p>
           <div className="mt-8 grid gap-4 sm:grid-cols-3">

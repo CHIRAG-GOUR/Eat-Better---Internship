@@ -128,12 +128,12 @@ function AreaShow({ id, index, areaId, tone, title, media, children }: { id: str
 
 
 const RANGE_PHOTOS: [string, string, string][] = [
-  ["/brand/products/millet-bhujia-1.webp", "Millet range", "#35401D"],
-  ["/brand/products/hazelnut-laddoo-1.webp", "Laddoos", "#381C11"],
-  ["/brand/products/nut-mix-2.webp", "Nut mixes", "#AF4300"],
-  ["/brand/products/laddoo-tin-0.webp", "Laddoo tin", "#E7BA68"],
-  ["/brand/products/diwali-hamper-0.webp", "Gifting", "#550D10"],
-  ["/brand/products/quinoa-namkeen-0.webp", "Quinoa namkeen", "#D81F45"],
+  ["/brand/catalog/range-millet.webp", "Millet namkeen", "#39451F"],
+  ["/brand/catalog/range-laddoo.webp", "Laddoos", "#3F2319"],
+  ["/brand/catalog/range-nuts.webp", "Nut mixes", "#9E4104"],
+  ["/brand/catalog/range-hamper.webp", "Festive hampers", "#F3B750"],
+  ["/brand/catalog/lab-office.webp", "Gift boxes", "#6E1625"],
+  ["/brand/catalog/range-chips.webp", "Chips & puffs", "#B94507"],
 ];
 
 export function NameSection() {
@@ -242,10 +242,10 @@ export function PackSection() {
       media={
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {[
-            ["/brand/products/millet-bhujia-0.webp", "Pouch", "Millet Bhujia"],
-            ["/brand/products/hazelnut-laddoo-0.webp", "Sachet", "Hazelnut Chocolate Laddoos"],
-            ["/brand/products/laddoo-box-24-0.webp", "Box", "Assorted Laddoo Box"],
-            ["/brand/products/laddoo-tin-0.webp", "Tin", "Assorted Laddoo Tin"],
+            ["/brand/catalog/fmt-pouch.webp", "Pouch", "Chickpea Puffs"],
+            ["/brand/catalog/fmt-sachet.webp", "Sachet", "Orange Ginger Laddoos"],
+            ["/brand/catalog/fmt-box.webp", "Box", "Ujjwal Diwali Hamper"],
+            ["/brand/catalog/fmt-tin.webp", "Tin", "Laddoos in Round Tin"],
           ].map(([src, fmt, name], i) => (
             <motion.figure key={src} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }} className="overflow-hidden rounded-2xl border border-cocoa bg-white">
               <div className="relative aspect-square">

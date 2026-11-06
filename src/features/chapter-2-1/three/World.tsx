@@ -243,19 +243,19 @@ export default function World() {
             </mesh>
           ))}
           <Hoverable label="Official Eat Better product photo">
-            <Billboard src="/brand/products/millet-namkeen-0.webp" position={[-6.0, 3.2, -10.5]} rotation={[0, 0.9, 0]} width={2.4} height={2.4} />
+            <Billboard src="/brand/catalog/bb-bhujia.webp" position={[-6.0, 3.2, -10.5]} rotation={[0, 0.9, 0]} width={2.4} height={2.4} />
           </Hoverable>
           <Suspense fallback={null}>
             <PackPlinths position={[5.9, 0, -13]} rotation={-1.2} ids={compact ? PACKS.slice(0, 2) : PACKS.slice(0, 3)} />
           </Suspense>
           <LogoStandee position={[-5.9, 0, -19]} rotation={1.0} />
           <Hoverable label="eatbetterco.com — official website">
-            <Billboard src="/chapter-1-5/all-products-collection.png" position={[6.0, 3.3, -28]} rotation={[0, -0.9, 0]} width={4.2} height={2.37} />
+            <Billboard src="/brand/catalog/bb-snackbox.webp" position={[6.0, 3.2, -28]} rotation={[0, -0.9, 0]} width={2.4} height={2.4} />
           </Hoverable>
           <ToneSpeaker position={[-5.9, 0, -31]} rotation={1.0} reduced={reduced} />
           <Swatches position={[-5.9, 0, -39]} rotation={1.15} compact={compact} />
           <Hoverable label="Official Eat Better creative">
-            <Billboard src="/brand/products/laddoo-box-42-0.webp" position={[6.0, 3.2, -42]} rotation={[0, -0.9, 0]} width={2.4} height={2.4} />
+            <Billboard src="/brand/catalog/bb-vanilla.webp" position={[6.0, 3.2, -42]} rotation={[0, -0.9, 0]} width={2.4} height={2.4} />
           </Hoverable>
           {!compact && (
             <Suspense fallback={null}>

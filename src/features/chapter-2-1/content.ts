@@ -34,9 +34,9 @@ export const PACK_TONES = STUDIO_TONES.filter((s) => ["Festive Maroon", "Forest"
 
 /** Where the identity shows up — official assets only. */
 export const TOUCHPOINTS = [
-  { id: "web", label: "Website", img: "/chapter-1-5/all-products-collection.png", note: "Official eatbetterco.com collection page" },
-  { id: "pack", label: "Packaging", img: "/brand/products/millet-namkeen-0.webp", note: "Official product photo" },
-  { id: "social", label: "Video & social", img: "/brand/video-poster.jpg", note: "From Eat Better’s own channel" },
+  { id: "web", label: "Website", img: "/chapter-2-1/web/home2.webp", note: "Official eatbetterco.com home page" },
+  { id: "pack", label: "Packaging", img: "/brand/catalog/protein-chips-pizza.webp", note: "Official product photo" },
+  { id: "social", label: "Video & social", img: "/brand/catalog/puffs-lime-creative.webp", note: "Official social creative" },
 ];
 
 /* ── Brand Identity Lab ─────────────────────────────────────────── */

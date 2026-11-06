@@ -161,11 +161,11 @@ export const LABS_21: Record<"name" | "logo" | "colour" | "pack" | "tone" | "per
         { id: "box", label: "Box or tin" },
       ],
       items: [
-        { id: "college", label: "One laddoo to carry to college", img: "/brand/products/hazelnut-laddoo-0.webp", answer: "sachet", why: "A slim sachet is made for one serving on the go.", rule: "format" },
-        { id: "family", label: "Namkeen for the family to share at tea time", img: "/brand/products/millet-bhel-0.webp", answer: "pouch", why: "Pouches hold enough to share, like Eat Better’s namkeens.", rule: "format" },
-        { id: "gift", label: "A gift for a colleague at Diwali", img: "/brand/products/laddoo-box-24-0.webp", answer: "box", why: "Boxes and tins present an assortment as a gift — value you can see.", rule: "value" },
-        { id: "office", label: "A box of 24 assorted laddoos for an office treat", img: "/brand/products/laddoo-box-42-0.webp", answer: "box", why: "Assortments come in boxes so everyone can pick a flavour.", rule: "format" },
-        { id: "trail", label: "A trail mix to snack from over a few days", img: "/brand/products/trail-mix-0.webp", answer: "pouch", why: "A pouch suits a snack you dip into more than once.", rule: "format" },
+        { id: "college", label: "One laddoo to carry to college", img: "/brand/catalog/lab-sachet.webp", answer: "sachet", why: "A slim sachet is made for one serving on the go.", rule: "format" },
+        { id: "family", label: "Namkeen for the family to share at tea time", img: "/brand/catalog/lab-family.webp", answer: "pouch", why: "Pouches hold enough to share, like Eat Better’s namkeens.", rule: "format" },
+        { id: "gift", label: "A gift for a colleague at Diwali", img: "/brand/catalog/lab-gift.webp", answer: "box", why: "Boxes and tins present an assortment as a gift — value you can see.", rule: "value" },
+        { id: "office", label: "A box of 24 assorted laddoos for an office treat", img: "/brand/catalog/lab-office.webp", answer: "box", why: "Assortments come in boxes so everyone can pick a flavour.", rule: "format" },
+        { id: "trail", label: "A nut mix to snack from over a few days", img: "/brand/catalog/lab-nuts.webp", answer: "pouch", why: "A pouch suits a snack you dip into more than once.", rule: "format" },
       ],
     },
     create: {

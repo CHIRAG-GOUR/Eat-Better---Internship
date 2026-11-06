@@ -45,10 +45,10 @@ export const FESTIVE = {
   gifting:
     "Positioning date-sweetened laddoos and roasted nut mixes as alternatives to traditional sugar-heavy sweets taps into the growing preference for guilt-free festive indulgence.",
   hampers: [
-    { img: "/brand/products/rakhi-hamper-0.webp", label: "Rakhi hamper" },
-    { img: "/brand/products/diwali-hamper-0.webp", label: "Diwali hamper" },
-    { img: "/brand/products/marigold-hamper-0.webp", label: "Marigold hamper" },
-    { img: "/brand/products/marigold-hamper-2.webp", label: "Marigold hamper, opened" },
+    { img: "/brand/catalog/h-sneh.webp", label: "Sneh Rakhi hamper" },
+    { img: "/brand/catalog/h-dhoom.webp", label: "Dhoom Diwali hamper" },
+    { img: "/brand/catalog/h-marigold.webp", label: "Marigold Diwali hamper" },
+    { img: "/brand/catalog/h-pichwai.webp", label: "Pichwai Diwali hamper" },
   ],
 };
 

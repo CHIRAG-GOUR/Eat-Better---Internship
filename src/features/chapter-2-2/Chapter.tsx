@@ -58,8 +58,8 @@ export default function Chapter() {
           emphasise={["stories", "reviews", "community", "first", "second"]}
           steps={[
             { img: "/chapter-2-2/video/home-kitchen-to-factory-poster.jpg", label: "Stories" },
-            { img: "/chapter-1-3/exhibition-stall.webp", label: "Community" },
-            { img: "/chapter-1-2/quick-delivery.webp", label: "A great first order" },
+            { img: "/brand/catalog/friends-bhel.webp", label: "Community" },
+            { img: "/brand/catalog/unbox-glowup.webp", label: "A great first order" },
           ]}
         />
         <Think />

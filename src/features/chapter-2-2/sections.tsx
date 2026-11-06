@@ -86,7 +86,7 @@ export function Community() {
           <GlossaryText>{COMMUNITY.text}</GlossaryText>
         </SectionIntro>
         <div className="mt-6">
-          <SplitStory img="/chapter-1-3/exhibition-stall.webp" alt="A snack stall at an exhibition" kicker="Where it started" title="Exhibitions and direct selling">
+          <SplitStory img="/chapter-2-2/exhibition-tasting.webp" alt="Shoppers tasting samples at a snack stall in an exhibition hall (illustrative photo)" kicker="Where it started" title="Exhibitions and direct selling">
             <div className="space-y-4">
               <Example>{COMMUNITY.example}</Example>
               <Concept>{COMMUNITY.concept}</Concept>
@@ -320,7 +320,7 @@ export function Markets() {
         <div className="mt-6 grid gap-3 md:grid-cols-3">
           <motion.figure initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="overflow-hidden rounded-2xl border border-cocoa bg-cream shadow-[2px_2px_0_0_#2f1c1a]">
             <div className="relative aspect-[16/10]">
-              <Image src="/chapter-1-1/art/order-online.webp" alt="" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
+              <Image src="/chapter-2-2/web-product-page.webp" alt="Eat Better product page on eatbetterco.com" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
             </div>
             <figcaption className="flex items-center gap-2 p-3 font-display text-[1.1rem] font-semibold text-cocoa">
               <Globe className="size-5 text-orange" /> Own website
@@ -329,7 +329,7 @@ export function Markets() {
           {MARKETS.places.map((p, i) => (
             <motion.figure key={p.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: (i + 1) * 0.1 }} className="overflow-hidden rounded-2xl border border-cocoa bg-cream shadow-[2px_2px_0_0_#2f1c1a]">
               <div className="relative aspect-[16/10]">
-                <Image src={i === 0 ? "/chapter-1-2/frames/shipping-box.webp" : "/chapter-1-2/quick-delivery.webp"} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
+                <Image src={i === 0 ? "/brand/catalog/unbox-snackbox.webp" : "/brand/catalog/cravings-puffs.webp"} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
               </div>
               <figcaption className="p-3">
                 <div className="flex items-center gap-2 font-display text-[1.1rem] font-semibold text-cocoa">

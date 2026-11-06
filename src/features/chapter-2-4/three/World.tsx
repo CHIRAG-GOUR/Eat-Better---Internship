@@ -241,10 +241,10 @@ export default function World() {
           </Hoverable>
           <Kiosk x={5.9} z={-23} rot={-1.2} />
           <Hoverable label="Festive campaign — Diwali gift hampers (official photo)">
-            <Billboard src="/brand/products/diwali-hamper-0.webp" position={[6.1, 3.3, -31]} rotation={[0, -0.9, 0]} width={2.6} height={2.6} />
+            <Billboard src="/brand/catalog/bb-tyohaar.webp" position={[6.1, 3.3, -31]} rotation={[0, -0.9, 0]} width={2.6} height={2.6} />
           </Hoverable>
           <Hoverable label="Rakhi gift hamper (official photo)">
-            <Billboard src="/brand/products/rakhi-hamper-0.webp" position={[-6.1, 3.3, -36]} rotation={[0, 0.9, 0]} width={2.4} height={2.4} />
+            <Billboard src="/brand/catalog/bb-nazar.webp" position={[-6.1, 3.3, -36]} rotation={[0, 0.9, 0]} width={2.4} height={2.4} />
           </Hoverable>
           <Hoverable label="Corporate gifting — eatbetterco.com (screenshot)">
             <Billboard src="/chapter-2-4/web/corporate-gifting.webp" position={[6.1, 3.3, -44]} rotation={[0, -0.9, 0]} width={4.1} height={2.0} />

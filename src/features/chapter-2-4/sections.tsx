@@ -184,7 +184,7 @@ export function Funding() {
           />
         </div>
         <div className="mt-5 grid items-stretch gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-          <Frame src="/chapter-1-3/funding.webp" alt="Investors and founders shaking hands over a table with snacks" caption="Illustrative photo" ratio="16/9" />
+          <Frame src="/chapter-2-4/investor-handshake.webp" alt="A founder and an investor shaking hands over a table with snacks and a pitch on a laptop" caption="Illustrative photo" ratio="16/9" />
           <div className="grid gap-3">
             <Point icon={Landmark} lead="Institutional validation" tone="white">
               {FUNDING.validation}

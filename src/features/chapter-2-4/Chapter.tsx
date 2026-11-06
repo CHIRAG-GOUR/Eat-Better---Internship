@@ -52,8 +52,8 @@ export default function Chapter() {
           text={TAKEAWAY}
           emphasise={["earned", "story", "transparent", "standards", "unit", "economics", "amplify"]}
           steps={[
-            { img: "/chapter-1-3/home-kitchen.webp", label: "A compelling brand story" },
-            { img: "/chapter-1-2/better-ingredients.webp", label: "Transparent product standards" },
+            { img: "/brand/catalog/story-tin.webp", label: "A compelling brand story" },
+            { img: "/brand/catalog/ingredients-hazelnut.webp", label: "Transparent product standards" },
             { img: "/chapter-2-4/lms-3.png", label: "Media amplifies it" },
           ]}
         />
